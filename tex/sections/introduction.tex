@@ -1,1 +1,44 @@
 \section{Introduction}
+
+Regular expressions and finite automata are two ways to describe the same
+regular languages. In practice, we often start from a regular expression and
+want to build a deterministic finite automaton (DFA) that recognizes the same
+language. There are many known constructions for this task, such as Thompson’s
+$\varepsilon$-NFA, position automata, or the standard subset construction. In
+this thesis we focus on a different tool for this purpose:
+\emph{derivatives} of languages and regular expressions.
+
+The basic idea of a derivative is simple. When we read a symbol (or a word)
+from the input, we remove this prefix from all words in the language and look
+at what is left. The derivative of a language with respect to a word
+thus describes “what remains” after consuming that word. Each derivative is
+again a language, and for regular languages it is again regular. 
+
+To put it simply, the derivative-based DFA construction treats each derivative
+as a possible state and uses derivatives to define the transitions and the
+accepting states. Our main theorem states that the DFA constructed in
+this way from a regular expression $r$ accepts exactly the language
+$\mathcal{L}(r)$. In other words, for every word $w$, the DFA accepts $w$ if
+and only if $w$ belongs to the language denoted by $r$. 
+
+Compared with more classical constructions, the derivative approach has several
+advantages. Thompson’s construction first builds an NFA with
+$\varepsilon$-transitions and then applies the subset construction to obtain a
+DFA. A position automaton marks each occurrence of a symbol and requires a
+separate follow-set computation. These methods work well, but they introduce
+additional intermediate structure. The derivative construction works directly
+on the syntax of the regular expression and does not need $\varepsilon$-moves
+or explicit subsets of states. It is conceptually closer to the language
+itself: each state is just a different “view” of the same language after
+reading some prefix.
+
+
+Derivatives are used in this thesis in both the classical (crisp) and fuzzy
+settings. In the crisp case, we work with the usual regular expressions built
+from union, concatenation, Kleene star, intersection, and complement, and we
+use derivatives to construct DFAs that recognize exactly the same languages.
+In the fuzzy case, we add a similarity relation on the alphabet, so that
+symbols can match not only when they are equal, but also when they are
+“similar enough”. Then we define fuzzy derivatives
+that take this similarity into account and show that they still lead to
+regular languages and automata.

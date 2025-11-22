@@ -32,6 +32,31 @@ An important property of the classical derivative is that it preserves regularit
     $u \in \Sigma^*$ and for any cut value $\cut \in [0,1]$.
 \end{theorem}
 
+\begin{proof}
+The argument is similar to the proof of Theorem~\ref{the:language-derivative-regular}.
+Let $\mathcal{L} \subseteq \Sigma^*$ be regular and fix $\cut \in [0,1]$.
+
+For a single symbol $a \in \Sigma$ we have, by Definition of $\partial_a^\cut$,
+\[
+  \partial_a^\cut(\mathcal{L})
+  = \{ w \in \Sigma^* \mid \exists b \in \Sigma \text{ with } \cR(a,b) \ge \cut
+       \text{ and } bw \in \mathcal{L} \}
+  = \bigcup_{\substack{b \in \Sigma \\ \cR(a,b) \ge \cut}} \partial_b(\mathcal{L}),
+\]
+where $\partial_b(\mathcal{L})$ is the classical derivative of $\mathcal{L}$ with
+respect to $b$. By Theorem~\ref{the:language-derivative-regular}, each
+$\partial_b(\mathcal{L})$ is regular, and since $\Sigma$ is finite, the union
+is finite; hence $\partial_a^\cut(\mathcal{L})$ is regular.
+
+For a word $u = a_1 \cdots a_n$ we use the recursive definition
+$\partial_u^\cut(\mathcal{L}) = \partial_{a_n}^\cut(\cdots \partial_{a_1}^\cut(\mathcal{L}) \cdots)$
+and apply the previous argument inductively: at each step we take a fuzzy
+derivative of a regular language and obtain a regular language again. Thus
+$\partial_u^\cut(\mathcal{L})$ is regular for every $u \in \Sigma^*$ and every
+cut $\cut \in [0,1]$.
+\end{proof}
+
+
 \noindent
 In order to compute fuzzy derivatives in practice, it is convenient to identify, for a given symbol and cut value, the set of symbols that are considered similar enough to be treated as matches. We call this set the \emph{cut neighborhood} of the symbol, and define it formally as follows.
 
@@ -90,6 +115,106 @@ The semantic and syntactic definitions of the fuzzy derivative are intended to c
     $$
 \end{theorem}
 
+\begin{proof}[Proof.]
+We prove that for all regular expressions $R$ and all words $u \in \Sigma^*$,
+\[
+  \mathcal{L}\!\bigl(\mathcal{D}^\cut_u(R)\bigr)
+  \;=\;
+  \partial^\cut_u\!\bigl(\mathcal{L}(R)\bigr).
+\]
+As in the crisp case, the proof has two steps: first a single symbol $a\in\Sigma$,
+then an arbitrary word $u$.
+
+\paragraph{Step 1 (single symbol).}
+Fix $a \in \Sigma$. We show by structural induction on $R$ that
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_a(R)\bigr)
+  = \partial^\cut_a\bigl(\mathcal{L}(R)\bigr).
+\]
+
+\smallskip
+\noindent\emph{Bases.}
+\begin{itemize}
+  \item $R = \emptyset$:
+    $\mathcal{D}^\cut_a(\emptyset)=\emptyset$, hence
+    $\mathcal{L}(\mathcal{D}^\cut_a(\emptyset))=\emptyset$, and
+    $\partial^\cut_a(\emptyset)=\emptyset$ by definition.
+  \item $R = \varepsilon$:
+    $\mathcal{D}^\cut_a(\varepsilon)=\emptyset$, so
+    $\mathcal{L}(\mathcal{D}^\cut_a(\varepsilon))=\emptyset$; on the language side
+    there is no word of the form $bw$ (with $(a,b)\in\cR_\cut$) equal to $\varepsilon$,
+    hence $\partial^\cut_a(\{\varepsilon\})=\emptyset$.
+  \item $R = b \in \Sigma$:
+    By Definition~\ref{def:regex-fuzzy-derivative},
+    $\mathcal{D}^\cut_a(b)=\varepsilon$ if $b \in \mathcal{S}^\cut_a$ and
+    $\mathcal{D}^\cut_a(b)=\emptyset$ otherwise, so
+    \[
+      \mathcal{L}(\mathcal{D}^\cut_a(b)) =
+      \begin{cases}
+        \{\varepsilon\} & \text{if } b \in \mathcal{S}^\cut_a,\\
+        \emptyset       & \text{otherwise.}
+      \end{cases}
+    \]
+    On the language side we have
+    \[
+      \partial^\cut_a(\{b\})
+      = \{ w \mid \exists c\in\Sigma,\ (a,c)\in\cR_\cut \ \text{and}\ cw=b \},
+    \]
+    which is $\{\varepsilon\}$ exactly when $(a,b)\in\cR_\cut$ (i.e.\ $b\in\mathcal{S}^\cut_a$),
+    and $\emptyset$ otherwise. Thus the two coincide.
+\end{itemize}
+
+\smallskip
+\noindent\emph{Inductive cases.}
+For $R = R_1 + R_2$, $R = R_1 \,\&\, R_2$, $R = \neg R_1$, $R = R_1\cdot R_2$ and
+$R = (R_1)^*$, the syntactic fuzzy derivative is defined by exactly the same
+algebraic clauses as in the crisp case (the parameter $\cut$ does not appear
+in these rules), and the semantic fuzzy derivative $\partial^\cut_a$ is defined
+as a finite union of classical derivatives:
+\[
+  \partial^\cut_a(L)
+  = \bigcup_{\substack{b \in \Sigma \\ (a,b)\in\cR_\cut}} \partial_b(L).
+\]
+Since each classical derivative $\partial_b$ satisfies the usual algebraic
+laws for $+$, $\&$, $\neg$, concatenation, and star, and finite unions preserve
+these equalities, the calculations in the crisp proof carry over verbatim with
+$\mathcal{D}_a$ and $\partial_a$ replaced by $\mathcal{D}^\cut_a$ and
+$\partial^\cut_a$. Using the induction hypothesis on $R_1$ and $R_2$ in each
+case, we obtain
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_a(R)\bigr)
+  = \partial^\cut_a\bigl(\mathcal{L}(R)\bigr)
+\]
+for all $a \in \Sigma$ and all regular expressions $R$.
+
+\paragraph{Step 2 (arbitrary word).}
+We prove by induction on $u \in \Sigma^*$ that
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_u(R)\bigr)
+  = \partial^\cut_u\bigl(\mathcal{L}(R)\bigr).
+\]
+\begin{itemize}
+  \item Base $u=\varepsilon$:
+    $\mathcal{D}^\cut_\varepsilon(R)=R$ and
+    $\partial^\cut_\varepsilon(\mathcal{L}(R))=\mathcal{L}(R)$.
+  \item Step $u = va$ with $v \in \Sigma^*$ and $a \in \Sigma$:
+    \[
+      \begin{aligned}
+      \mathcal{L}\bigl(\mathcal{D}^\cut_{va}(R)\bigr)
+      &= \mathcal{L}\bigl(\mathcal{D}^\cut_a(\mathcal{D}^\cut_v(R))\bigr) \\
+      &= \partial^\cut_a\bigl(\mathcal{L}(\mathcal{D}^\cut_v(R))\bigr)
+           \quad\text{(by Step 1)} \\
+      &= \partial^\cut_a\bigl(\partial^\cut_v(\mathcal{L}(R))\bigr)
+           \quad\text{(IH on $v$)} \\
+      &= \partial^\cut_{va}\bigl(\mathcal{L}(R)\bigr).
+      \end{aligned}
+    \]
+\end{itemize}
+Therefore $\mathcal{L}(\mathcal{D}^\cut_u(R))=\partial^\cut_u(\mathcal{L}(R))$
+for all words $u \in \Sigma^*$, which completes the proof.
+\end{proof}
+
+
 \subsection*{Examples}
 Assume the alphabet $\Sigma = \{a, b, c\}$ and a fuzzy similarity relation $\cR$ on $\Sigma$ defined as follows:
 \[
@@ -139,3 +264,142 @@ Let $\mathcal{L} = \{abc, ba, bb\}$. Then:
         \item $(b,b) \in \cR_\cut$ and $bb \in \mathcal{L}$ $\Rightarrow$ $b \in \partial_b^\cut(\mathcal{L})$
     \end{itemize}
 \end{itemize}
+
+\begin{theorem}\label{the:fuzzy-derivative-set-finite}
+Let $\Sigma$ be a finite alphabet and let $\mathcal{L} \subseteq \Sigma^*$ be a
+regular language. For every cut value $\cut \in [0,1]$, the set of fuzzy
+derivatives
+\[
+  \bigl\{\, \partial_u^\cut(\mathcal{L}) \;\bigm|\; u \in \Sigma^* \bigr\}
+\]
+is finite.
+\end{theorem}
+
+\begin{proof}
+Fix $\cut \in [0,1]$ and let $\mathcal{L}$ be regular. By
+Theorem~\ref{the:derivative-set-is-finite}, the set of classical derivatives
+\[
+  D \;=\; \bigl\{\, \partial_w(\mathcal{L}) \mid w \in \Sigma^* \bigr\}
+\]
+is finite.
+
+For a single symbol $a \in \Sigma$ we have, by the definition of the fuzzy
+derivative,
+\[
+  \partial_a^\cut(\mathcal{L})
+  = \{ w \mid \exists b \in \Sigma \text{ with } \cR(a,b) \ge \cut
+                  \text{ and } bw \in \mathcal{L} \}
+  = \bigcup_{\substack{b \in \Sigma \\ \cR(a,b) \ge \cut}} \partial_b(\mathcal{L}),
+\]
+so $\partial_a^\cut(\mathcal{L})$ is a finite union of elements of $D$.
+
+Using the recursive definition
+$\partial_{av}^\cut(\mathcal{L}) = \partial_v^\cut(\partial_a^\cut(\mathcal{L}))$
+and the fact that $\partial_a^\cut$ distributes over unions, a straightforward
+induction on the length of $u$ shows that every fuzzy derivative
+$\partial_u^\cut(\mathcal{L})$ is a finite union of languages from $D$.
+Since $D$ is finite, there are only finitely many such unions (at most
+$2^{|D|}$). Hence the set
+$\{\partial_u^\cut(\mathcal{L}) \mid u \in \Sigma^*\}$ is finite.
+\end{proof}
+
+
+
+\begin{theorem}\label{the:regex-fuzzy-derivative-types-finite}
+Let $\Sigma$ be a finite alphabet and let $R$ be a regular expression over
+$\Sigma$. For every cut value $\cut \in [0,1]$, the set of derivative languages
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
+\]
+is finite.
+\end{theorem}
+
+\begin{proof}
+Let $\cut \in [0,1]$ be fixed and $\mathcal{L} = \mathcal{L}(R)$.
+By Theorem~\ref{the:two-fuzzy-derivative-mapping}, for every word $w \in \Sigma^*$,
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_w(R)\bigr)
+  \;=\;
+  \partial^\cut_w\bigl(\mathcal{L}(R)\bigr)
+  \;=\;
+  \partial^\cut_w(\mathcal{L}).
+\]
+Hence
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \mid w \in \Sigma^* \bigr\}
+  \;=\;
+  \bigl\{\, \partial^\cut_w(\mathcal{L}) \mid w \in \Sigma^* \bigr\},
+\]
+and the right-hand set is finite by
+Theorem~\ref{the:fuzzy-derivative-set-finite}. This proves the claim.
+\end{proof}
+
+
+
+\begin{theorem}\label{the:fuzzy-dfa-correctness}
+Let $r$ be a regular expression over $\Sigma$, let $\cut \in [0,1]$, and let
+$M^\cut = \langle Q^\cut, \Sigma, \delta^\cut, q_0^\cut, F^\cut \rangle$
+be the DFA constructed from $r$ using fuzzy derivatives (for the fixed cut
+value $\cut$).
+Then $M^\cut$ and $r$ define the same $\cut$-language:
+\[
+  \mathcal{L}(M^\cut) \;=\; \mathcal{L}^\cut(r).
+\]
+Equivalently, for every word $w \in \Sigma^*$,
+\[
+  M^\cut \text{ accepts } w
+  \;\;\Longleftrightarrow\;\;
+  w \in \mathcal{L}^\cut(r).
+\]
+\end{theorem}
+
+\begin{proof}[Proof.]
+Let $\delta^{\cut *} : Q^\cut \times \Sigma^* \to Q^\cut$ be the standard
+extension of $\delta^\cut$ to words:
+\[
+  \delta^{\cut *}(q,\varepsilon) = q,
+  \qquad
+  \delta^{\cut *}(q,wa) = \delta^\cut\bigl(\delta^{\cut *}(q,w),a\bigr)
+  \text{ for } w \in \Sigma^*, a \in \Sigma.
+\]
+
+We first show by induction on $w \in \Sigma^*$ that
+\[
+  \delta^{\cut *}(q_0^\cut,w) = \bigl[\,\mathcal{D}^\cut_w(r)\,\bigr].
+\]
+
+\emph{Base case:} For $w = \varepsilon$ we have
+$q_0^\cut = [r] = [\mathcal{D}^\cut_\varepsilon(r)]$, so the claim holds.
+
+\emph{Inductive step:} Let $w = ua$ with $u \in \Sigma^*$ and $a \in \Sigma$.
+By the induction hypothesis,
+$\delta^{\cut *}(q_0^\cut,u) = [\mathcal{D}^\cut_u(r)]$.
+Then, by the definition of $\delta^\cut$,
+\[
+  \delta^{\cut *}(q_0^\cut,ua)
+  = \delta^\cut\bigl(\delta^{\cut *}(q_0^\cut,u),a\bigr)
+  = \delta^\cut\bigl([\mathcal{D}^\cut_u(r)],a\bigr)
+  = \bigl[\,\mathcal{D}^\cut_a(\mathcal{D}^\cut_u(r))\,\bigr]
+  = \bigl[\,\mathcal{D}^\cut_{ua}(r)\,\bigr],
+\]
+using the rule $\mathcal{D}^\cut_{ua}(r) = \mathcal{D}^\cut_a(\mathcal{D}^\cut_u(r))$.
+This proves the claim.
+
+Now let $w \in \Sigma^*$. Then:
+\[
+\begin{aligned}
+w \text{ is accepted by } M^\cut
+&\Longleftrightarrow \delta^{\cut *}(q_0^\cut,w) \in F^\cut \\[0.5ex]
+&\Longleftrightarrow \delta^{\cut *}(q_0^\cut,w) = [\mathcal{D}^\cut_w(r)]
+             \text{ and } [\mathcal{D}^\cut_w(r)] \in F^\cut
+             \quad\text{(by the claim above and def.\ of $F^\cut$)} \\[0.5ex]
+&\Longleftrightarrow \nu\bigl(\mathcal{D}^\cut_w(r)\bigr) = \varepsilon \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \mathcal{L}\bigl(\mathcal{D}^\cut_w(r)\bigr) \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \partial^\cut_w\bigl(\mathcal{L}(r)\bigr)
+     \quad\text{(by Theorem~\ref{the:two-fuzzy-derivative-mapping})} \\[0.5ex]
+&\Longleftrightarrow w \in \mathcal{L}^\cut(r)
+     \quad\text{(by the definition of $\mathcal{L}^\cut(r)$).}
+\end{aligned}
+\]
+Hence $\mathcal{L}(M^\cut) = \mathcal{L}^\cut(r)$, as required.
+\end{proof}
