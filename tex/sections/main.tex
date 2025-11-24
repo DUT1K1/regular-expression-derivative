@@ -22,8 +22,6 @@
 
 
 \usepackage{listings}
-
-\usepackage{hyperref}
 \lstdefinestyle{thesiscode}{
   basicstyle=\ttfamily\small,
   columns=fullflexible,
@@ -40,6 +38,7 @@
 }
 
 \usepackage{tikz}
+\usepackage{hyperref}
 \usetikzlibrary{arrows.meta,positioning}
 
 
@@ -50,6 +49,7 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{remark}{Remark}[section]
 \newtheorem{conjecture}{Conjecture}[section]
+\newtheorem{proposition}{Proposition}[section]
 
 
 \title{Derivative of Regular Expressions with Similarity Relation}
@@ -59,11 +59,11 @@
 
 \maketitle
 
-\input{sections/introduction}
-\input{sections/preliminaries}
-\input{sections/fuzzy_proximity_similarity_relation}
-\input{sections/derivative_regex_reglanguages}
-\input{sections/fuzzy_similarity_derivative}
+\input{introduction}
+\input{preliminaries}
+\input{fuzzy_proximity_similarity_relation}
+\input{derivative_regex_reglanguages}
+\input{fuzzy_similarity_derivative}
 
 
 
