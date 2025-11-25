@@ -94,8 +94,13 @@ language. In the fuzzy setting, this requires taking into account all symbols in
 $$
 \begin{array}{c}
     \mathcal{D}^\cut_a(\varepsilon)=\emptyset \\[1ex]
-    \mathcal{D}^\cut_a(a)=\varepsilon \\[1ex]
-    \mathcal{D}^\cut_a(b)=\emptyset \text{ for } b \notin \mathcal{S}^\cut_a \\[1ex]
+   %\mathcal{D}^\cut_a(a)=\varepsilon \\[1ex]
+ \mathcal{D}^\cut_a(b)=
+      \begin{cases}
+        \varepsilon & \text{if } b \in \mathcal{S}^\cut_a,\\
+        \emptyset       & \text{otherwise.}
+      \end{cases}\\[1ex]
+    %\mathcal{D}^\cut_a(b)=\emptyset \text{ for } b \notin \mathcal{S}^\cut_a \\[1ex]
     \mathcal{D}^\cut_a(\emptyset)=\emptyset \\[1ex]
     \mathcal{D}^\cut_a(r\cdot s)= \mathcal{D}^\cut_a(r)\cdot s + \nu(r)\cdot \mathcal{D}^\cut_a(s) \\[1ex]
     \mathcal{D}^\cut_a(r^*)=\mathcal{D}^\cut_a(r)\cdot r^* \\[1ex]

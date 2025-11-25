@@ -1,13 +1,14 @@
 % !TEX root =main.tex
 \section{Introduction}
 
-Regular expressions and finite automata are two ways to describe the same
-regular languages. In practice, we often start from a regular expression and
+Regular expressions and finite automata are two {\em dual}
+ ways to describe the same
+regular languages, the former is {\em bottom-up}, while the latter is {\em top-down}. In practice, we often start from a regular expression and
 want to build a deterministic finite automaton (DFA) that recognizes the same
 language. There are many known constructions for this task, such as Thompson’s
 $\varepsilon$-NFA, position automata, or the standard subset construction. In
 this thesis we focus on a different tool for this purpose:
-\emph{derivatives} of languages and regular expressions.
+\emph{derivatives} of languages and regular expressions~\cite{B62}.
 
 The basic idea of a derivative is simple. When we read a symbol (or a word)
 from the input, we remove this prefix from all words in the language and look
@@ -32,6 +33,8 @@ on the syntax of the regular expression and does not need $\varepsilon$-moves
 or explicit subsets of states. It is conceptually closer to the language
 itself: each state is just a different “view” of the same language after
 reading some prefix.
+
+{\color{red} Minimality? Citations}
 
 
 Derivatives are used in this thesis in both the classical (crisp) and fuzzy
