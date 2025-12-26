@@ -1,78 +1,79 @@
-\section{Preliminaries}
+\section{Preliminaries}\label{sec:preliminaries}
 
-We start by providing foundational definitions necessary for understanding the rest of the paper.
+We start by providing the foundational definitions necessary for understanding the rest of the paper.
 
-\subsection{Alphabets and Languages}
+\begin{definition}[Alphabet, words, and languages]
+\mbox{}\\[-0.5em]
+\begin{itemize}
+    \item An \emph{alphabet} $\Sigma$ is a finite nonempty set of symbols.
+    \item A \emph{word} over $\Sigma$ is a finite sequence of symbols from $\Sigma$.
+    \item The \emph{empty word} is denoted by $\varepsilon$.
+    \item The \emph{set of all words} over $\Sigma$ is $\Sigma^*$.
+    \item A \emph{language} over $\Sigma$ is a subset $\mathcal{L} \subseteq \Sigma^*$.
+\end{itemize}
+\end{definition}
 
-An \emph{alphabet} $\Sigma$ is a finite nonempty set of symbols. A \emph{word} over $\Sigma$ is a finite sequence of symbols from $\Sigma$. The empty word is denoted by $\varepsilon$. We denote the set of all words over $\Sigma$ by $\Sigma^*$, and a \emph{language} over $\Sigma$ is a subset $\mathcal{L} \subseteq \Sigma^*$.
-
-\subsection{Regular Expressions: Syntax}
-
+\begin{definition}
 Regular expressions over an alphabet $\Sigma$ are formally defined by the following grammar:
 
 $$
-R ::= \emptyset \mid \varepsilon \mid a\,(a \in \Sigma) \mid R+R \mid R\cdot R \mid R^* \mid R \& R \mid \neg R
+r ::= \emptyset \mid \varepsilon \mid a\,(a \in \Sigma) \mid r+r \mid r\cdot r \mid r^* \mid r \& r \mid \neg r
 $$
-
+where $r$ ranges over regular expressions and $a$ ranges over symbols in $\Sigma$.
 The intuitive meanings of these expressions are:
 \begin{itemize}
     \item $\emptyset$ represents the empty language,
     \item $\varepsilon$ represents the language containing only the empty word,
-    \item $a$ (for $a \in \Sigma$) represents the language containing only the word $a$,
-    \item $R + S$ represents the union of the languages represented by $R$ and $S$,
-    \item $R \cdot S$ represents the concatenation of languages represented by $R$ and $S$,
-    \item $R^*$ represents the Kleene star (iterated concatenation) of the language represented by $R$,
-    \item $R \& S$ represents the intersection of languages represented by $R$ and $S$,
-    \item $\neg R$ represents the complement of the language represented by $R$.
+    \item $a$ (for $a \in \Sigma$) represents the language containing only the one-letter word $a$,
+    \item $r + s$ represents the union of the languages represented by $r$ and $s$,
+    \item $r \cdot s$ represents the concatenation of languages represented by $r$ and $s$,
+    \item $r^*$ represents the Kleene star of the language represented by $r$,
+    \item $r \& s$ represents the intersection of languages represented by $r$ and $s$,
+    \item $\neg r$ represents the complement of the language represented by $r$.
 \end{itemize}
-
-\subsection{Semantic Interpretation}
-
-Given a regular expression $R$ over $\Sigma$, we define its semantic interpretation as the language $\mathcal{L}(R)$ as follows:
-\[
-\begin{aligned}
-\mathcal{L}(\emptyset) &= \emptyset \\
-\mathcal{L}(\varepsilon) &= \{\varepsilon\} \\
-\mathcal{L}(a) &= \{a\}, \quad a \in \Sigma \\
-\mathcal{L}(R+S) &= \mathcal{L}(R) \cup \mathcal{L}(S) \\
-\mathcal{L}(R\cdot S) &= \{xy \mid x \in \mathcal{L}(R), y \in \mathcal{L}(S)\} \\
-\mathcal{L}(R^*) &= \bigcup_{n \geq 0} \mathcal{L}(R)^n, \quad \text{where } \mathcal{L}(R)^0 = \{\varepsilon\}, \quad \mathcal{L}(R)^{n+1} = \mathcal{L}(R)^n \cdot \mathcal{L}(R) \\
-\mathcal{L}(R \& S) &= \mathcal{L}(R) \cap \mathcal{L}(S) \\
-\mathcal{L}(\neg R) &= \Sigma^* \setminus \mathcal{L}(R)
-\end{aligned}
-\]
-
-With these preliminaries, we have clearly set the foundations required to understand the derivative operations defined subsequently.
-
-\subsection{Nullable Regular Languages}
-In many constructions involving regular expressions, it is useful to know 
-whether the language described by a given expression contains the empty word 
-$\varepsilon$.  
-This property, called \emph{nullability}, plays a crucial role in the 
-definition of derivatives, particularly when handling concatenation: 
-if the first part of a concatenation can generate $\varepsilon$, 
-then the derivative must also account for the derivative of the second part.  
-To formalize this property, we introduce the \emph{nullable} function $\nu$, 
-which determines whether a regular expression is nullable and provides 
-a convenient symbolic form for use in subsequent rules.
-
-\begin{definition}\label{def:nullable}
-    If a regular language contains $\varepsilon$ it is called nullable. $\varepsilon \in \mathcal{L}[\![r]\!]$. And we define the following function:
-$$
-\nu(r) = 
-\begin{cases}
-	\varepsilon & \text{if }r \text{ is nullable} \\
-	\emptyset & \text{otherwise}
-\end{cases}
-$$
 \end{definition}
 
-\noindent
-Now based on the definition~\ref{def:nullable} we can write the following:
-$$
+
+\begin{definition}[Semantic interpretation]
+
+For a regular expression $r$ over $\Sigma$, its semantic interpretation is the
+language $\mathcal{L}(r) \subseteq \Sigma^*$ defined inductively by:
+\[
+\begin{aligned}
+\mathcal{L}(\emptyset)   &= \emptyset, \\
+\mathcal{L}(\varepsilon) &= \{\varepsilon\}, \\
+\mathcal{L}(a)           &= \{a\}, \quad a \in \Sigma, \\[0.5ex]
+\mathcal{L}(r + s)       &= \mathcal{L}(r) \cup \mathcal{L}(s), \\
+\mathcal{L}(r \cdot s)   &= \{uv \mid u \in \mathcal{L}(r),\ v \in \mathcal{L}(s)\}, \\
+\mathcal{L}(r^*)         &= \bigcup_{n \geq 0} \mathcal{L}(r)^n,
+   \quad \text{where } \mathcal{L}(r)^0 = \{\varepsilon\},\
+   \mathcal{L}(r)^{n+1} = \mathcal{L}(r)^n \cdot \mathcal{L}(r), \\
+\mathcal{L}(r \& s)      &= \mathcal{L}(r) \cap \mathcal{L}(s), \\
+\mathcal{L}(\neg r)      &= \Sigma^* \setminus \mathcal{L}(r).
+\end{aligned}
+\]
+\end{definition}
+
+\begin{definition}[Nullable regular expressions]\label{def:nullable}
+In many constructions involving regular expressions it is useful to know
+whether the language described by a given expression contains the empty word
+$\varepsilon$. A regular expression $r$ is called \emph{nullable} if
+$\varepsilon \in \mathcal{L}(r)$.
+
+We define the \emph{nullable} function $\nu$ by
+\[
+\nu(r) =
+\begin{cases}
+  \varepsilon & \text{if $r$ is nullable},\\
+  \emptyset   & \text{otherwise}.
+\end{cases}
+\]
+
+Equivalently, $\nu$ is characterized by the following equations:
+\[
 \begin{array}{c}
      \nu (\varepsilon)=\varepsilon  \\[1ex]
-     \nu(a)=\emptyset \\[1ex]
+     \nu(a)=\emptyset \quad (a \in \Sigma) \\[1ex]
      \nu(\emptyset)=\emptyset \\[1ex]
      \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) \\[1ex]
      \nu(r+s) = \nu(r) + \nu(s) \\[1ex]
@@ -80,17 +81,18 @@ $$
      \nu(r\:\&\:s) = \nu(r) \: \& \: \nu(s) \\[1ex]
      \nu(\neg r)= 
      \begin{cases}
-         \varepsilon & \text{if } \nu(r) = \emptyset \\
-         \emptyset & \text{if } \nu(r) = \varepsilon
+         \varepsilon & \text{if } \nu(r) = \emptyset, \\
+         \emptyset   & \text{if } \nu(r) = \varepsilon.
      \end{cases}
 \end{array}
-$$
+\]
+\end{definition}
 
-
-\subsection{Canonical Form}
- $[R]$ denotes the canonical (normalized) form
-of the regular expression $R$.
-\\
-$[R]=[S]  \implies$
-$\mathcal{L}(R)=\mathcal{L}(S)$.
-
+\begin{definition}[Canonical form]\label{def:canonical-form}
+ $[r]$ denotes the canonical (normalized) form
+of the regular expression $r$.
+If $[r] = [s]$ for regular expressions $r$ and $s$, then
+\[
+  \mathcal{L}(r) = \mathcal{L}(s).
+\]
+\end{definition}

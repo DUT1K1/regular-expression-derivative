@@ -1,0 +1,151 @@
+\section{Automata Construction}\label{sec:dfa-from-derivatives}
+
+In this section we construct a finite deterministic automaton (DFA) from a regular expression $r$, using the derivative operator $\mathcal{D}_a(\cdot)$
+and the nullable function $\nu(\cdot)$. Each DFA state denotes the remaining
+language of $r$ after consuming the prefix. Transitions are computed by taking one-step
+derivatives with respect to input symbols.
+
+\subsection{DFA Structure}
+Let $\equiv$ denote semantic equivalence of regular expressions:
+\[
+  R \equiv S \iff \mathcal{L}(R)=\mathcal{L}(S).   
+  \]
+We define the DFA $M=\langle Q, \Sigma, \delta,  q_0, F\rangle,$ as follows.
+
+\begin{itemize}
+    \item $Q \;=\; \{\, [\,\mathcal{D}_w(r)\,] \mid w \in \Sigma^* \,\}$ is the set of states; 
+
+    \item $\Sigma$ is a finite alphabet.
+
+  \item $\delta: Q \times \Sigma \to Q$ is the transition function defined by
+        \[
+          \delta\bigl([R], a\bigr) \;=\; \bigl[\,\mathcal{D}_a(R)\,\bigr].
+        \]
+    \item $q_0 = [\,r\,] \in Q$ is the start state (since $\mathcal{D}_\varepsilon(r)=r$).
+  \item $F \subseteq Q$ is the set of accepting states:
+        \[
+          F \;=\; \{\, [R] \in Q \mid \nu(R)=\varepsilon \,\}.
+        \]
+\end{itemize}
+
+
+
+By Theorem~\ref{the:two-derivative-mapping},
+$\mathcal{L}(\mathcal{D}_u(r))=\partial_u(\mathcal{L}(r))$, running the DFA corresponds exactly to repeatedly taking derivatives.
+
+
+\subsection{Pseudocode}\label{subsec:pseudocode-deriv-dfa}
+
+
+\begin{itemize}
+  \item \texttt{Sigma} $\equiv \Sigma$.
+  \item \texttt{delta} $\equiv \delta : Q\times\Sigma\to Q$.
+  \item \texttt{State} $:= [R]$.
+  \item \texttt{D(a, R)} $\equiv \mathcal{D}_a(R)$.
+  \item \texttt{nullable(R)} $\equiv \nu(R)=\varepsilon$.
+  \item \texttt{epsilon} $\equiv \varepsilon$.
+  \item \texttt{q\_0} $\equiv [r]$ (since $\mathcal{D}_\varepsilon(r)=r$).
+  \item \texttt{empty} $\equiv \emptyset$.
+  \item \texttt{union}(Q,\{x\}) $\equiv Q \cup \{x\}$.
+\end{itemize}
+
+
+
+\begin{lstlisting}[style=thesiscode,label={lst:deriv-dfa-paper}]
+ goto(q, a, Q, delta):
+    q_a := [ D(a, q) ]
+    if exists q' in Q and q' = q_a then
+        delta[(q, a)] := q'
+        return (Q, delta)
+    else
+        Q     := union(Q, { q_a })
+        delta := union(delta, (q, a) -> q_a))
+        for each a' in Sigma do
+            (Q, delta) := goto(q_a, a', Q, delta)
+        return (Q, delta)
+
+dfa(r):
+    q_0 := [ r ]
+    Q  := { q_0 }
+    delta := empty
+    for each a in Sigma do
+        (Q, delta) := goto(q_0, a, Q, delta)
+    F := { q in Q | nullable(q) }
+    return (Q, Sigma, delta, q_0, F)
+\end{lstlisting}
+
+\textbf{Termination.}
+By Theorem~\ref{the:regex-derivative-types-finite}, only finitely many
+distinct derivative languages arise; so the construction terminates.
+
+
+
+
+\begin{theorem}\label{the:dfa-correctness}
+Let $r$ be a regular expression over $\Sigma$, and let
+$M = \langle Q, \Sigma, \delta, q_0, F \rangle$
+be the DFA constructed from $r$.
+Then $M$ and $r$ define the same language:
+\[
+  \mathcal{L}(M) \;=\; \mathcal{L}(r).
+\]
+Equivalently, for every word $w \in \Sigma^*$,
+\[
+  M \text{ accepts } w
+  \;\;\Longleftrightarrow\;\;
+  w \in \mathcal{L}(r).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\delta^* : Q \times \Sigma^* \to Q$ be the extension of
+$\delta$ to words:
+\[
+  \delta^*(q,\varepsilon) = q,
+  \qquad
+  \delta^*(q,wa) = \delta\bigl(\delta^*(q,w),a\bigr)
+  \text{ for } w \in \Sigma^*, a \in \Sigma.
+\]
+
+We first show by induction on $w \in \Sigma^*$ that
+\[
+  \delta^*(q_0,w) = \bigl[\,\mathcal{D}_w(r)\,\bigr].
+\]
+\emph{Base case:} For $w = \varepsilon$ we have
+$q_0 = [r] = [\mathcal{D}_\varepsilon(r)]$, so the claim holds.
+
+\emph{Inductive step:} Let $w = ua$ with $u \in \Sigma^*$ and $a \in \Sigma$.
+By the induction hypothesis,
+$\delta^*(q_0,u) = [\mathcal{D}_u(r)]$.
+Then, by the definition of $\delta$,
+\[
+  \delta^*(q_0,ua)
+  = \delta\bigl(\delta^*(q_0,u),a\bigr)
+  = \delta\bigl([\mathcal{D}_u(r)],a\bigr)
+  = \bigl[\,\mathcal{D}_a(\mathcal{D}_u(r))\,\bigr]
+  = \bigl[\,\mathcal{D}_{ua}(r)\,\bigr],
+\]
+using the rule $\mathcal{D}_{ua}(r) = \mathcal{D}_a(\mathcal{D}_u(r))$.
+This proves the claim.
+
+Now let $w \in \Sigma^*$. Then:
+\[
+\begin{aligned}
+w \text{ is accepted by } M
+&\Longleftrightarrow \delta^*(q_0,w) \in F \\[0.5ex]
+&\Longleftrightarrow \delta^*(q_0,w) = [\mathcal{D}_w(r)]
+             \text{ and } [\mathcal{D}_w(r)] \in F
+             \quad\\[0.5ex]
+&\Longleftrightarrow \nu\bigl(\mathcal{D}_w(r)\bigr) = \varepsilon \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \mathcal{L}\bigl(\mathcal{D}_w(r)\bigr) \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \partial_w\bigl(\mathcal{L}(r)\bigr)
+     \quad\text{(by Theorem~\ref{the:two-derivative-mapping})} \\[0.5ex]
+&\Longleftrightarrow w\varepsilon \in \mathcal{L}(r)
+     \quad\text{(by the definition of }\partial_w\text{)} \\[0.5ex]
+&\Longleftrightarrow w \in \mathcal{L}(r)
+     \quad\text{(since }w\varepsilon = w\text{).}
+\end{aligned}
+\]
+Hence $\mathcal{L}(M) = \mathcal{L}(r)$.
+
+\end{proof}
