@@ -1,0 +1,132 @@
+\documentclass{article}
+\bibliographystyle{plain}
+\usepackage{bussproofs}
+\usepackage{graphicx}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+
+%%%%
+\usepackage{upgreek}
+\usepackage{calc}
+\usepackage{bm}
+
+\newtheorem{theorem}{Theorem}%  meant for continuous numbers
+
+\theoremstyle{proposition}
+\newtheorem{proposition}{Proposition}% 
+\newtheorem{counterexample}{Counterexample}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{question}{Questions}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{corollary}{Corollary}
+
+\theoremstyle{definition}%
+\newtheorem{definition}{Definition}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+
+\def\univ{U}
+\def\type{\mathit{type}}
+
+\def\T{\mathcal{T}}
+
+\def\P{\mathcal{P}}
+
+\def\dom{\mathcal{D}}
+
+\def\mod{\mathcal{M}}
+
+\def\typetau{\uptau}
+\def\typesigma{\upsigma}
+\def\typevar{\upalpha}
+\def\typebase{\upbeta}
+\def\typeuniver{\upomega}
+\newcommand{\tp}{\mathsf{type}}
+\newcommand{\degree}{\mathsf{degree}}
+\newcommand{\coltp}{\mathsf{ctype}}
+\newcommand{\coldeg}{\mathsf{cdegree}}
+\newcommand{\crisp}{\mathsf{crisp}}
+\newcommand {\ie}{{\em i.e.}}
+\newcommand {\eg}{{\em e.g.}}
+
+\newcommand{\fit}{{\textsc{fA}}}
+\newcommand{\fv}{\mathsf{fv}}
+\newcommand{\bv}{\mathsf{bv}}
+
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
+
+\newcommand{\temur}[1]{{\color{red}#1}}
+
+
+\title{Notes on similarity and fuzzy membership}
+\author{BD FH MK DM }
+\begin{document}
+\maketitle
+
+\section{Similarity vs Fuzzy Memebrship}
+There appear to be two approaches to {\em fuzzy regular languages}, the first uses the notion of {\em similarity} between elements of the alphabet and extends it thereof. The second uses the notion of ``{\em fuzzy membership}" of characters to alphabet, of words to languages, and generalizes it thereof. 
+Similarity can be related to fuzzy membership if we have a binary equality relation, between characters. Namely if $(a,b)\in_\mu Eq$, then we can assume that ${\mathcal R}(a,b)=\mu$. Axioms must be added on $Eq$ membership for the induced relation to be a similarity. 
+
+\section{Similarity}
+
+Let ${\mathcal R}\subseteq D$ be a {\em similarity} on the domain (alphabet) $D$.
+
+\begin{definition}\label{ext}Let ${\mathcal R}\subseteq D$ be a {\em similarity} on the domain (alphabet) $D$. ${\mathcal R}$ can be extended to \begin{itemize}
+\item a {\em  relation on words} as follows:
+ 
+
+${\mathcal R}^w(w_1,w_2) = \begin{cases} 0 & \mbox{ if } w_1= \epsilon \mbox{ and } w_2\neq \epsilon \\
+{\mathcal R}(a_1,a_2)\otimes {\mathcal R}^w(w'_1,w'_2) & \mbox{ if }w_i=a_iw'_i \mbox{ and  } w'_1, w'_2\neq \epsilon\\
+{\mathcal R}(a_1,a_2)\otimes K & \mbox{ if }w_i=a_iw'_i \mbox{ and  } w'_1= \epsilon \mbox{ or } w'_2 = \epsilon\\
+\end{cases}$
+\noindent The constant $K$  in the last clause, is some conventional value. This clause reflects the intuition behind the {\em lexicographic similarity} \ie\ the similarity one uses in looking up a word in the dictionary. 
+\footnote{$$\frac{\mathcal{R}(a_1,a_2)\otimes\mathcal{R}(w_1',w_2')}{max(|w_1|,|w_2|)}  \mbox{ if }|w_1|\neq |w_2|
+$$}
+\item a {\em  relation on languages} as follows:
+$${\mathcal R}^L(L_1,L_2)= \min\{\inf_{w_1\in L_1}\sup_{w_2\in L_2}{\mathcal R}^w(w_1,w_2),\inf_{w_2\in L_2}\sup_{w_1\in L_1}{\mathcal R}^w(w_1,w_2)\}.$$
+\end{itemize}
+\end{definition}
+
+
+
+\begin{proposition}The relations ${\mathcal R}^w$ and ${\mathcal R}^L$ defined in Definition~\ref{ext} are similarity relations.
+\end{proposition}
+
+\begin{definition}\label{symexp} Let $e_1,e_2\subseteq A^*$ be regular expressions and  ${\mathcal R}$ be a similarity relation on $A$. We define a relation on regular expressions as follows:
+\begin{itemize}
+\item ${\mathcal R}^e(0,e) = \begin{cases} 1 & \mbox{ if } e=\emptyset\\
+                                                        0 & \mbox{ otherwise };\end{cases}$
+\item ${\mathcal R}^e(\epsilon,e) = \begin{cases} 1 \mbox{ if } \epsilon = e\\
+0 & \mbox{ otherwise };\end{cases}$
+\item ${\mathcal R}^e(a_1,a_2) = {\mathcal R}(a_1,a_2)$;
+\item ${\mathcal R}^e(e_1^*,e_2^*) = {\mathcal R}^e(e_1,e_2)$;
+\item ${\mathcal R}^e(e,f_1+f_2) = \min \{{\mathcal R}^e(e,f_1),{\mathcal R}^e(e,f_2)\}$;
+\item ${\mathcal R}^e(e,f_1\wedge f_2) =\begin{cases} 1 &  e=\emptyset \mbox{ and } f_1\wedge f_2=\emptyset\\ \min \{{\mathcal R}^e(e,f_1),{\mathcal R}^e(e,f_2)\}& \mbox{ otherwise}\end{cases}$;
+%\item ${\mathcal R}^e(e_1+e_2,f_1+f_2) = \min \{{\mathcal R}^e(e_1,f_1),{\mathcal R}^e(e_1,f_2),{\mathcal R}^e(e_2,f_1),{\mathcal R}^e(e_2,f_2) \}$;
+%\item ${\mathcal R}^e(e_1\wedge e_2,f_1\wedge f_2) = \begin{cases} 1 & \mbox{ if } e_1\& e_2=\emptyset \mbox{ or } f_1\wedge f_2=\emptyset\\
+%\min \{\max \{{\mathcal R}^e(e_1,f_1),{\mathcal R}^e(e_1,f_2)\}, &\\
+%\ \ \ \ \ \ \ \ \ \ \max\{{\mathcal R}^e(e_2,f_1),{\mathcal R}^e(e_2,f_2) \}\} & \mbox{ otherwise}.
+%\end{cases}$
+\end{itemize}
+\end{definition}
+\noindent The last clause is more elaborate because we have to take care of the cases in which some  $e$ may be equal to some $f_i$.
+
+\begin{conjecture}  The relation ${\mathcal R}^e$ defined in Definition~\ref{symexp} are similarity relations and moreover ${\mathcal R}^e(e_1,e_2)={\mathcal R}^L(L(e_1),L(e_2)).$
+\end{conjecture}
+
+
+
+\end{document}

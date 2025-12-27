@@ -1,0 +1,505 @@
+% !TEX root =main.tex
+\section{Derivative of Regular Languages and Regular Expressions}\label{sec:derivatives}
+The \emph{derivative} of a language \(L \subseteq \Sigma^*\) with respect to a symbol \(a \in \Sigma\) is defined as the set of all suffixes \(w\) such that \(aw \in L\). In other words, it consists of all words in \(L\) that begin with \(a\), with the leading \(a\) removed. Words in \(L\) that do not start with \(a\) are excluded from the derivative.
+
+\begin{definition}\label{def:derivative}
+    The derivative of a language $L \subseteq \Sigma^*$ with respect to symbol $a \in \Sigma$ is defined to be:
+    $$
+        \partial_a(L)=\{ w \in \Sigma^* \mid a \cdot w \in L \}
+    $$
+
+    \textbf{Example:} Let $\Sigma = \{a, b\}$ and $L = \{aab, bb, baa, a\}$. Then:
+    \[
+        \partial_a(L) = \{ab, \varepsilon \}.
+    \] 
+    
+    Since: \begin{itemize}
+        \item From $aab$, removing the initial $a$ yields $ab$.
+        \item From $a$, removing the initial $a$ yields $\varepsilon$.
+        \item The words $bb$ and $baa$ are ignored, since they do not start with $a$.
+    \end{itemize}
+\end{definition}
+
+
+
+\noindent
+Having defined the derivative of a language with respect to a \emph{single symbol} 
+$a \in \Sigma$, we now extend the concept to handle derivatives with respect to an 
+\emph{entire word} $u \in \Sigma^*$. 
+The idea is to process the word one symbol at a time from left to right: 
+first take the derivative with respect to the initial symbol, and then apply 
+the derivative again to the result with respect to the remaining suffix. 
+This recursive approach leads to the following definition.
+
+
+\begin{definition}\label{def:derivative-string}
+    The derivative of a language $L \subseteq \Sigma^*$ with respect to a word $u=a\cdot w \in \Sigma^*$ where $a \in \Sigma$ and $w \in \Sigma^*$ is defined to be:
+    $$
+        \partial_u(L)=\partial_w(\partial_a(L))
+    $$
+
+    \textbf{Example:} Let $\Sigma = \{a, b\}$ and $L = \{aab, abb, ab, b\}$.  
+    Take $u = ab$, so $a \in \Sigma$ and $v = b$.  
+
+    First, compute:
+    \[
+        \partial_a(L) = \{ab, bb, b\},
+    \]
+
+    \begin{itemize}
+        \item $aab \to ab$
+        \item $abb \to bb$
+        \item $ab \to b$
+        \item $b$ is ignored (does not start with $a$)
+    \end{itemize}
+
+    Then:
+    \[
+        \partial_b\big(\partial_a(L)\big) = \{b, \varepsilon\},
+    \]
+    because:
+    \begin{itemize}
+        \item $ab$ is ignored (does not start with $b$)
+        \item $bb \to b$
+        \item $b \to \varepsilon$
+    \end{itemize}
+
+    Therefore:
+    \[
+        \partial_{ab}(L) = \{b, \varepsilon\}.
+    \]
+\end{definition}
+
+\noindent
+An important property of derivatives is that they preserve regularity: if we start with a regular language, then taking its derivative with respect to any symbol or word ayields another regular language. This fact ensures that derivatives can be used in algorithms and constructions (such as building deterministic finite automata) without leaving the class of regular languages. The following theorem formalizes this property.
+
+
+\begin{theorem}\label{the:language-derivative-regular}
+    $$\text{If }L\subseteq\Sigma^* \text{ is regular then } \partial_u(L) \text{ is also regular for any word } u\in\Sigma^*$$
+\end{theorem}
+
+\begin{proof}[Proof.]
+Suppose $L \subseteq \Sigma^*$ is a regular language.  
+By definition, there exists a regular expression $r$ such that 
+$\mathcal{L}(r) = L$.
+
+Now consider the syntactic derivative $\mathcal{D}_u(r)$ of $r$ with respect to 
+a word $u \in \Sigma^*$.  
+By Theorem~\ref{the:two-derivative-mapping} we have
+\[
+   \mathcal{L}\bigl(\mathcal{D}_u(r)\bigr)
+   \;=\;
+   \partial_u(\mathcal{L}(r))
+   \;=\;
+   \partial_u(L).
+\]
+
+Furthermore, by construction the derivative $\mathcal{D}_u(r)$ is itself a
+regular expression, since the rules for derivatives always yield expressions
+formed from the grammar of regular expressions.  
+Therefore $\partial_u(L)$ is denoted by a regular expression, and hence it is a
+regular language.
+
+Thus, if $L \subseteq \Sigma^*$ is regular, then $\partial_u(L)$ is regular for
+every word $u \in \Sigma^*$.
+\end{proof}
+
+\begin{theorem}\label{the:derivative-set-is-finite}
+    Let $\Sigma$ be a finite alphabet and let $L \subseteq \Sigma^*$ be a regular language.
+    Then the set of all derivatives of $L$ with respect to words over $\Sigma$,
+    \[
+        \bigl\{\, \partial_{u}(L) \;\bigm|\; u \in \Sigma^* \bigr\},
+    \]
+    is finite.
+\end{theorem}
+
+\begin{proof}
+Since $L$ is regular, there exists a regular expression $r$ with $\mathcal{L}(r)=L$.
+By Theorem~\ref{the:two-derivative-mapping}, for every $u\in\Sigma^*$ we have
+\[
+   \partial_u(L) \;=\; \partial_u\bigl(\mathcal{L}(r)\bigr)
+   \;=\; \mathcal{L}\!\bigl(\mathcal{D}_u(r)\bigr).
+\]
+Thus it is enough to prove that the set
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}_u(r)) \;\bigm|\; u\in\Sigma^* \bigr\}
+\]
+is finite. We prove this by induction on the number \(N\) of regular operators in \(r\).
+
+\paragraph{Bases (\(N=0\)).}
+\begin{description}
+  \item[\(r=\emptyset\).]
+  \[
+    \mathcal{D}_u(\emptyset)=\emptyset \quad \forall\, u\in\Sigma^*.
+  \]
+  The collection is \( \{\emptyset\} \).
+
+  \item[\(r=\varepsilon\).]
+  \[
+    \mathcal{D}_\varepsilon(\varepsilon)=\varepsilon,
+    \qquad
+    \mathcal{D}_a(\varepsilon)=\emptyset \quad \forall\, a\in\Sigma.
+  \]
+  The collection is \( \{\{\varepsilon\},\emptyset\} \).
+
+  \item[\(r=a\in\Sigma\).]
+  \[
+    \mathcal{D}_\varepsilon(a)=a,
+    \qquad
+    \mathcal{D}_a(a)=\varepsilon,
+    \qquad
+    \mathcal{D}_b(a)=\emptyset \quad \forall\, b\in\Sigma\setminus\{a\}.
+  \]
+  The collection is finite.
+\end{description}
+
+\paragraph{Inductive step (\(N>0\)).}
+Induction hypothesis: every regular expression with at most \(N\) regular operators has only finitely many languages of the form \(\{\,\mathcal{L}(\mathcal{D}_u(\cdot)) \mid u\in\Sigma^*\,\}\).
+Let \(r\) be a regular expression with \(N+1\) regular operators, and let \(p\) and \(q\) be its subexpressions with at most \(N\) regular operators.
+
+\smallskip
+\emph{(1) Boolean combinations.}
+If \(r=p+q\), then for every word \(u\),
+\[
+  \mathcal{L}(\mathcal{D}_u(r))
+  \;=\;
+  \mathcal{L}(\mathcal{D}_u(p)) \cup \mathcal{L}(\mathcal{D}_u(q)).
+\]
+By the induction hypothesis there are only finitely many possibilities for each term on the right, so there are only finitely many possible unions. The same reasoning applies to $\cap$ and $\neg$.
+
+\emph{(2) Concatenation.}
+Let \(r=p\cdot q\).
+
+\textit{}
+For \(a\in\Sigma\),
+\[
+  \mathcal{D}_a(p\cdot q)
+  \;=\;
+  \mathcal{D}_a(p)\cdot q \;+\; \nu(p)\cdot \mathcal{D}_a(q).
+\]
+
+\textit{}
+For \(u=a_1a_2\),
+\[
+\begin{aligned}
+\mathcal{D}_{a_1a_2}(p\cdot q)
+&= \mathcal{D}_{a_2}\!\bigl(\mathcal{D}_{a_1}(p)\cdot q \;+\; \nu(p)\cdot \mathcal{D}_{a_1}(q)\bigr) \\
+&= \mathcal{D}_{a_1a_2}(p)\cdot q
+   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \mathcal{D}_{a_2}(q)
+   \;+\; \nu(p)\cdot \mathcal{D}_{a_1a_2}(q).
+\end{aligned}
+\]
+
+
+For \(u=a_1\cdots a_n\),
+\[
+  \mathcal{D}_{u}(p\cdot q)
+  \;=\;
+  \mathcal{D}_{u}(p)\cdot q
+  \;+\;
+  \nu(p)\cdot \mathcal{D}_{u}(q)
+  \;+\;
+  \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \mathcal{D}_{a_2\cdots a_n}(q)
+  \;+\;\cdots\;+\;
+  \nu\!\bigl(\mathcal{D}_{a_1\cdots a_{n-1}}(p)\bigr)\cdot \mathcal{D}_{a_n}(q).
+\]
+Equivalently,
+\[
+  \mathcal{D}_u(p\cdot q)
+  \;=\;
+  \mathcal{D}_u(p)\cdot q
+  \;+\;
+  \sum_{i=0}^{n-1}
+  \Bigl(
+    \nu\!\bigl(\mathcal{D}_{a_1\cdots a_i}(p)\bigr)\cdot
+    \mathcal{D}_{a_{i+1}\cdots a_n}(q)
+  \Bigr),
+\]
+where the summation denotes a finite union using \(+\).
+By the induction hypothesis, the set of possible terms is finite, so only finitely many unions can occur.
+
+
+\smallskip
+\emph{(3) Kleene star.}
+Let \(r=p^*\).
+
+\textit{}
+For \(a\in\Sigma\),
+\[
+  \mathcal{D}_a(p^*) \;=\; \mathcal{D}_a(p)\cdot p^*.
+\]
+
+\textit{}
+For \(u=a_1a_2\),
+\[
+\begin{aligned}
+\mathcal{D}_{a_1a_2}(p^*)
+&= \mathcal{D}_{a_2}\bigl(\mathcal{D}_{a_1}(p)\cdot p^*\bigr) \\
+&= \bigl(\mathcal{D}_{a_2}\mathcal{D}_{a_1}(p)\bigr)\cdot p^*
+   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \mathcal{D}_{a_2}(p^*) \\
+&= \mathcal{D}_{a_1a_2}(p)\cdot p^*
+   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \bigl(\mathcal{D}_{a_2}(p)\cdot p^*\bigr).
+\end{aligned}
+\]
+
+Thus \(\mathcal{D}_{a_1a_2}(p^*)\) is a union of terms \((\mathcal{D}_t p)\cdot p^*\).
+
+\textit{}
+For \(u=a_1\cdots a_n\) with \(n\ge 1\) we prove by induction on \(n\) that \(\mathcal{D}_u(p^*)\) is a finite union of terms \((\mathcal{D}_t (p))\cdot p^*\) with \(t\ne\varepsilon\).
+The case \(n=1\) is \(\mathcal{D}_a(p^*)=\mathcal{D}_a(p)\cdot p^*\).
+Inductive step
+\[
+\mathcal{D}_{ua}(p^*)=\mathcal{D}_a\bigl(\mathcal{D}_u(p^*)\bigr).
+\]
+By the induction hypothesis, \(\mathcal{D}_u(p^*)=\sum_j (\mathcal{D}_{t_j}p)\cdot p^*\).
+Applying the product rule to each summand and \(\mathcal{D}_a(p^*)=\mathcal{D}_a(p)\cdot p^*\) gives
+\[
+\mathcal{D}_a\!\bigl((\mathcal{D}_{t_j}(p))\cdot p^*\bigr)
+= (\mathcal{D}_a(\mathcal{D}_{t_j}p))\cdot p^*
+  \;+\; \nu(\mathcal{D}_{t_j}(p))\,(\mathcal{D}_a (p))\cdot p^*,
+\]
+which is again a union of terms \((\mathcal{D}_t (p))\cdot p^*\).
+
+\smallskip
+This completes the induction. Therefore the set \(\{\mathcal{L}(\mathcal{D}_u(r)) \mid u\in\Sigma^*\}\) is finite, and so \(\{\partial_u(L)\mid u\in\Sigma^*\}\) is finite as well.
+\end{proof}
+
+
+\noindent
+So far, we have defined derivatives at the \emph{semantic} level, 
+that is, as operations on languages themselves.  
+However, in practice we often work with the syntactic representation of a language, 
+namely a regular expression.  
+To apply derivatives directly to regular expressions, we need a corresponding 
+\emph{syntactic} definition.  
+This allows us to compute derivatives by manipulating the structure of the 
+expression, rather than first interpreting it as a language.  
+Although the semantic and syntactic derivatives capture the same underlying idea 
+--- removing a given prefix from all words in the language --- they operate on 
+different objects.  
+The following definition formalizes the derivative in the syntactic setting.
+
+
+\begin{definition}\label{def:regex-derivative}
+    Let \(R\) be a regular expression over the alphabet \(\Sigma\) and let
+    \(u \in \Sigma^{*}\) be a word.
+    The \emph{derivative of the regular expression \(R\) with respect to \(u\)}
+    is the regular expression
+    \[
+        \mathcal{D}_{u}(R)
+    \]
+    whose language satisfies
+    \[
+        \mathcal{L}\bigl(\mathcal{D}_{u}(R)\bigr)
+        \;=\;
+        \{\, v \in \Sigma^{*} \mid u\cdot v \in \mathcal{L}(R) \}.
+    \]
+\end{definition}
+
+
+\noindent
+Since we have now defined the meaning of nullable and have a general understanding of derivative we can write the following:
+$$
+\begin{array}{c}
+    \mathcal{D}_a(\varepsilon)=\emptyset \\[1ex]
+    \mathcal{D}_a(a)=\varepsilon \\[1ex]
+    \mathcal{D}_a(b)=\emptyset \text{ for } a\neq b \\[1ex]
+    \mathcal{D}_a(\emptyset)=\emptyset \\[1ex]
+    \mathcal{D}_a(r\cdot s)= \mathcal{D}_a(r)\cdot s + \nu(r)\cdot \mathcal{D}_a(s) \\[1ex]
+    \mathcal{D}_a(r^*)=\mathcal{D}_a(r)\cdot r^* \\[1ex]
+    \mathcal{D}_a(r+s)=\mathcal{D}_a(r)+\mathcal{D}_a(s) \\[1ex]
+    \mathcal{D}_a(r\:\&\:s)=\mathcal{D}_a(r)\:\&\:\mathcal{D}_a(s) \\[1ex]
+    \mathcal{D}_a(\neg r) = \neg(\mathcal{D}_a(r))
+\end{array}
+$$
+
+\noindent
+Additional rules may need to be added for special cases, one is for derivative with respect to empty string and the other is for derivative with respect to multiple regular expressions:
+$$
+\begin{array}{c}
+     \mathcal{D}_\varepsilon(r)=r  \\[1ex]
+     \mathcal{D}_{ua}(r)=\mathcal{D}_a(\mathcal{D}_u(r))
+\end{array}
+$$
+\textbf{Examples:}
+\begin{itemize}
+    \item $\partial_a(a+b)=\partial_a(a) + \partial_a(b)=\varepsilon+\emptyset=\varepsilon$
+    \item $\partial_{aaa}(a^*)=\partial_{aa}(\partial_a(a^*))=\partial_{aa}(\partial_a(a)\cdot a^*)=\partial_{aa}(\varepsilon \cdot a^*)=\partial_{aa}(a^*)=\cdots=a^*$
+    \item $\partial_c\left(\left(a+b\right)^*\cdot c\right)= \partial_c((a+b)^*)\cdot c + \nu((a+b)^*)\cdot \partial_c(c)= \emptyset \cdot c + \varepsilon \cdot \varepsilon= \emptyset+ \varepsilon=\varepsilon$
+\end{itemize}
+
+\noindent
+We have introduced two notions of derivative: 
+(i) the \emph{semantic derivative}\/ $\partial_{u}(\mathcal{L})$ of a regular language $\mathcal{L}\!\subseteq\!\Sigma^{*}$ (Definition~\ref{def:derivative}), and 
+(ii) the \emph{syntactic derivative}\/ $\mathcal{D}_{u}(R)$ of a regular expression $R$ (Definition~\ref{def:regex-derivative}). 
+Both operations embody the same intuition—``what remains of a word after removing the prefix $u$''—yet they are defined on different objects.  
+To make their relationship explicit and eliminate any possible ambiguity, we next state a lemma that shows the two definitions coincide under the semantics mapping.
+
+\begin{theorem}[Semantic–syntactic correspondence]\label{the:two-derivative-mapping}
+  Let \(R\) be a regular expression over \(\Sigma\) and \(u\in\Sigma^{*}\).
+  Then
+  \[
+      \mathcal{L}\bigl(\mathcal{D}_{u}(R)\bigr)
+      \;=\;
+      \partial_{u}\bigl(\mathcal{L}(R)\bigr).
+  \]
+  In words, taking the derivative at the level of regular expressions and
+  then interpreting the result as a language yields exactly the same set of
+  strings as first interpreting \(R\) semantically and then taking the
+  derivative of the resulting language.
+\end{theorem}
+
+\begin{proof}[Proof]
+We prove that for all regular expressions $R$ and all words $u \in \Sigma^*$,
+\[
+  \mathcal{L}\!\big(\mathcal{D}_u(R)\big) \;=\; \partial_u\!\big(\mathcal{L}(R)\big).
+\]
+The proof is in two layers: first for a single symbol $a\in\Sigma$ by structural
+induction on $R$, then extend to words $u$ by induction on $|u|$.
+
+\paragraph{Step 1 (single symbol).}
+Fix $a\in\Sigma$. We show by structural induction on $R$ that
+$\mathcal{L}(\mathcal{D}_a(R))=\partial_a(\mathcal{L}(R))$.
+
+\smallskip
+\noindent\emph{Bases.}
+\begin{itemize}
+  \item $R=\emptyset$: $\mathcal{D}_a(\emptyset)=\emptyset$ and $\partial_a(\emptyset)=\emptyset$.
+  \item $R=\varepsilon$: $\mathcal{D}_a(\varepsilon)=\emptyset$ and
+        $\partial_a(\{\varepsilon\})=\emptyset$ since $aw\neq\varepsilon$.
+  \item $R=b\in\Sigma$:
+        $\mathcal{D}_a(b)=\varepsilon$ iff $a=b$, else $\emptyset$;
+        likewise $\partial_a(\{b\})=\{\varepsilon\}$ iff $a=b$, else $\emptyset$.
+\end{itemize}
+
+\noindent\emph{Inductive cases.}
+Write $L(\cdot)$ for $\mathcal{L}(\cdot)$.
+\begin{itemize}
+  \item $R=R_1+R_2$:
+    \[
+      L(\mathcal{D}_a(R_1{+}R_2))
+      = L(\mathcal{D}_a(R_1)) \cup L(\mathcal{D}_a(R_2))
+      = \partial_a L(R_1) \cup \partial_a L(R_2)
+      = \partial_a\big(L(R_1)\cup L(R_2)\big)
+      = \partial_a L(R).
+    \]
+  \item $R=R_1\,\&\,R_2$:
+    \[
+      L(\mathcal{D}_a(R_1\,\&\,R_2))
+      = L(\mathcal{D}_a(R_1)) \cap L(\mathcal{D}_a(R_2))
+      = \partial_a L(R_1) \cap \partial_a L(R_2)
+      = \partial_a\big(L(R_1)\cap L(R_2)\big)
+      = \partial_a L(R).
+    \]
+  \item $R=\neg R_1$:
+    \[
+      L(\mathcal{D}_a(\neg R_1))
+      = \Sigma^* \setminus L(\mathcal{D}_a(R_1))
+      = \Sigma^* \setminus \partial_a L(R_1)
+      = \partial_a\big(\Sigma^* \setminus L(R_1)\big)
+      = \partial_a L(R).
+    \]
+\item $R = R_1 \cdot R_2$.
+Using the derivative rule
+\[
+  \mathcal{D}_a(R_1\cdot R_2)
+  \;=\;
+  \mathcal{D}_a(R_1)\cdot R_2 \;+\; \nu(R_1)\cdot \mathcal{D}_a(R_2)
+\]
+and semantics of $+$, $\cdot$, we get
+\[
+\begin{aligned}
+\mathcal{L}\big(\mathcal{D}_a(R_1\cdot R_2)\big)
+&= \mathcal{L}\big(\mathcal{D}_a(R_1)\big)\cdot \mathcal{L}(R_2)
+   \;\cup\;
+   \mathcal{L}\big(\nu(R_1)\big)\cdot \mathcal{L}\big(\mathcal{D}_a(R_2)\big) \\[2pt]
+&\stackrel{\text{IH}}{=}\;
+   \partial_a\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)
+   \;\cup\;
+   \mathcal{L}\big(\nu(R_1)\big)\cdot \partial_a\mathcal{L}(R_2).
+\end{aligned}
+\]
+By definition of $\nu$,
+\[
+\mathcal{L}\big(\nu(R_1)\big)=
+\begin{cases}
+\{\varepsilon\} & \text{if }\varepsilon\in\mathcal{L}(R_1),\\
+\emptyset       & \text{otherwise,}
+\end{cases}
+\]
+hence
+\[
+\mathcal{L}\big(\mathcal{D}_a(R_1\cdot R_2)\big)
+=
+\partial_a\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)
+\;\cup\;
+\begin{cases}
+\partial_a\mathcal{L}(R_2) & \text{if }\varepsilon\in\mathcal{L}(R_1),\\
+\emptyset                   & \text{otherwise.}
+\end{cases}
+\]
+This is exactly the left-quotient law for concatenation,
+\[
+\partial_a\!\big(\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)\big)
+=
+\partial_a\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)
+\;\cup\;
+\big(\,\varepsilon\in\mathcal{L}(R_1)\;?\;\partial_a\mathcal{L}(R_2):\emptyset\,\big),
+\]
+so
+\[
+\mathcal{L}\big(\mathcal{D}_a(R_1\cdot R_2)\big)
+=
+\partial_a\!\big(\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)\big)
+=
+\partial_a\mathcal{L}(R_1\cdot R_2).
+\]
+
+  \item $R=(R_1)^*$:
+    Since $L(R_1^*) = \bigcup_{n\ge 0} L(R_1)^n$ and any factorization of a word
+    in $L(R_1^*)$ can be taken with the first block from $L(R_1)$,
+    \[
+      \partial_a L(R_1^*) = \partial_a L(R_1) \cdot L(R_1^*).
+    \]
+    By the derivative rule $\mathcal{D}_a(R_1^*)=\mathcal{D}_a(R_1)\cdot R_1^*$ and the IH,
+    \[
+      L(\mathcal{D}_a(R_1^*)) = L(\mathcal{D}_a(R_1))\cdot L(R_1^*)
+      = \partial_a L(R_1)\cdot L(R_1^*)
+      = \partial_a L(R_1^*).
+    \]
+\end{itemize}
+Thus $L(\mathcal{D}_a(R))=\partial_a L(R)$ for all $a$ and $R$.
+
+\paragraph{Step 2 (arbitrary word).}
+We prove by induction on $u\in\Sigma^*$ that
+$L(\mathcal{D}_u(R))=\partial_u L(R)$.
+\begin{itemize}
+  \item Base $u=\varepsilon$: $\mathcal{D}_\varepsilon(R)=R$ and $\partial_\varepsilon L(R)=L(R)$.
+  \item Step $u=va$:
+    \[
+      \begin{aligned}
+      L(\mathcal{D}_{va}(R))
+      &= L\big(\mathcal{D}_a(\mathcal{D}_v(R))\big)
+       = \partial_a\big(L(\mathcal{D}_v(R))\big) \quad\text{(Step 1)} \\
+      &= \partial_a\big(\partial_v L(R)\big) \quad\text{(IH on $v$)}
+       = \partial_{va} L(R).
+      \end{aligned}
+    \]
+\end{itemize}
+Therefore $L(\mathcal{D}_u(R))=\partial_u L(R)$ for all words $u$, completing the proof.
+\end{proof}
+
+
+
+\begin{theorem}\label{the:regex-derivative-types-finite}
+Let $\Sigma$ be a finite alphabet and let $R$ be a regular expression over $\Sigma$.
+Then the set of derivative languages of $R$,
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
+\]
+is finite. 
+\end{theorem}
+
+\begin{proof}[Proof.]
+Follows directly from Theorem~\ref{the:two-derivative-mapping} and Theorem~\ref{the:derivative-set-is-finite}.
+\end{proof}

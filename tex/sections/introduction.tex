@@ -1,0 +1,67 @@
+% !TEX root =main.tex
+\section{Introduction}
+
+Regular expressions and finite automata are two {\em dual} ways to describe the same
+regular languages, the former is {\em bottom-up}, while the latter is {\em top-down}. In practice, we often start from a regular expression and
+want to build a deterministic finite automaton (DFA) that recognizes the same
+language. There are many known constructions for this task, such as Thompson’s
+$\varepsilon$-NFA~\cite{Thompson1968}, various forms of position automata~\cite{Glushkov1962, McNaughtonYamada1960}, or the standard subset construction. 
+
+In this work we focus on a different tool for this purpose:
+\emph{derivatives} of languages and regular expressions~\cite{B62}. The basic idea of a derivative is simple. When we read a symbol (or a word)
+from the input, we remove this prefix from all words in the language and look
+at what is left. The derivative of a language with respect to a word
+thus describes “what remains” after consuming that word. Each derivative is
+again a language, and for regular languages it is again regular~\cite{B62}. 
+
+A derivative-based DFA construction treats each (equivalence class of) derivative
+as a state and uses derivatives to define transitions and accepting states.
+Our main correctness theorem shows that the DFA constructed in this way from
+a regular expression $r$ accepts exactly the language $\mathcal{L}(r)$:
+for every word $w$, the DFA accepts $w$ if and only if $w \in \mathcal{L}(r)$.
+Moreover, the set of distinct derivative languages of $r$ is finite, and the
+construction introduces one state for each of them. It is known that no DFA
+that recognizes $\mathcal{L}(r)$ can have fewer states than the number of such distinct
+derivatives, so the derivative automaton is minimal~\cite{B62}.
+
+Compared with more classical constructions, the derivative approach has several
+conceptual advantages. Thompson’s construction first builds an NFA with
+$\varepsilon$-transitions and then applies the subset construction, while
+position automata mark each symbol occurrence and require a separate follow-set
+computation~\cite{Thompson1968,Glushkov1962,McNaughtonYamada1960}.
+These methods introduce additional intermediate structure such as
+$\varepsilon$-moves or explicit powersets of NFA states.
+By contrast, the derivative construction works directly on the syntax of the
+regular expression and does not need $\varepsilon$-moves or an explicit powerset
+construction. Each state is a canonical “view” of the same language after
+reading some prefix, and the associated DFA is both canonical and minimal
+for the language~\cite{B62}.
+
+Derivatives are used in this thesis in both the classical (crisp) and fuzzy
+settings. In the crisp case, we work with the usual regular expressions built
+from union, concatenation, Kleene star, intersection, and complement, and we
+use derivatives to construct DFAs that recognize exactly the same languages.
+We define derivatives semantically (on languages) and syntactically (on regular expressions), prove their semantic-syntactic correspondence, and show that only finitely many derivative languages arise.
+This finiteness guaranties that the derivative-based construction always terminates and yields minimal DFA.
+
+In the fuzzy case, we add a similarity relation on the alphabet, so that
+symbols can match not only when they are equal, but also when they are
+“similar enough”. Then we define fuzzy derivatives
+that take this similarity into account and show that they still lead to
+regular languages and automata.
+
+\paragraph{Synopsis.}
+\begin{itemize}
+    \item Section~\ref{sec:preliminaries} fixes basic notation for alphabets, words,
+languages, and regular expressions, and recalls their semantics, nullability,
+and canonical forms.
+    \item Section~\ref{sec:derivatives} defines derivatives of regular languages and
+regular expressions, extends them to words, and establishes their regularity
+and finiteness properties.
+    \item Section~\ref{sec:dfa-from-derivatives} presents the derivative-based DFA
+construction, specifies its states, transitions, and acceptance condition, and
+gives pseudocode with a termination argument.
+    \item Section~\ref{sec:fuzzy-derivatives} introduces fuzzy derivatives based 
+    on cut similarity, extends them to words and regular expressions, and proves
+regularity and semantic-syntactic correspondence.
+\end{itemize}

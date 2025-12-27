@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{microtype}
+
+\usepackage{listings}
+\lstdefinestyle{thesiscode}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  frame=single,
+  numbers=left,
+  numbersep=8pt,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.75\baselineskip,
+  belowskip=0.75\baselineskip,
+  breaklines=true
+}
+
+
+\usepackage{listings}
+
+\usepackage{hyperref}
+\lstdefinestyle{thesiscode}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  frame=single,
+  numbers=left,
+  numbersep=8pt,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.75\baselineskip,
+  belowskip=0.75\baselineskip,
+  breaklines=true
+}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+
+\newcommand{\cR}{{\mathcal R}}
+\def\cut{\mu}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+
+\title{Derivative of Regular Expressions with Similarity Relation}
+\author{BD, FH, MK, DM }
+
+\begin{document}
+
+\maketitle
+
+\input{sections/introduction}
+\input{sections/preliminaries}
+% \input{sections/fuzzy_proximity_similarity_relation}
+\input{sections/derivative_regex_reglanguages}
+\input{sections/automata_construction}
+\input{sections/fuzzy_similarity_derivative}
+
+\bibliographystyle{unsrt}
+\bibliography{sections/biblio}
+
+
+\end{document}

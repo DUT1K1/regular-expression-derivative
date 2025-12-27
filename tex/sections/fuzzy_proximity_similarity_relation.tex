@@ -1,0 +1,91 @@
+% !TEX root =main.tex
+\section{Fuzzy Proximity and Similarity Relations}
+
+% We define basic notions about similarity relations following \cite{DBLP:journals/tcs/Sessa02,DBLP:journals/fss/IranzoR17}.
+
+A binary \emph{fuzzy relation} on a set $S$ is a mapping from $S\times S$ to the real interval $[0,1]$. If $\cR$ is a fuzzy relation on $S$ and $\cut$ is a number $0<\cut \le 1$ (called \emph{cut value}), then the \emph{$\cut$-cut} of $\cR$ on $S$, denoted $\cR_\cut$, is an ordinary (crisp) relation on $S$ defined as
+\[
+  \cR_\cut := \{(s_1,s_2) \mid \cR(s_1,s_2) \ge \cut \}.
+\]
+
+% We define basic notions about similarity relations following \cite{DBLP:journals/tcs/Sessa02,DBLP:journals/fss/IranzoR17}.
+
+A fuzzy relation $\cR$ on a set $S$ is called a \emph{proximity relation}, if it is reflexive and symmetric:
+\begin{description}
+  \item[Reflexivity:] $\cR(s,s)=1$ for all $s\in S$;
+  \item[Symmetry:] $\cR(s_1,s_2)=\cR(s_2,s_1)$ for all $s_1,s_2\in S$.
+\end{description}
+
+Let $\wedge$ be a T-norm: an associative, commutative, non-decreasing binary operation on $[0,1]$ with $1$ as the unit element. A proximity relation (on $S$) is called a \emph{similarity relation} (on $S$) iff it is transitive:
+\begin{description}
+  \item[Transitivity] $\cR(s_1,s_2)\ge \cR(s_1,s) \wedge \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
+\end{description}
+
+In this paper, in the role of T-norm we take the \emph{minimum} of two numbers, and write $\min$ instead of $\wedge$. In the role of $S$ we take a syntactic domain, defined in the next section.
+
+\paragraph{Standing conventions.}
+Throughout, we fix the T-norm to be the minimum and write $\min$ instead of $\wedge$.
+We use $\cR$ for the base fuzzy relation and $A$ for the alphabet.
+
+
+\subsection{Similarity on Words and Languages}
+
+\begin{definition}[Similarity on words]\label{def:Rw}
+For $w_1,w_2\in A^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
+\[
+\mathcal{R}^w(w_1,w_2)=
+\begin{cases}
+1 & \text{if } w_1=\epsilon \text{ and } w_2=\epsilon,\\[2pt]
+0 & \text{if } (w_1=\epsilon \text{ and } w_2\neq\epsilon)\ \text{or}\ (w_2=\epsilon \text{ and } w_1\neq\epsilon),\\[4pt]
+\min\!\bigl(\mathcal{R}(a_1,a_2),\,\mathcal{R}^w(w_1',w_2')\bigr)
+  & \text{if } w_i=a_iw_i' \text{ and } |w_1|=|w_2|,\\[6pt]
+\dfrac{\min\!\bigl(\mathcal{R}(a_1,a_2),\,\mathcal{R}^w(w_1',w_2')\bigr)}{\max(|w_1|,|w_2|)}
+  & \text{if } w_i=a_iw_i' \text{ and } |w_1|\neq |w_2|.
+\end{cases}
+\]
+\end{definition}
+
+\begin{lemma}\label{lem:Rw-sim}
+$\mathcal{R}^w$ is a proximity relation on $A^*$ (reflexive and symmetric).
+Moreover, $\mathcal{R}^w$ is transitive, hence a similarity on $A^*$.
+\end{lemma}
+
+\begin{definition}[Similarity on languages]\label{def:RL}
+For languages $L_1,L_2\subseteq A^*$ define
+\[
+\mathcal{R}^L(L_1,L_2)\;=\;
+\min\!\Bigl\{
+\inf_{w_1\in L_1}\ \sup_{w_2\in L_2}\ \mathcal{R}^w(w_1,w_2)\ ,\
+\inf_{w_2\in L_2}\ \sup_{w_1\in L_1}\ \mathcal{R}^w(w_1,w_2)
+\Bigr\}.
+\]
+\end{definition}
+
+\subsection{Similarity on Regular Expressions}
+
+\begin{definition}[Syntactic similarity on regex]\label{def:Re}
+Let $e,f$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$.
+\begin{itemize}
+\item $\mathcal{R}^e(\emptyset,f)=\begin{cases}1 & \text{if } f=\emptyset\\ 0 & \text{otherwise.}\end{cases}$
+\item $\mathcal{R}^e(\varepsilon,f)=\begin{cases}1 & \text{if } f=\varepsilon\\ 0 & \text{otherwise.}\end{cases}$
+\item $\mathcal{R}^e(a_1,a_2)=\mathcal{R}(a_1,a_2)$.
+\item $\mathcal{R}^e(e^\ast,f^\ast)=\mathcal{R}^e(e,f)$.
+\item $\mathcal{R}^e(e,f_1\cdot f_2)=\min\{\mathcal{R}^e(e,f_1),\mathcal{R}^e(e,f_2)\}$
+\item $\mathcal{R}^e(e,f_1+f_2)=\min\{\mathcal{R}^e(e,f_1),\mathcal{R}^e(e,f_2)\}$.
+\item $\mathcal{R}^e(e,f_1\wedge f_2)=
+\begin{cases}
+1 & \text{if } e=\emptyset \text{ and } f_1\wedge f_2=\emptyset,\\
+\min\{\mathcal{R}^e(e,f_1),\mathcal{R}^e(e,f_2)\} & \text{otherwise.}
+\end{cases}$
+\end{itemize}
+\end{definition}
+
+\begin{conjecture} Let $\mathcal D^\mu_a(e)=\bigcup_{\{e'\mid \mathcal R^{exp}(e,e')\}}\mathcal D_a(e')$, see Definition~\autoref{fuzzyderivative}
+\end{conjecture}
+
+\begin{conjecture}\label{conj:syntax-semantics}
+For all regular expressions $e_1,e_2$,
+\[
+\mathcal{R}^e(e_1,e_2)\;=\;\mathcal{R}^L\bigl(L(e_1),L(e_2)\bigr).
+\]
+\end{conjecture}
