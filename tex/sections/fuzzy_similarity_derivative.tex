@@ -1,5 +1,5 @@
 % !TEX root =main.tex
-\section{Derivative of Regular Expressions with Fuzzy Similarity Relation}
+\section{Derivative of Regular Expressions with Fuzzy Similarity Relation}\label{sec:fuzzy-derivatives}
 In this paper, we generalize this notion using fuzzy similarity. Suppose $\cR$ is a fuzzy similarity relation on $\Sigma$, and let $\cut$ be a cut value ($0 < \cut \le 1$). Then the \emph{$\cut$-fuzzy derivative} of $\mathcal{L}$ with respect to a symbol $a \in \Sigma$, denoted $D_a^\cut(\mathcal{L})$, is defined as the set of suffixes $w$ such that there exists $b \in \Sigma$ with $\cR(a,b) \ge \cut$ and $bw \in \mathcal{L}$. In this way, the derivative is taken with respect to all symbols $b$ sufficiently similar to $a$, with the leading $b$ removed.
 
 \begin{definition}\label{fuzzyderivative}

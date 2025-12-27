@@ -1,16 +1,16 @@
 % !TEX root =main.tex
-\section{Derivative of Regular Languages and Regular Expressions }
-The \emph{derivative} of a language \(\mathcal{L} \subseteq \Sigma^*\) with respect to a symbol \(a \in \Sigma\) is defined as the set of all suffixes \(w\) such that \(aw \in \mathcal{L}\). In other words, it consists of all words in \(\mathcal{L}\) that begin with \(a\), with the leading \(a\) removed. Words in \(\mathcal{L}\) that do not start with \(a\) are excluded from the derivative.
+\section{Derivative of Regular Languages and Regular Expressions}\label{sec:derivatives}
+The \emph{derivative} of a language \(L \subseteq \Sigma^*\) with respect to a symbol \(a \in \Sigma\) is defined as the set of all suffixes \(w\) such that \(aw \in L\). In other words, it consists of all words in \(L\) that begin with \(a\), with the leading \(a\) removed. Words in \(L\) that do not start with \(a\) are excluded from the derivative.
 
 \begin{definition}\label{def:derivative}
-    The derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to symbol $a \in \Sigma$ is defined to be:
+    The derivative of a language $L \subseteq \Sigma^*$ with respect to symbol $a \in \Sigma$ is defined to be:
     $$
-        \partial_a(\mathcal{L})=\{ w \in \Sigma^* \mid a \cdot w \in \mathcal{L} \}
+        \partial_a(L)=\{ w \in \Sigma^* \mid a \cdot w \in L \}
     $$
 
-    \textbf{Example:} Let $\Sigma = \{a, b\}$ and $\mathcal{L} = \{aab, bb, baa, a\}$. Then:
+    \textbf{Example:} Let $\Sigma = \{a, b\}$ and $L = \{aab, bb, baa, a\}$. Then:
     \[
-        \partial_a(\mathcal{L}) = \{ab, \varepsilon \}.
+        \partial_a(L) = \{ab, \varepsilon \}.
     \] 
     
     Since: \begin{itemize}
@@ -33,17 +33,17 @@ This recursive approach leads to the following definition.
 
 
 \begin{definition}\label{def:derivative-string}
-    The derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
+    The derivative of a language $L \subseteq \Sigma^*$ with respect to a word $u=a\cdot w \in \Sigma^*$ where $a \in \Sigma$ and $w \in \Sigma^*$ is defined to be:
     $$
-        \partial_u(\mathcal{L})=\partial_v(\partial_a(\mathcal{L}))
+        \partial_u(L)=\partial_w(\partial_a(L))
     $$
 
-    \textbf{Example:} Let $\Sigma = \{a, b\}$ and $\mathcal{L} = \{aab, abb, ab, b\}$.  
+    \textbf{Example:} Let $\Sigma = \{a, b\}$ and $L = \{aab, abb, ab, b\}$.  
     Take $u = ab$, so $a \in \Sigma$ and $v = b$.  
 
     First, compute:
     \[
-        \partial_a(\mathcal{L}) = \{ab, bb, b\},
+        \partial_a(L) = \{ab, bb, b\},
     \]
 
     \begin{itemize}
@@ -55,7 +55,7 @@ This recursive approach leads to the following definition.
 
     Then:
     \[
-        \partial_b\big(\partial_a(\mathcal{L})\big) = \{b, \varepsilon\},
+        \partial_b\big(\partial_a(L)\big) = \{b, \varepsilon\},
     \]
     because:
     \begin{itemize}
@@ -66,7 +66,7 @@ This recursive approach leads to the following definition.
 
     Therefore:
     \[
-        \partial_{ab}(\mathcal{L}) = \{b, \varepsilon\}.
+        \partial_{ab}(L) = \{b, \varepsilon\}.
     \]
 \end{definition}
 
@@ -75,26 +75,26 @@ An important property of derivatives is that they preserve regularity: if we sta
 
 
 \begin{theorem}\label{the:language-derivative-regular}
-    $$\text{If }\mathcal{L}\subseteq\Sigma^* \text{ is regular then } \partial_u(\mathcal{L}) \text{ is also regular for any word } u\in\Sigma^*$$
+    $$\text{If }L\subseteq\Sigma^* \text{ is regular then } \partial_u(L) \text{ is also regular for any word } u\in\Sigma^*$$
 \end{theorem}
 
 \begin{proof}[Proof.]
 Suppose $L \subseteq \Sigma^*$ is a regular language.  
-By definition, there exists a regular expression $R$ such that 
-$\mathcal{L}(R) = L$.
+By definition, there exists a regular expression $r$ such that 
+$\mathcal{L}(r) = L$.
 
-Now consider the syntactic derivative $\mathcal{D}_u(R)$ of $R$ with respect to 
+Now consider the syntactic derivative $\mathcal{D}_u(r)$ of $r$ with respect to 
 a word $u \in \Sigma^*$.  
 By Theorem~\ref{the:two-derivative-mapping} we have
 \[
-   \mathcal{L}\bigl(\mathcal{D}_u(R)\bigr)
+   \mathcal{L}\bigl(\mathcal{D}_u(r)\bigr)
    \;=\;
-   \partial_u(\mathcal{L}(R))
+   \partial_u(\mathcal{L}(r))
    \;=\;
    \partial_u(L).
 \]
 
-Furthermore, by construction the derivative $\mathcal{D}_u(R)$ is itself a
+Furthermore, by construction the derivative $\mathcal{D}_u(r)$ is itself a
 regular expression, since the rules for derivatives always yield expressions
 formed from the grammar of regular expressions.  
 Therefore $\partial_u(L)$ is denoted by a regular expression, and hence it is a
@@ -108,33 +108,33 @@ every word $u \in \Sigma^*$.
     Let $\Sigma$ be a finite alphabet and let $L \subseteq \Sigma^*$ be a regular language.
     Then the set of all derivatives of $L$ with respect to words over $\Sigma$,
     \[
-        \bigl\{\, \partial_{w}(L) \;\bigm|\; w \in \Sigma^* \bigr\},
+        \bigl\{\, \partial_{u}(L) \;\bigm|\; u \in \Sigma^* \bigr\},
     \]
     is finite.
 \end{theorem}
 
 \begin{proof}
-Since $L$ is regular, there exists a regular expression $R$ with $\mathcal{L}(R)=L$.
-By Theorem~\ref{the:two-derivative-mapping}, for every $w\in\Sigma^*$ we have
+Since $L$ is regular, there exists a regular expression $r$ with $\mathcal{L}(r)=L$.
+By Theorem~\ref{the:two-derivative-mapping}, for every $u\in\Sigma^*$ we have
 \[
-   \partial_w(L) \;=\; \partial_w\bigl(\mathcal{L}(R)\bigr)
-   \;=\; \mathcal{L}\!\bigl(\mathcal{D}_w(R)\bigr).
+   \partial_u(L) \;=\; \partial_u\bigl(\mathcal{L}(r)\bigr)
+   \;=\; \mathcal{L}\!\bigl(\mathcal{D}_u(r)\bigr).
 \]
 Thus it is enough to prove that the set
 \[
-  \bigl\{\, \mathcal{L}(\mathcal{D}_w(R)) \;\bigm|\; w\in\Sigma^* \bigr\}
+  \bigl\{\, \mathcal{L}(\mathcal{D}_u(r)) \;\bigm|\; u\in\Sigma^* \bigr\}
 \]
-is finite. We prove this by induction on the number \(N\) of regular operators in \(R\).
+is finite. We prove this by induction on the number \(N\) of regular operators in \(r\).
 
 \paragraph{Bases (\(N=0\)).}
 \begin{description}
-  \item[\(R=\emptyset\).]
+  \item[\(r=\emptyset\).]
   \[
-    \mathcal{D}_w(\emptyset)=\emptyset \quad \forall\, w\in\Sigma^*.
+    \mathcal{D}_u(\emptyset)=\emptyset \quad \forall\, u\in\Sigma^*.
   \]
   The collection is \( \{\emptyset\} \).
 
-  \item[\(R=\varepsilon\).]
+  \item[\(r=\varepsilon\).]
   \[
     \mathcal{D}_\varepsilon(\varepsilon)=\varepsilon,
     \qquad
@@ -142,7 +142,7 @@ is finite. We prove this by induction on the number \(N\) of regular operators i
   \]
   The collection is \( \{\{\varepsilon\},\emptyset\} \).
 
-  \item[\(R=a\in\Sigma\).]
+  \item[\(r=a\in\Sigma\).]
   \[
     \mathcal{D}_\varepsilon(a)=a,
     \qquad
@@ -154,65 +154,65 @@ is finite. We prove this by induction on the number \(N\) of regular operators i
 \end{description}
 
 \paragraph{Inductive step (\(N>0\)).}
-Induction hypothesis: every regular expression with at most \(N\) regular operators has only finitely many languages of the form \(\{\,\mathcal{L}(\mathcal{D}_w(\cdot)) \mid w\in\Sigma^*\,\}\).
-Let \(R\) be a regular expression with \(N+1\) regular operators, and let \(P\) and \(Q\) be its subexpressions with at most \(N\) regular operators.
+Induction hypothesis: every regular expression with at most \(N\) regular operators has only finitely many languages of the form \(\{\,\mathcal{L}(\mathcal{D}_u(\cdot)) \mid u\in\Sigma^*\,\}\).
+Let \(r\) be a regular expression with \(N+1\) regular operators, and let \(p\) and \(q\) be its subexpressions with at most \(N\) regular operators.
 
 \smallskip
 \emph{(1) Boolean combinations.}
-If \(R=P+Q\), then for every word \(w\),
+If \(r=p+q\), then for every word \(u\),
 \[
-  \mathcal{L}(\mathcal{D}_w(R))
+  \mathcal{L}(\mathcal{D}_u(r))
   \;=\;
-  \mathcal{L}(\mathcal{D}_w(P)) \cup \mathcal{L}(\mathcal{D}_w(Q)).
+  \mathcal{L}(\mathcal{D}_u(p)) \cup \mathcal{L}(\mathcal{D}_u(q)).
 \]
 By the induction hypothesis there are only finitely many possibilities for each term on the right, so there are only finitely many possible unions. The same reasoning applies to $\cap$ and $\neg$.
 
 \emph{(2) Concatenation.}
-Let \(R=P\cdot Q\).
+Let \(r=p\cdot q\).
 
 \textit{}
 For \(a\in\Sigma\),
 \[
-  \mathcal{D}_a(P\cdot Q)
+  \mathcal{D}_a(p\cdot q)
   \;=\;
-  \mathcal{D}_a(P)\cdot Q \;+\; \nu(P)\cdot \mathcal{D}_a(Q).
+  \mathcal{D}_a(p)\cdot q \;+\; \nu(p)\cdot \mathcal{D}_a(q).
 \]
 
 \textit{}
-For \(w=a_1a_2\),
+For \(u=a_1a_2\),
 \[
 \begin{aligned}
-\mathcal{D}_{a_1a_2}(P\cdot Q)
-&= \mathcal{D}_{a_2}\!\bigl(\mathcal{D}_{a_1}(P)\cdot Q \;+\; \nu(P)\cdot \mathcal{D}_{a_1}(Q)\bigr) \\
-&= \mathcal{D}_{a_1a_2}(P)\cdot Q
-   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(P)\bigr)\cdot \mathcal{D}_{a_2}(Q)
-   \;+\; \nu(P)\cdot \mathcal{D}_{a_1a_2}(Q).
+\mathcal{D}_{a_1a_2}(p\cdot q)
+&= \mathcal{D}_{a_2}\!\bigl(\mathcal{D}_{a_1}(p)\cdot q \;+\; \nu(p)\cdot \mathcal{D}_{a_1}(q)\bigr) \\
+&= \mathcal{D}_{a_1a_2}(p)\cdot q
+   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \mathcal{D}_{a_2}(q)
+   \;+\; \nu(p)\cdot \mathcal{D}_{a_1a_2}(q).
 \end{aligned}
 \]
 
 
-For \(w=a_1\cdots a_r\),
+For \(u=a_1\cdots a_n\),
 \[
-  \mathcal{D}_w(P\cdot Q)
+  \mathcal{D}_{u}(p\cdot q)
   \;=\;
-  \mathcal{D}_w(P)\cdot Q
+  \mathcal{D}_{u}(p)\cdot q
   \;+\;
-  \nu(P)\cdot \mathcal{D}_{a_1\cdots a_r}(Q)
+  \nu(p)\cdot \mathcal{D}_{u}(q)
   \;+\;
-  \nu\!\bigl(\mathcal{D}_{a_1}(P)\bigr)\cdot \mathcal{D}_{a_2\cdots a_r}(Q)
+  \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \mathcal{D}_{a_2\cdots a_n}(q)
   \;+\;\cdots\;+\;
-  \nu\!\bigl(\mathcal{D}_{a_1\cdots a_{r-1}}(P)\bigr)\cdot \mathcal{D}_{a_r}(Q).
+  \nu\!\bigl(\mathcal{D}_{a_1\cdots a_{n-1}}(p)\bigr)\cdot \mathcal{D}_{a_n}(q).
 \]
 Equivalently,
 \[
-  \mathcal{D}_w(P\cdot Q)
+  \mathcal{D}_u(p\cdot q)
   \;=\;
-  \mathcal{D}_w(P)\cdot Q
+  \mathcal{D}_u(p)\cdot q
   \;+\;
-  \sum_{i=0}^{r-1}
+  \sum_{i=0}^{n-1}
   \Bigl(
-    \nu\!\bigl(\mathcal{D}_{a_1\cdots a_i}(P)\bigr)\cdot
-    \mathcal{D}_{a_{i+1}\cdots a_r}(Q)
+    \nu\!\bigl(\mathcal{D}_{a_1\cdots a_i}(p)\bigr)\cdot
+    \mathcal{D}_{a_{i+1}\cdots a_n}(q)
   \Bigr),
 \]
 where the summation denotes a finite union using \(+\).
@@ -221,47 +221,47 @@ By the induction hypothesis, the set of possible terms is finite, so only finite
 
 \smallskip
 \emph{(3) Kleene star.}
-Let \(R=P^*\).
+Let \(r=p^*\).
 
 \textit{}
 For \(a\in\Sigma\),
 \[
-  \mathcal{D}_a(P^*) \;=\; \mathcal{D}_a(P)\cdot P^*.
+  \mathcal{D}_a(p^*) \;=\; \mathcal{D}_a(p)\cdot p^*.
 \]
 
 \textit{}
-For \(w=a_1a_2\),
+For \(u=a_1a_2\),
 \[
 \begin{aligned}
-\mathcal{D}_{a_1a_2}(P^*)
-&= \mathcal{D}_{a_2}\bigl(\mathcal{D}_{a_1}(P)\cdot P^*\bigr) \\
-&= \bigl(\mathcal{D}_{a_2}\mathcal{D}_{a_1}(P)\bigr)\cdot P^*
-   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(P)\bigr)\cdot \mathcal{D}_{a_2}(P^*) \\
-&= \mathcal{D}_{a_1a_2}(P)\cdot P^*
-   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(P)\bigr)\cdot \bigl(\mathcal{D}_{a_2}(P)\cdot P^*\bigr).
+\mathcal{D}_{a_1a_2}(p^*)
+&= \mathcal{D}_{a_2}\bigl(\mathcal{D}_{a_1}(p)\cdot p^*\bigr) \\
+&= \bigl(\mathcal{D}_{a_2}\mathcal{D}_{a_1}(p)\bigr)\cdot p^*
+   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \mathcal{D}_{a_2}(p^*) \\
+&= \mathcal{D}_{a_1a_2}(p)\cdot p^*
+   \;+\; \nu\!\bigl(\mathcal{D}_{a_1}(p)\bigr)\cdot \bigl(\mathcal{D}_{a_2}(p)\cdot p^*\bigr).
 \end{aligned}
 \]
 
-Thus \(\mathcal{D}_{a_1a_2}(P^*)\) is a union of terms \((\mathcal{D}_t P)\cdot P^*\).
+Thus \(\mathcal{D}_{a_1a_2}(p^*)\) is a union of terms \((\mathcal{D}_t p)\cdot p^*\).
 
 \textit{}
-For \(w=a_1\cdots a_r\) with \(r\ge 1\) we prove by induction on \(r\) that \(\mathcal{D}_w(P^*)\) is a finite union of terms \((\mathcal{D}_t P)\cdot P^*\) with \(t\ne\varepsilon\).
-The case \(r=1\) is \(\mathcal{D}_a(P^*)=\mathcal{D}_a(P)\cdot P^*\).
+For \(u=a_1\cdots a_n\) with \(n\ge 1\) we prove by induction on \(n\) that \(\mathcal{D}_u(p^*)\) is a finite union of terms \((\mathcal{D}_t (p))\cdot p^*\) with \(t\ne\varepsilon\).
+The case \(n=1\) is \(\mathcal{D}_a(p^*)=\mathcal{D}_a(p)\cdot p^*\).
 Inductive step
 \[
-\mathcal{D}_{wa}(P^*)=\mathcal{D}_a\bigl(\mathcal{D}_w(P^*)\bigr).
+\mathcal{D}_{ua}(p^*)=\mathcal{D}_a\bigl(\mathcal{D}_u(p^*)\bigr).
 \]
-By the induction hypothesis, \(\mathcal{D}_w(P^*)=\sum_j (\mathcal{D}_{t_j}P)\cdot P^*\).
-Applying the product rule to each summand and \(\mathcal{D}_a(P^*)=\mathcal{D}_a(P)\cdot P^*\) gives
+By the induction hypothesis, \(\mathcal{D}_u(p^*)=\sum_j (\mathcal{D}_{t_j}p)\cdot p^*\).
+Applying the product rule to each summand and \(\mathcal{D}_a(p^*)=\mathcal{D}_a(p)\cdot p^*\) gives
 \[
-\mathcal{D}_a\!\bigl((\mathcal{D}_{t_j}P)\cdot P^*\bigr)
-= (\mathcal{D}_a\mathcal{D}_{t_j}P)\cdot P^*
-  \;+\; \nu(\mathcal{D}_{t_j}P)\,(\mathcal{D}_a P)\cdot P^*,
+\mathcal{D}_a\!\bigl((\mathcal{D}_{t_j}(p))\cdot p^*\bigr)
+= (\mathcal{D}_a(\mathcal{D}_{t_j}p))\cdot p^*
+  \;+\; \nu(\mathcal{D}_{t_j}(p))\,(\mathcal{D}_a (p))\cdot p^*,
 \]
-which is again a union of terms \((\mathcal{D}_t P)\cdot P^*\).
+which is again a union of terms \((\mathcal{D}_t (p))\cdot p^*\).
 
 \smallskip
-This completes the induction. Therefore the set \(\{\mathcal{L}(\mathcal{D}_w(R)) \mid w\in\Sigma^*\}\) is finite, and so \(\{\partial_w(L)\mid w\in\Sigma^*\}\) is finite as well.
+This completes the induction. Therefore the set \(\{\mathcal{L}(\mathcal{D}_u(r)) \mid u\in\Sigma^*\}\) is finite, and so \(\{\partial_u(L)\mid u\in\Sigma^*\}\) is finite as well.
 \end{proof}
 
 
