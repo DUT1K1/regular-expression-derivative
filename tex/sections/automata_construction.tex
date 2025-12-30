@@ -151,3 +151,62 @@ u \text{ is accepted by } M
 Hence $\mathcal{L}(M) = \mathcal{L}(r)$.
 
 \end{proof}
+
+\begin{theorem}\label{the:dfa-minimality}
+Let $r$ be a regular expression over $\Sigma$, and let
+$M = \langle Q, \Sigma, \delta, q_0, F \rangle$
+be the DFA constructed from $r$ by derivatives.
+Then $M$ is minimal: for every DFA
+$N = \langle P, \Sigma, \delta_N, p_0, F_N \rangle$
+with $\mathcal{L}(N) = \mathcal{L}(r)$, we have $|Q| \le |P|$.
+\end{theorem}
+
+\begin{proof}
+Let $N=\langle P, \Sigma, \delta_N, p_0, F_N \rangle$ be any DFA with
+$\mathcal{L}(N)=\mathcal{L}(r)$. For each word $u\in\Sigma^*$, write
+$p_u = \delta_N^*(p_0,u)$ for the state reached in $N$ after reading $u$.
+Define a map $\phi : Q \to P$ by
+\[
+  \phi\bigl([\mathcal{D}_u(r)]\bigr) = p_u.
+\]
+We claim that $\phi$ is well-defined and injective.
+
+\smallskip
+\noindent\emph{Well-defined.}
+If $[\mathcal{D}_u(r)]=[\mathcal{D}_v(r)]$, then
+$\mathcal{L}(\mathcal{D}_u(r))=\mathcal{L}(\mathcal{D}_v(r))$, hence for every
+$x\in\Sigma^*$,
+\[
+  \begin{aligned}
+    ux \in \mathcal{L}(r) \;&\Longleftrightarrow\; x \in \mathcal{L}(\mathcal{D}_u(r)) \\
+    \;&\Longleftrightarrow\; x \in \mathcal{L}(\mathcal{D}_v(r)) \\
+    \;&\Longleftrightarrow\; vx \in \mathcal{L}(r).
+  \end{aligned}
+\]
+Since $N$ recognizes $\mathcal{L}(r)$, this implies
+$\delta_N^*(p_u,x)\in F_N$ iff $\delta_N^*(p_v,x)\in F_N$ for all $x$,
+so $p_u=p_v$. Thus $\phi$ does not depend on the chosen representative.
+
+\smallskip
+\noindent\emph{Injective.}
+Suppose $\phi([\mathcal{D}_u(r)])=\phi([\mathcal{D}_v(r)])$, i.e., $p_u=p_v$.
+Then for all $x\in\Sigma^*$,
+\[
+  \begin{aligned}
+    ux \in \mathcal{L}(r)
+    \;&\Longleftrightarrow\;
+    \delta_N^*(p_u,x)\in F_N \\
+    \;&\Longleftrightarrow\;
+    \delta_N^*(p_v,x)\in F_N \\
+    \;&\Longleftrightarrow\;
+    vx \in \mathcal{L}(r).
+  \end{aligned}
+\]
+Hence $\mathcal{L}(\mathcal{D}_u(r))=\mathcal{L}(\mathcal{D}_v(r))$, so
+$[\mathcal{D}_u(r)]=[\mathcal{D}_v(r)]$. Therefore $\phi$ is injective.
+
+\smallskip
+Since $\phi$ is injective, $|Q| \le |P|$. By Theorem~\ref{the:dfa-correctness},
+$M$ recognizes $\mathcal{L}(r)$, so no DFA for $\mathcal{L}(r)$ can have fewer
+states than $M$. Thus $M$ is minimal.
+\end{proof}
