@@ -281,18 +281,18 @@ The following definition formalizes the derivative in the syntactic setting.
 
 
 \begin{definition}\label{def:regex-derivative}
-    Let \(R\) be a regular expression over the alphabet \(\Sigma\) and let
+    Let \(r\) be a regular expression over the alphabet \(\Sigma\) and let
     \(u \in \Sigma^{*}\) be a word.
-    The \emph{derivative of the regular expression \(R\) with respect to \(u\)}
+    The \emph{derivative of the regular expression \(r\) with respect to \(u\)}
     is the regular expression
     \[
-        \mathcal{D}_{u}(R)
+        \mathcal{D}_{u}(r)
     \]
     whose language satisfies
     \[
-        \mathcal{L}\bigl(\mathcal{D}_{u}(R)\bigr)
+        \mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)
         \;=\;
-        \{\, v \in \Sigma^{*} \mid u\cdot v \in \mathcal{L}(R) \}.
+        \{\, v \in \Sigma^{*} \mid u\cdot v \in \mathcal{L}(r) \}.
     \]
 \end{definition}
 
@@ -318,7 +318,7 @@ Additional rules may need to be added for special cases, one is for derivative w
 $$
 \begin{array}{c}
      \mathcal{D}_\varepsilon(r)=r  \\[1ex]
-     \mathcal{D}_{ua}(r)=\mathcal{D}_a(\mathcal{D}_u(r))
+     \mathcal{D}_{aw}(r)=\mathcal{D}_w(\mathcal{D}_a(r))
 \end{array}
 $$
 \textbf{Examples:}
@@ -330,172 +330,177 @@ $$
 
 \noindent
 We have introduced two notions of derivative: 
-(i) the \emph{semantic derivative}\/ $\partial_{u}(\mathcal{L})$ of a regular language $\mathcal{L}\!\subseteq\!\Sigma^{*}$ (Definition~\ref{def:derivative}), and 
-(ii) the \emph{syntactic derivative}\/ $\mathcal{D}_{u}(R)$ of a regular expression $R$ (Definition~\ref{def:regex-derivative}). 
+(i) the \emph{semantic derivative}\/ $\partial_{u}(L)$ of a regular language $L\!\subseteq\!\Sigma^{*}$ (Definition~\ref{def:derivative}), and 
+(ii) the \emph{syntactic derivative}\/ $\mathcal{D}_{u}(r)$ of a regular expression $r$ (Definition~\ref{def:regex-derivative}). 
 Both operations embody the same intuition—``what remains of a word after removing the prefix $u$''—yet they are defined on different objects.  
 To make their relationship explicit and eliminate any possible ambiguity, we next state a lemma that shows the two definitions coincide under the semantics mapping.
 
-\begin{theorem}[Semantic–syntactic correspondence]\label{the:two-derivative-mapping}
-  Let \(R\) be a regular expression over \(\Sigma\) and \(u\in\Sigma^{*}\).
+\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-derivative-mapping}
+  Let \(r\) be a regular expression over \(\Sigma\) and \(u\in\Sigma^{*}\).
   Then
   \[
-      \mathcal{L}\bigl(\mathcal{D}_{u}(R)\bigr)
+      \mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)
       \;=\;
-      \partial_{u}\bigl(\mathcal{L}(R)\bigr).
+      \partial_{u}\bigl(\mathcal{L}(r)\bigr).
   \]
   In words, taking the derivative at the level of regular expressions and
   then interpreting the result as a language yields exactly the same set of
-  strings as first interpreting \(R\) semantically and then taking the
+  strings as first interpreting \(r\) semantically and then taking the
   derivative of the resulting language.
 \end{theorem}
 
 \begin{proof}[Proof]
-We prove that for all regular expressions $R$ and all words $u \in \Sigma^*$,
+We prove that for all regular expressions $r$ and all words $u \in \Sigma^*$,
 \[
-  \mathcal{L}\!\big(\mathcal{D}_u(R)\big) \;=\; \partial_u\!\big(\mathcal{L}(R)\big).
+  \mathcal{L}\!\big(\mathcal{D}_u(r)\big) \;=\; \partial_u\!\big(\mathcal{L}(r)\big).
 \]
 The proof is in two layers: first for a single symbol $a\in\Sigma$ by structural
-induction on $R$, then extend to words $u$ by induction on $|u|$.
+induction on $r$, then extend to words $u$ by induction on $|u|$.
 
 \paragraph{Step 1 (single symbol).}
-Fix $a\in\Sigma$. We show by structural induction on $R$ that
-$\mathcal{L}(\mathcal{D}_a(R))=\partial_a(\mathcal{L}(R))$.
+Fix $a\in\Sigma$. We show by structural induction on $r$ that
+$\mathcal{L}(\mathcal{D}_a(r))=\partial_a(\mathcal{L}(r))$.
 
 \smallskip
 \noindent\emph{Bases.}
 \begin{itemize}
-  \item $R=\emptyset$: $\mathcal{D}_a(\emptyset)=\emptyset$ and $\partial_a(\emptyset)=\emptyset$.
-  \item $R=\varepsilon$: $\mathcal{D}_a(\varepsilon)=\emptyset$ and
+  \item $r=\emptyset$: $\mathcal{D}_a(\emptyset)=\emptyset$ and $\partial_a(\emptyset)=\emptyset$.
+  \item $r=\varepsilon$: $\mathcal{D}_a(\varepsilon)=\emptyset$ and
         $\partial_a(\{\varepsilon\})=\emptyset$ since $aw\neq\varepsilon$.
-  \item $R=b\in\Sigma$:
+  \item $r=b\in\Sigma$:
         $\mathcal{D}_a(b)=\varepsilon$ iff $a=b$, else $\emptyset$;
         likewise $\partial_a(\{b\})=\{\varepsilon\}$ iff $a=b$, else $\emptyset$.
 \end{itemize}
 
 \noindent\emph{Inductive cases.}
-Write $L(\cdot)$ for $\mathcal{L}(\cdot)$.
 \begin{itemize}
-  \item $R=R_1+R_2$:
+  \item $r=r_1+r_2$:
     \[
-      L(\mathcal{D}_a(R_1{+}R_2))
-      = L(\mathcal{D}_a(R_1)) \cup L(\mathcal{D}_a(R_2))
-      = \partial_a L(R_1) \cup \partial_a L(R_2)
-      = \partial_a\big(L(R_1)\cup L(R_2)\big)
-      = \partial_a L(R).
+    \begin{aligned}
+      \mathcal{L}(\mathcal{D}_a(r_1{+}r_2))
+      &= \mathcal{L}(\mathcal{D}_a(r_1)) \cup \mathcal{L}(\mathcal{D}_a(r_2)) \\
+      &= \partial_a \mathcal{L}(r_1) \cup \partial_a \mathcal{L}(r_2) \\
+      &= \partial_a\big(\mathcal{L}(r_1)\cup \mathcal{L}(r_2)\big) \\
+      &= \partial_a \mathcal{L}(r).
+    \end{aligned}
     \]
-  \item $R=R_1\,\&\,R_2$:
+  \item $r=r_1\,\&\,r_2$:
     \[
-      L(\mathcal{D}_a(R_1\,\&\,R_2))
-      = L(\mathcal{D}_a(R_1)) \cap L(\mathcal{D}_a(R_2))
-      = \partial_a L(R_1) \cap \partial_a L(R_2)
-      = \partial_a\big(L(R_1)\cap L(R_2)\big)
-      = \partial_a L(R).
+    \begin{aligned}
+      \mathcal{L}(\mathcal{D}_a(r_1\,\&\,r_2))
+      &= \mathcal{L}(\mathcal{D}_a(r_1)) \cap \mathcal{L}(\mathcal{D}_a(r_2)) \\
+      &= \partial_a \mathcal{L}(r_1) \cap \partial_a \mathcal{L}(r_2) \\
+      &= \partial_a\big(\mathcal{L}(r_1)\cap \mathcal{L}(r_2)\big) \\
+      &= \partial_a \mathcal{L}(r).
+    \end{aligned}
     \]
-  \item $R=\neg R_1$:
+  \item $r=\neg r_1$:
     \[
-      L(\mathcal{D}_a(\neg R_1))
-      = \Sigma^* \setminus L(\mathcal{D}_a(R_1))
-      = \Sigma^* \setminus \partial_a L(R_1)
-      = \partial_a\big(\Sigma^* \setminus L(R_1)\big)
-      = \partial_a L(R).
+    \begin{aligned}
+      \mathcal{L}(\mathcal{D}_a(\neg r_1))
+      &= \Sigma^* \setminus \mathcal{L}(\mathcal{D}_a(r_1)) \\
+      &= \Sigma^* \setminus \partial_a \mathcal{L}(r_1) \\
+      &= \partial_a\big(\Sigma^* \setminus \mathcal{L}(r_1)\big) \\
+      &= \partial_a \mathcal{L}(r).
+    \end{aligned}
     \]
-\item $R = R_1 \cdot R_2$.
+\item $r = r_1 \cdot r_2$.
 Using the derivative rule
 \[
-  \mathcal{D}_a(R_1\cdot R_2)
+  \mathcal{D}_a(r_1\cdot r_2)
   \;=\;
-  \mathcal{D}_a(R_1)\cdot R_2 \;+\; \nu(R_1)\cdot \mathcal{D}_a(R_2)
+  \mathcal{D}_a(r_1)\cdot r_2 \;+\; \nu(r_1)\cdot \mathcal{D}_a(r_2)
 \]
 and semantics of $+$, $\cdot$, we get
 \[
 \begin{aligned}
-\mathcal{L}\big(\mathcal{D}_a(R_1\cdot R_2)\big)
-&= \mathcal{L}\big(\mathcal{D}_a(R_1)\big)\cdot \mathcal{L}(R_2)
+\mathcal{L}\big(\mathcal{D}_a(r_1\cdot r_2)\big)
+&= \mathcal{L}\big(\mathcal{D}_a(r_1)\big)\cdot \mathcal{L}(r_2)
    \;\cup\;
-   \mathcal{L}\big(\nu(R_1)\big)\cdot \mathcal{L}\big(\mathcal{D}_a(R_2)\big) \\[2pt]
+   \mathcal{L}\big(\nu(r_1)\big)\cdot \mathcal{L}\big(\mathcal{D}_a(r_2)\big) \\[2pt]
 &\stackrel{\text{IH}}{=}\;
-   \partial_a\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)
+   \partial_a(\mathcal{L}(r_1))\cdot \mathcal{L}(r_2)
    \;\cup\;
-   \mathcal{L}\big(\nu(R_1)\big)\cdot \partial_a\mathcal{L}(R_2).
+   \mathcal{L}\big(\nu(r_1)\big)\cdot \partial_a(\mathcal{L}(r_2)).
 \end{aligned}
 \]
 By definition of $\nu$,
 \[
-\mathcal{L}\big(\nu(R_1)\big)=
+\mathcal{L}\big(\nu(r_1)\big)=
 \begin{cases}
-\{\varepsilon\} & \text{if }\varepsilon\in\mathcal{L}(R_1),\\
+\{\varepsilon\} & \text{if }\varepsilon\in\mathcal{L}(r_1),\\
 \emptyset       & \text{otherwise,}
 \end{cases}
 \]
 hence
 \[
-\mathcal{L}\big(\mathcal{D}_a(R_1\cdot R_2)\big)
+\mathcal{L}\big(\mathcal{D}_a(r_1\cdot r_2)\big)
 =
-\partial_a\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)
+\partial_a(\mathcal{L}(r_1))\cdot \mathcal{L}(r_2)
 \;\cup\;
 \begin{cases}
-\partial_a\mathcal{L}(R_2) & \text{if }\varepsilon\in\mathcal{L}(R_1),\\
+\partial_a(\mathcal{L}(r_2)) & \text{if }\varepsilon\in\mathcal{L}(r_1),\\
 \emptyset                   & \text{otherwise.}
 \end{cases}
 \]
 This is exactly the left-quotient law for concatenation,
 \[
-\partial_a\!\big(\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)\big)
+\partial_a\!\big(\mathcal{L}(r_1)\cdot \mathcal{L}(r_2)\big)
 =
-\partial_a\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)
+\partial_a(\mathcal{L}(r_1))\cdot \mathcal{L}(r_2)
 \;\cup\;
-\big(\,\varepsilon\in\mathcal{L}(R_1)\;?\;\partial_a\mathcal{L}(R_2):\emptyset\,\big),
+\big(\,\varepsilon\in\mathcal{L}(r_1)\;?\;\partial_a\mathcal{L}(r_2):\emptyset\,\big),
 \]
 so
 \[
-\mathcal{L}\big(\mathcal{D}_a(R_1\cdot R_2)\big)
+\mathcal{L}\big(\mathcal{D}_a(r_1\cdot r_2)\big)
 =
-\partial_a\!\big(\mathcal{L}(R_1)\cdot \mathcal{L}(R_2)\big)
+\partial_a\!\big(\mathcal{L}(r_1)\cdot \mathcal{L}(r_2)\big)
 =
-\partial_a\mathcal{L}(R_1\cdot R_2).
+\partial_a\big(\mathcal{L}(r_1\cdot r_2)\big).
 \]
 
-  \item $R=(R_1)^*$:
-    Since $L(R_1^*) = \bigcup_{n\ge 0} L(R_1)^n$ and any factorization of a word
-    in $L(R_1^*)$ can be taken with the first block from $L(R_1)$,
+  \item $r=(r_1)^*$:
+    Since $\mathcal{L}(r_1^*) = \bigcup_{n\ge 0} \mathcal{L}(r_1)^n$ and any factorization of a word
+    in $\mathcal{L}(r_1^*)$ can be taken with the first block from $\mathcal{L}(r_1)$,
     \[
-      \partial_a L(R_1^*) = \partial_a L(R_1) \cdot L(R_1^*).
+      \partial_a (\mathcal{L}(r_1^*)) = \partial_a (\mathcal{L}(r_1)) \cdot \mathcal{L}(r_1^*).
     \]
-    By the derivative rule $\mathcal{D}_a(R_1^*)=\mathcal{D}_a(R_1)\cdot R_1^*$ and the IH,
+    By the derivative rule $\mathcal{D}_a(r_1^*)=\mathcal{D}_a(r_1)\cdot r_1^*$ and the IH,
     \[
-      L(\mathcal{D}_a(R_1^*)) = L(\mathcal{D}_a(R_1))\cdot L(R_1^*)
-      = \partial_a L(R_1)\cdot L(R_1^*)
-      = \partial_a L(R_1^*).
+      \mathcal{L}(\mathcal{D}_a(r_1^*)) = \mathcal{L}(\mathcal{D}_a(r_1))\cdot \mathcal{L}(r_1^*)
+      = \partial_a \mathcal{L}(r_1)\cdot \mathcal{L}(r_1^*)
+      = \partial_a \mathcal{L}(r_1^*).
     \]
 \end{itemize}
-Thus $L(\mathcal{D}_a(R))=\partial_a L(R)$ for all $a$ and $R$.
+Thus $\mathcal{L}(\mathcal{D}_a(r))=\partial_a (\mathcal{L}(r))$ for all $a$ and $r$.
 
 \paragraph{Step 2 (arbitrary word).}
 We prove by induction on $u\in\Sigma^*$ that
-$L(\mathcal{D}_u(R))=\partial_u L(R)$.
+$\mathcal{L}(\mathcal{D}_u(r))=\partial_u \mathcal{L}(r)$.
 \begin{itemize}
-  \item Base $u=\varepsilon$: $\mathcal{D}_\varepsilon(R)=R$ and $\partial_\varepsilon L(R)=L(R)$.
-  \item Step $u=va$:
+  \item Base $u=\varepsilon$: $\mathcal{D}_\varepsilon(r)=r$ and $\partial_\varepsilon \mathcal{L}(r)=\mathcal{L}(r)$.
+  \item Step $u=aw$:
     \[
       \begin{aligned}
-      L(\mathcal{D}_{va}(R))
-      &= L\big(\mathcal{D}_a(\mathcal{D}_v(R))\big)
-       = \partial_a\big(L(\mathcal{D}_v(R))\big) \quad\text{(Step 1)} \\
-      &= \partial_a\big(\partial_v L(R)\big) \quad\text{(IH on $v$)}
-       = \partial_{va} L(R).
+      \mathcal{L}(\mathcal{D}_{aw}(r))
+      &= \mathcal{L}\big(\mathcal{D}_w(\mathcal{D}_a(r))\big)
+       = \partial_w\big(\mathcal{L}(\mathcal{D}_a(r))\big) \quad\text{(Step 1)} \\
+      &= \partial_w\big(\partial_a \mathcal{L}(r)\big) \quad\text{(IH on $w$)}
+       = \partial_{aw} \mathcal{L}(r).
       \end{aligned}
     \]
 \end{itemize}
-Therefore $L(\mathcal{D}_u(R))=\partial_u L(R)$ for all words $u$, completing the proof.
+Therefore $\mathcal{L}(\mathcal{D}_u(r))=\partial_u (\mathcal{L}(r))$ for all words $u$, completing the proof.
 \end{proof}
 
 
 
 \begin{theorem}\label{the:regex-derivative-types-finite}
-Let $\Sigma$ be a finite alphabet and let $R$ be a regular expression over $\Sigma$.
-Then the set of derivative languages of $R$,
+Let $\Sigma$ be a finite alphabet and let $r$ be a regular expression over $\Sigma$.
+Then the set of derivative languages of $r$,
 \[
-  \bigl\{\, \mathcal{L}(\mathcal{D}_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
+  \bigl\{\, \mathcal{L}(\mathcal{D}_{w}(r)) \;\bigm|\; w \in \Sigma^* \bigr\}
 \]
 is finite. 
 \end{theorem}
