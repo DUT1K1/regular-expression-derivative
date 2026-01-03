@@ -1,2 +1,4 @@
 -Q src regexderiv
+src/RegexBasics.v
+src/main_theorem.v
 src/der_proof.v
