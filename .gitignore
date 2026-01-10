@@ -109,3 +109,9 @@ lib/ocaml
 *.toc
 *.vrb
 *.pdf
+
+
+*.glob
+*.vo
+*.vok
+*.vos

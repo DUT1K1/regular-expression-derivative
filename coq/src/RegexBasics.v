@@ -1,4 +1,4 @@
-From Stdlib Require Import Ascii List Bool.
+From Stdlib Require Import Ascii List Bool Nat.
 Import ListNotations.
 Export ListNotations.
 
@@ -252,11 +252,59 @@ Fixpoint regex_sim (R : ascii_sim) (r s : regex) {struct s} : Prop :=
 
 Definition Re (R : ascii_sim) (r s : regex) : Prop := regex_sim R r s.
 
-(* Fuzzy derivative (language-level). *)
-Definition D_mu_char (R : ascii_sim) (a : ascii) (r : regex) : language :=
-  fun w => exists r', Re R r r' /\ Lang (D_char a r') w.
+Definition lang_union (P : regex -> Prop) (F : regex -> language) : language :=
+  fun w => exists r, P r /\ F r w.
 
-Lemma D_mu_char_unfold :
+(* Fuzzy derivative via regex similarity (conjecture form). *)
+Definition D_mu_char (R : ascii_sim) (a : ascii) (r : regex) : language :=
+  lang_union (fun r' => Re R r r') (fun r' => Lang (D_char a r')).
+
+Lemma D_mu_char_spec :
   forall (R : ascii_sim) (a : ascii) (r : regex) (w : word),
     D_mu_char R a r w <-> exists r', Re R r r' /\ Lang (D_char a r') w.
 Proof. reflexivity. Qed.
+
+(* ------------------------------------------------------------------ *)
+(* Fuzzy derivatives with a cut-based similarity on symbols            *)
+(* ------------------------------------------------------------------ *)
+
+(* Similarity values and a cut are modeled on a totally ordered scale.
+   We use nat for simplicity; cut membership is cut <= R(a,b). *)
+Definition sim_val := nat.
+Definition fuzzy_sim := ascii -> ascii -> sim_val.
+
+Definition R_cut (R : fuzzy_sim) (cut : sim_val) : ascii -> ascii -> bool :=
+  fun a b => Nat.leb cut (R a b).
+
+Definition cut_neighborhood (R : fuzzy_sim) (cut : sim_val) (a : ascii) : ascii -> Prop :=
+  fun b => R_cut R cut a b = true.
+
+(* Semantic fuzzy derivative: ∂^cut_a(L). *)
+Definition dlang_cut_char (R : fuzzy_sim) (cut : sim_val) (a : ascii) (L : language) : language :=
+  fun w => exists b, cut_neighborhood R cut a b /\ L (b :: w).
+
+(* Fuzzy derivative w.r.t. a word. *)
+Fixpoint dlang_cut (R : fuzzy_sim) (cut : sim_val) (u : word) (L : language) : language :=
+  match u with
+  | [] => L
+  | a :: v => dlang_cut R cut v (dlang_cut_char R cut a L)
+  end.
+
+(* Syntactic fuzzy derivative on regexes. *)
+Fixpoint D_cut_char (R : fuzzy_sim) (cut : sim_val) (a : ascii) (r : regex) : regex :=
+  match r with
+  | Empty      => Empty
+  | Epsilon    => Empty
+  | Char b     => if R_cut R cut a b then Epsilon else Empty
+  | Alt r s    => Alt (D_cut_char R cut a r) (D_cut_char R cut a s)
+  | And r s    => And (D_cut_char R cut a r) (D_cut_char R cut a s)
+  | Seq r s    => Alt (Seq (D_cut_char R cut a r) s) (Seq (nu r) (D_cut_char R cut a s))
+  | Star r     => Seq (D_cut_char R cut a r) (Star r)
+  | Neg r      => Neg (D_cut_char R cut a r)
+  end.
+
+Fixpoint D_cut (R : fuzzy_sim) (cut : sim_val) (u : word) (r : regex) : regex :=
+  match u with
+  | [] => r
+  | a :: v => D_cut R cut v (D_cut_char R cut a r)
+  end.

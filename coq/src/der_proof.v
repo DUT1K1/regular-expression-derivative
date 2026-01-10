@@ -1,6 +1,6 @@
 From regexderiv Require Import RegexBasics.
-From Coq Require Import List.
-From Coq Require Import Ascii.
+From Stdlib Require Import List.
+From Stdlib Require Import Ascii.
 Import ListNotations.
 
 (* ------------------------------------------------------------------ *)
@@ -87,6 +87,15 @@ Proof.
     split; intro H.
     + intro Hr0. apply H. apply IHr. exact Hr0.
     + intro Hr0. apply H. apply IHr. exact Hr0.
+Qed.
+
+(* Fuzzy derivative as a union of classic derivatives. *)
+Lemma D_mu_char_union :
+  forall (R : ascii_sim) (a : ascii) (r : regex) (w : word),
+    D_mu_char R a r w <-> exists r', Re R r r' /\ Lang (D_char a r') w.
+Proof.
+  intros R a r w.
+  apply D_mu_char_spec.
 Qed.
 
 
