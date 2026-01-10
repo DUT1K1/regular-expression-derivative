@@ -29,6 +29,12 @@ We use $\cR$ for the base fuzzy relation and $A$ for the alphabet.
 
 
 \subsection{Similarity on Words and Languages}
+We defined similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we can define similarity between words to be
+
+\[
+  \mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]
+\]
+
 
 \begin{definition}[Similarity on words]\label{def:Rw}
 For $w_1,w_2\in A^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
@@ -38,9 +44,7 @@ For $w_1,w_2\in A^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
 1 & \text{if } w_1=\epsilon \text{ and } w_2=\epsilon,\\[2pt]
 0 & \text{if } (w_1=\epsilon \text{ and } w_2\neq\epsilon)\ \text{or}\ (w_2=\epsilon \text{ and } w_1\neq\epsilon),\\[4pt]
 \min\!\bigl(\mathcal{R}(a_1,a_2),\,\mathcal{R}^w(w_1',w_2')\bigr)
-  & \text{if } w_i=a_iw_i' \text{ and } |w_1|=|w_2|,\\[6pt]
-\dfrac{\min\!\bigl(\mathcal{R}(a_1,a_2),\,\mathcal{R}^w(w_1',w_2')\bigr)}{\max(|w_1|,|w_2|)}
-  & \text{if } w_i=a_iw_i' \text{ and } |w_1|\neq |w_2|.
+  & \text{if } w_i=a_iw_i'.
 \end{cases}
 \]
 \end{definition}
@@ -70,7 +74,7 @@ Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$
 \item $\mathcal{R}^r(\varepsilon,s)=\begin{cases}1 & \text{if } s=\varepsilon\\ 0 & \text{otherwise.}\end{cases}$
 \item $\mathcal{R}^r(a_1,a_2)=\mathcal{R}(a_1,a_2)$.
 \item $\mathcal{R}^r(r^\ast,s^\ast)=\mathcal{R}^r(r,s)$.
-\item $\mathcal{R}^r(r,s_1\cdot s_2)=\min\{\mathcal{R}^r(r,s_1),\mathcal{R}^r(r,s_2)\}$
+\item $\mathcal{R}^r(r_1 \cdot r_2,s_1\cdot s_2)=\min\{\mathcal{R}^r(r_1,s_1),\mathcal{R}^r(r_2,s_2)\}$
 \item $\mathcal{R}^r(r,s_1+s_2)=\min\{\mathcal{R}^r(r,s_1),\mathcal{R}^r(r,s_2)\}$.
 \item $\mathcal{R}^r(r,s_1\wedge s_2)=
 \begin{cases}

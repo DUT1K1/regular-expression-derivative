@@ -211,3 +211,52 @@ Proof.
       * exfalso. apply Hnot. apply (proj1 IHr). reflexivity.
       * reflexivity.
 Qed.
+
+(* ------------------------------------------------------------------ *)
+(* Syntactic similarity on regexes (R^r / R^e)                         *)
+(* ------------------------------------------------------------------ *)
+
+Definition ascii_sim := ascii -> ascii -> Prop.
+
+(* We treat 1/0 as True/False and min as conjunction. *)
+Fixpoint regex_sim (R : ascii_sim) (r s : regex) {struct s} : Prop :=
+  match s with
+  | Empty => r = Empty
+  | Epsilon => r = Epsilon
+  | Char a2 =>
+      match r with
+      | Char a1 => R a1 a2
+      | _ => False
+      end
+  | Star s1 =>
+      match r with
+      | Star r1 => regex_sim R r1 s1
+      | _ => False
+      end
+  | Seq s1 s2 =>
+      match r with
+      | Seq r1 r2 => regex_sim R r1 s1 /\ regex_sim R r2 s2
+      | _ => False
+      end
+  | Alt s1 s2 =>
+      regex_sim R r s1 /\ regex_sim R r s2
+  | And s1 s2 =>
+      (r = Empty /\ and_ s1 s2 = Empty) \/
+      (regex_sim R r s1 /\ regex_sim R r s2)
+  | Neg s1 =>
+      match r with
+      | Neg r1 => regex_sim R r1 s1
+      | _ => False
+      end
+  end.
+
+Definition Re (R : ascii_sim) (r s : regex) : Prop := regex_sim R r s.
+
+(* Fuzzy derivative (language-level). *)
+Definition D_mu_char (R : ascii_sim) (a : ascii) (r : regex) : language :=
+  fun w => exists r', Re R r r' /\ Lang (D_char a r') w.
+
+Lemma D_mu_char_unfold :
+  forall (R : ascii_sim) (a : ascii) (r : regex) (w : word),
+    D_mu_char R a r w <-> exists r', Re R r r' /\ Lang (D_char a r') w.
+Proof. reflexivity. Qed.
