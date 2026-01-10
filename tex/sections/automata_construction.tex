@@ -6,25 +6,28 @@ language of $r$ after consuming the prefix. Transitions are computed by taking o
 derivatives with respect to input symbols.
 
 \subsection{DFA Structure}
-Let $\equiv$ denote semantic equivalence of regular expressions:
-\[
-  r \equiv s \iff \mathcal{L}(r)=\mathcal{L}(s).   
-  \]
-We define the DFA $M=\langle Q, \Sigma, \delta,  q_0, F\rangle,$ as follows.
+We construct the derivative DFA using canonical representatives to avoid repeated states.
+Let $\mathsf{nf}(\cdot)$ be the normalization from Definition~\ref{def:canonize},
+and write $[r] := \mathsf{nf}(r)$.
+
+We define the DFA $M=\langle Q, \Sigma, \delta, q_0, F\rangle$ as follows.
 
 \begin{itemize}
-    \item $Q \;=\; \{\, [\,\mathcal{D}_u(r)\,] \mid u \in \Sigma^* \,\}$ is the set of states; 
+  \item $Q \;=\; \{\, [\,\mathcal{D}_u(r)\,] \mid u \in \Sigma^* \,\}$ is the set of states,
+        where $[t]=\mathsf{nf}(t)$ is the canonical form.
 
-    \item $\Sigma$ is a finite alphabet.
+  \item $\Sigma$ is a finite alphabet.
 
-  \item $\delta: Q \times \Sigma \to Q$ is the transition function defined by
+  \item $\delta: Q \times \Sigma \to Q$ is defined by canonicalizing derivatives:
         \[
-          \delta\bigl([r], a\bigr) \;=\; \bigl[\,\mathcal{D}_a(r)\,\bigr].
+          \delta(q,a) \;=\; \bigl[\,\mathcal{D}_a(q)\,\bigr].
         \]
-    \item $q_0 = [\,r\,] \in Q$ is the start state (since $\mathcal{D}_\varepsilon(r)=r$).
+
+  \item $q_0 = [\,r\,] \in Q$ is the initial state.
+
   \item $F \subseteq Q$ is the set of accepting states:
         \[
-          F \;=\; \{\, [r] \in Q \mid \nu(r)=\varepsilon \,\}.
+          F \;=\; \{\, q \in Q \mid \nu(q)=\varepsilon \,\}.
         \]
 \end{itemize}
 
@@ -210,3 +213,19 @@ Since $\phi$ is injective, $|Q| \le |P|$. By Theorem~\ref{the:dfa-correctness},
 $M$ recognizes $\mathcal{L}(r)$, so no DFA for $\mathcal{L}(r)$ can have fewer
 states than $M$. Thus $M$ is minimal.
 \end{proof}
+
+\subsection{Termination of the construction}\label{subsec:dfa-termination}
+
+The construction explores (canonical) Brzozowski derivatives of $r$ and adds a new state
+only when a new canonical form is discovered. Since $\Sigma$ is finite, the exploration
+branches finitely at each step.
+
+Moreover, Coquand and Siles~\cite{CoquandRegexEquality} prove that for any regular
+expression $r$, the set
+\[
+\mathrm{Der}(r)=\{\, s \mid \exists u\in\Sigma^*,\; r/u \sim s \,\}
+\]
+of all Brzozowski derivatives of $r$ is \emph{inductively finite} with respect to the
+similarity relation $\sim$. Since our states are canonical representatives modulo $\sim$,
+this implies that only finitely many distinct canonical derivatives can be generated.
+Consequently, the worklist construction of the derivative automaton always terminates.
