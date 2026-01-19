@@ -73,6 +73,7 @@ For languages $L_1,L_2\subseteq A^*$ define
 \begin{definition}[Syntactic similarity on regex]\label{def:Re}
 Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$.
 \begin{itemize}
+\item if $L(r_1)=L(r_2)$ then $\mathcal{R}^r(r_1,r_2)=1$ 
 \item $\mathcal{R}^r(\emptyset,s)=\begin{cases}1 & \text{if } s=\emptyset\\ 0 & \text{otherwise.}\end{cases}$
 \item $\mathcal{R}^r(\varepsilon,s)=\begin{cases}1 & \text{if } s=\varepsilon\\ 0 & \text{otherwise.}\end{cases}$
 \item $\mathcal{R}^r(a_1,a_2)=\mathcal{R}(a_1,a_2)$.
@@ -85,7 +86,6 @@ Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$
 1 & \text{if } r=\emptyset \text{ and } s_1\wedge s_2=\emptyset,\\
 \min\{\mathcal{R}^r(r,s_1),\mathcal{R}^r(r,s_2)\} & \text{otherwise.}
 \end{cases}$
-\item $\mathcal{R}^r(r,s)=0$ if none of the above applies.
 \end{itemize}
 \end{definition}
 
@@ -97,16 +97,11 @@ Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$
 \begin{conjecture}\label{conj:syntax-semantics}\hfill \begin{itemize}
 \item For all regular expressions $r_1,r_2$, 
 \[
-\mathcal{R}^r(r_1,r_2)\;\leq\;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
-\]
-\item  if we remove the default clause, and add the rule, if $L(r_1)=L(r_2)$ then $\mathcal{R}^r(r_1,r_2)=1$ , then 
-\[
 \mathcal{R}^r(r_1,r_2)\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
 \]
 \end{itemize}
 \end{conjecture}
 
-Clearly equality cannot hold since similarity on regular expresions is defined only up to syntactic equality. {\em E.g.} $\mathcal R^r(a^*,a^*\cdot a^*)=0$. 
 
 
 \begin{conjecture} Let $\mathcal D^\mu_a(r)=\bigcup_{\{r'\mid \mathcal R^{e}(r,r')\}}\mathcal D_a(r')$, see Definition~\autoref{fuzzyderivative}
