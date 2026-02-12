@@ -1,4 +1,13 @@
 -Q src regexderiv
+src/Languages.v
+src/Alphabet.v
+src/RegexSemantics.v
+src/Nullable.v
+src/Canonicalization.v
+src/ExamplesCanonicize.v
+src/Derivatives.v
+src/DerivativeExamples.v
+
 src/RegexBasics.v
 src/main_theorem.v
 src/der_proof.v
