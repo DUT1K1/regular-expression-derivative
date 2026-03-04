@@ -12,6 +12,20 @@ $$
 $$
 \end{definition}
 
+{\color{blue}
+\begin{proposition}
+Let $\cR$ is a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$). The relation $a\sim_\mu^\Sigma b$ if and only if $\cR(a,b)\geq \mu$ is an equivalence relation on $\Sigma$, which induces naturally an equivalence relation on words, $w_1\sim_\mu^{\Sigma^\star} w_2$.
+\end{proposition}
+
+\begin{definition}Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$). Let \begin{itemize}
+\item $\Sigma^\mu$ be the quotient set of $\Sigma$ w.r.t. the equivalence relation $\sim_\mu^\Sigma$;
+\item $\mathcal L^\mu$ be the quotient set of $\mathcal L$ with respect to the equivalence  $\sim_\mu^{\Sigma^\star}$, which is a language on $\Sigma^\mu$.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$).Then the \emph{$\cut$-fuzzy derivative} of $\mathcal{L}$ with respect to a symbol $a \in \Sigma$ is such that  $D_a^\cut(\mathcal{L})=\bigcup\{[c]\mid D_{[a]}(\mathcal L^\mu) \}$,
+\end{theorem}}
+
 \noindent
 Just as in the classical setting, the notion of a fuzzy derivative with respect to a single symbol can be extended to handle derivatives with respect to an entire word. The idea remains the same: process the word one symbol at a time from left to right, taking the fuzzy derivative with respect to the first symbol and then applying the fuzzy derivative again to the result for the remaining suffix. This recursive approach naturally generalizes the single-symbol fuzzy derivative to arbitrary words, as formalized below.
 

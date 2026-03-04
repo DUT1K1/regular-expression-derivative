@@ -81,6 +81,8 @@ dfa(r):
 By Theorem~\ref{the:regex-derivative-types-finite}, only finitely many
 distinct derivative languages arise; so the construction terminates.
 
+{\color{blue} \bf The {\tt exists} operator above should be made precise.}
+
 
 
 
@@ -229,3 +231,17 @@ of all Brzozowski derivatives of $r$ is \emph{inductively finite} with respect t
 similarity relation $\sim$. Since our states are canonical representatives modulo $\sim$,
 this implies that only finitely many distinct canonical derivatives can be generated.
 Consequently, the worklist construction of the derivative automaton always terminates.
+
+{\color{blue} {\bf COMMENT} One should discuss more in depth the distinction bewtween the two constructive formalizations of {\em finiteness}. There should be a section on the Coq development, perhaps elsewhere. Here I outline how one could prove in COQ that using Brzozowski derivatives one can synthesize a finite automaton. 
+\begin{itemize}
+\item  One can define inductively an explicit bound in Coq,  $K(e)$, on the number of language-inequivalent partial derivatives of a regular expression $e$: eg Conway, Antimirov.
+\item Using Coquand and Siles, one has in Coq a computable function which tests language equivalence of regular expressions.
+\item The pigeon hole principle holds for Kuratowski finiteness.
+\item If we compute syntactically the partial derivatives w.r.t. words of length $K(e)+1$ than there exists an $M\leq K(e)+1$, such that for words of  length $M$ the derivative w.r.t. such words are language equivalent (using Coquand Siles function) to a derivative which had been already defined. This is just the pigeon-hole principle, because once all derivatives w.r.t words of length M are language-equivalent to a derivatie  w.r.t. a shorter word than no new language-inequivalent derivatives can be produced.
+\item Thus we  prove in Coq that given a regular expression the derivatives, up to language equivalence, are Kuratowski finite and hence define an automaton.
+\end{itemize} 
+
+I suggest to produce a counterexample to the fact that Coquand similarity is not preserved by derivation.
+
+At the end of paragrph 3, the authors seem to say that the above property holds for Brzozowski similarity. Then why this is not enough to conclude the argument? Can they show that the weaker Brzozowski similarity is inductively finite? 
+}
