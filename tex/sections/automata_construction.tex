@@ -52,13 +52,17 @@ $\mathcal{L}(\mathcal{D}_u(r))=\partial_u(\mathcal{L}(r))$, running the DFA corr
   \item \texttt{union}(Q,\{x\}) $\equiv Q \cup \{x\}$.
 \end{itemize}
 
-
+Here $Q$ is a set of canonical representatives of derivative expressions. After computing
+\[
+q_a := [\,\mathcal{D}_a(q)\,],
+\]
+the condition ``$q_a \in Q$'' means that this canonical derivative is already present among the discovered states. Because every state is stored in canonical form, membership in $Q$ is checked using the syntactic equality of normalized expressions from Definition~\ref{def:canonize}, not by comparing the languages denoted by the expressions.
 
 \begin{lstlisting}[style=thesiscode,label={lst:deriv-dfa-paper}]
  goto(q, a, Q, delta):
     q_a := [ D(a, q) ]
-    if exists q' in Q and q' = q_a then
-        delta[(q, a)] := q'
+    if q_a in Q then
+        delta[(q, a)] := q_a
         return (Q, delta)
     else
         Q     := union(Q, { q_a })
