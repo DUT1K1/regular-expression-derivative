@@ -73,15 +73,15 @@ For languages $L_1,L_2\subseteq A^*$ define
 \begin{definition}[Syntactic similarity on regex]\label{def:Re}
 Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$.
 \begin{itemize}
-\item if $L(r_1)=L(r_2)$, then $\mathcal{R}^r(r_1,r_2)=1$;
+%\item if $L(r_1)=L(r_2)$, then $\mathcal{R}^r(r_1,r_2)=1$;
 \item $\mathcal{R}^r(\emptyset,s)=
 \begin{cases}
-1 & \text{if } L(s)=L(\emptyset),\\
+1 & \text{if } s=\emptyset\\
 0 & \text{otherwise;}
 \end{cases}$
 \item $\mathcal{R}^r(\varepsilon,s)=
 \begin{cases}
-1 & \text{if } L(s)=L(\varepsilon),\\
+1 & \text{if } s=\varepsilon,\\
 0 & \text{otherwise;}
 \end{cases}$
 \item $\mathcal{R}^r(a_1,a_2)=\mathcal{R}(a_1,a_2)$;
@@ -90,26 +90,32 @@ Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$
 \item $\mathcal{R}^r(s \cdot r_1, s \cdot r_2)=\mathcal{R}^r(r_1,r_2)$;
 \item $\mathcal{R}^r(r,s_1+s_2)=\min\{\mathcal{R}^r(r,s_1),\mathcal{R}^r(r,s_2)\}$;
 \item $\mathcal{R}^r(r,s_1\wedge s_2)=
-\begin{cases}
-1 & \text{if } L(r)=L(\emptyset)\ \text{and}\ L(s_1\wedge s_2)=L(\emptyset),\\
-\min\{\mathcal{R}^r(r,s_1),\mathcal{R}^r(r,s_2)\} & \text{otherwise.}
-\end{cases}$
+\min\{\mathcal{R}^r(r,s_1),\mathcal{R}^r(r,s_2)\}$.
 \end{itemize}
 \end{definition}
 
 \begin{lemma} $\mathcal R^r$ is a similarity on regular expressions.
 \end{lemma}
 
-
-\begin{theorem}\label{thm:syntax-semantics}
+\begin{lemma}\label{thm:syntax-semantics}
 For all regular expressions $r_1,r_2$, 
 \[
-\mathcal{R}^r(r_1,r_2)\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
+\mathcal{R}^r(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
+\]
+\end{lemma}
+
+
+\begin{theorem}\label{}
+For all regular expressions $r_1,r_2$, 
+\[
+sup\{\mathcal{R}^r(r_{i_1},r_{i_2})\mid L(r_{i_1})=L(r_1), L(r_{i_2})=L(r_2)\}\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
 \]
 \end{theorem}
 
 
+
 \subsection{Similarity on Regular Expressions}
+
 
 \begin{definition}[Similarity on regular expressions]\label{def:Re}
 Let $r,s$ be regular expressions over $A$, and let $\mathcal{R}$ be a similarity
