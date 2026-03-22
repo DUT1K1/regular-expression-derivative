@@ -24,7 +24,9 @@ Let $\cR$ is a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut val
 \end{definition}
 
 \begin{theorem}Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$).Then the \emph{$\cut$-fuzzy derivative} of $\mathcal{L}$ with respect to a symbol $a \in \Sigma$ is such that  $D_a^\cut(\mathcal{L})=\bigcup\{w \mid  [w]\in D_{[a]}(\mathcal L^\mu) \}$,
-\end{theorem}}
+\end{theorem}
+
+A notion of $\sim_\mu^\Sigma$ can be given also for regular expressions, by just defining inductively on the syntax of regualr expressions the equivalence class $[\ ]^\mu$. All results on fuzzy regular expressions go through w.r.t. the equivalence classes, {\em i.e.} the language of representatives.}
 
 \noindent
 Just as in the classical setting, the notion of a fuzzy derivative with respect to a single symbol can be extended to handle derivatives with respect to an entire word. The idea remains the same: process the word one symbol at a time from left to right, taking the fuzzy derivative with respect to the first symbol and then applying the fuzzy derivative again to the result for the remaining suffix. This recursive approach naturally generalizes the single-symbol fuzzy derivative to arbitrary words, as formalized below.
@@ -37,6 +39,13 @@ Just as in the classical setting, the notion of a fuzzy derivative with respect 
     $$
 \end{definition}
 
+
+{\color{red} A more interesting theory arises if we take
+$$
+    \partial^{\mu\otimes\mu'}_u(\mathcal{L}) = \partial^{\mu'}_v(\partial^\cut_a(\mathcal{L}))
+    $$
+
+}
 \noindent
 An important property of the classical derivative is that it preserves regularity. This ensures that repeated differentiation never produces a language outside the regular class, making the operation suitable for automata-based  algorithms. The same closure property holds in the fuzzy setting: even when derivatives are taken with respect to a cut-based similarity relation, the resulting language remains regular. The following theorem states this formally.
 
