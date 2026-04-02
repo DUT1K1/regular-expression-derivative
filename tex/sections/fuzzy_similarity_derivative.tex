@@ -1,6 +1,6 @@
 % !TEX root =main.tex
 \section{Derivative of Regular Expressions with Fuzzy Similarity Relation}\label{sec:fuzzy-derivatives}
-In this paper, we generalize this notion using fuzzy similarity. Suppose $\cR$ is a fuzzy similarity relation on $\Sigma$, and let $\cut$ be a cut value ($0 < \cut \le 1$). Then the \emph{$\cut$-fuzzy derivative} of $\mathcal{L}$ with respect to a symbol $a \in \Sigma$, denoted $D_a^\cut(\mathcal{L})$, is defined as the set of suffixes $w$ such that there exists $b \in \Sigma$ with $\cR(a,b) \ge \cut$ and $bw \in \mathcal{L}$. In this way, the derivative is taken with respect to all symbols $b$ sufficiently similar to $a$, with the leading $b$ removed.
+In this paper, we generalize this notion using fuzzy similarity. Suppose $\cR$ is a fuzzy similarity relation on $\Sigma$, and let $\cut$ be a cut value ($0 < \cut \le 1$). Then the \emph{$\cut$-fuzzy derivative} of $\mathcal{L}$ with respect to a symbol $a \in \Sigma$, denoted $\partial_a^\cut(\mathcal{L})$, is defined as the set of suffixes $w$ such that there exists $b \in \Sigma$ with $\cR(a,b) \ge \cut$ and $bw \in \mathcal{L}$. In this way, the derivative is taken with respect to all symbols $b$ sufficiently similar to $a$, with the leading $b$ removed.
 
 \begin{definition}\label{fuzzyderivative}
 $$
@@ -12,21 +12,202 @@ $$
 $$
 \end{definition}
 
-{\color{blue}
-\begin{proposition}
-Let $\cR$ is a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$). The relation $a\sim_\mu^\Sigma b$ if and only if $\cR(a,b)\geq \mu$ is an equivalence relation on $\Sigma$, which induces naturally an equivalence relation on words, $w_1\sim_\mu^{\Sigma^\star} w_2$.
+\begin{proposition}\label{prop:cut-equivalence}
+Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$. Define
+\[
+  a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.
+\]
+Then $\sim_\cut^\Sigma$ is an equivalence relation on $\Sigma$. It induces an
+equivalence relation on words by
+\[
+  a_1\cdots a_n \sim_\cut^{\Sigma^*} b_1\cdots b_m
+  \quad\Longleftrightarrow\quad
+  n=m \text{ and } a_i \sim_\cut^\Sigma b_i \text{ for every } i.
+\]
 \end{proposition}
 
-\begin{definition}Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$). Let \begin{itemize}
-\item $\Sigma^\mu$ be the quotient set of $\Sigma$ w.r.t. the equivalence relation $\sim_\mu^\Sigma$;
-\item $\mathcal L^\mu$ be the quotient set of $\mathcal L$ with respect to the equivalence  $\sim_\mu^{\Sigma^\star}$, which is a language on $\Sigma^\mu$.
-\end{itemize}
+\begin{definition}\label{def:quotient-language-fuzzy}
+Let $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$ and let
+$q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.
+Extend $q_\cut$ to words by
+\[
+  q_\cut^*(a_1\cdots a_n) = [a_1]_\cut \cdots [a_n]_\cut.
+\]
+For a language $\mathcal L \subseteq \Sigma^*$, define its quotient image by
+\[
+  \mathcal L^\cut := q_\cut^*(\mathcal L)
+  = \{q_\cut^*(w)\mid w\in\mathcal L\}
+  \subseteq (\Sigma^\cut)^*.
+\]
 \end{definition}
 
-\begin{theorem}Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value ($0 < \cut \le 1$).Then the \emph{$\cut$-fuzzy derivative} of $\mathcal{L}$ with respect to a symbol $a \in \Sigma$ is such that  $D_a^\cut(\mathcal{L})=\bigcup\{w \mid  [w]\in D_{[a]}(\mathcal L^\mu) \}$,
+\noindent
+The map $q_\cut$ sends each symbol to its $\cut$-equivalence class. The map
+$q_\cut^*$ does exactly the same thing for a whole word, letter by letter.
+
+\smallskip
+\noindent
+\textbf{Example.} Suppose $\Sigma=\{a,b,c\}$ and, for the fixed cut $\cut$, we
+have $a\sim_\cut^\Sigma b$ but $c$ is not equivalent to them. Then
+\[
+  q_\cut(a)=[a]_\cut,\qquad q_\cut(b)=[a]_\cut,\qquad q_\cut(c)=[c]_\cut.
+\]
+For the word $w=bac$ we obtain
+\[
+  q_\cut^*(bac)=[a]_\cut [a]_\cut [c]_\cut.
+\]
+So $q_\cut^*$ forgets which representative from a class was used and remembers
+only the sequence of classes.
+
+\smallskip
+\noindent
+Likewise, $\mathcal L^\cut$ is formed by replacing each word of $\mathcal L$ by
+its class-word. For example, if
+\[
+  \mathcal L=\{aa,ba,c\},
+\]
+then
+\[
+  \mathcal L^\cut
+  =
+  \{[a]_\cut[a]_\cut,\ [a]_\cut[a]_\cut,\ [c]_\cut\}
+  =
+  \{[a]_\cut[a]_\cut,\ [c]_\cut\}.
+\]
+Thus different words of $\mathcal L$ can become the same word in the quotient
+language $\mathcal L^\cut$.
+
+\noindent
+The next theorem explains how the fuzzy derivative becomes an ordinary derivative
+after passing to the quotient alphabet: once letters are identified up to
+$\cut$-similarity, differentiating with respect to $a$ is the same as
+differentiating with respect to the class $[a]_\cut$.
+
+{\color{green!50!black}
+\begin{theorem}\label{the:quotient-fuzzy-derivative}
+Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$. For every language $\mathcal L \subseteq \Sigma^*$ and every
+$a\in\Sigma$,
+\[
+  q_\cut^*\bigl(\partial_a^\cut(\mathcal L)\bigr)
+  \;=\;
+  \partial_{[a]_\cut}\bigl(\mathcal L^\cut\bigr).
+\]
 \end{theorem}
 
-A notion of $\sim_\mu^\Sigma$ can be given also for regular expressions, by just defining inductively on the syntax of regualr expressions the equivalence class $[\ ]^\mu$. All results on fuzzy regular expressions go through w.r.t. the equivalence classes, {\em i.e.} the language of representatives.}
+\begin{proof}[Proof sketch]
+We prove the two inclusions.
+
+If $x\in q_\cut^*(\partial_a^\cut(\mathcal L))$, then $x=q_\cut^*(w)$ for some
+$w\in\partial_a^\cut(\mathcal L)$. By definition of the fuzzy derivative, there
+exists $b\in\Sigma$ such that $\cR(a,b)\ge\cut$ and $bw\in\mathcal L$. Hence
+$[b]_\cut=[a]_\cut$, and therefore
+\[
+  [a]_\cut x = [b]_\cut q_\cut^*(w) = q_\cut^*(bw) \in \mathcal L^\cut.
+\]
+So $x\in \partial_{[a]_\cut}(\mathcal L^\cut)$.
+
+Conversely, let $x\in \partial_{[a]_\cut}(\mathcal L^\cut)$. Then
+$[a]_\cut x\in \mathcal L^\cut$, so there exists a word $bw\in\mathcal L$ such
+that $q_\cut^*(bw)=[a]_\cut x$. It follows that $[b]_\cut=[a]_\cut$, hence
+$\cR(a,b)\ge\cut$, and also $x=q_\cut^*(w)$. Therefore
+$w\in\partial_a^\cut(\mathcal L)$, and so
+$x\in q_\cut^*(\partial_a^\cut(\mathcal L))$.
+\end{proof}
+}
+
+{\color{red!75!black}
+\medskip
+\noindent\textbf{Earlier draft of Theorem~\ref{the:quotient-fuzzy-derivative} (false in general).}
+One may be tempted to write
+\[
+  \partial_a^\cut(\mathcal L)
+  =
+  \{w\in\Sigma^* \mid [w]_\cut \in \partial_{[a]_\cut}(\mathcal L^\cut)\}.
+\]
+This statement is false in general. The reason is that the quotient language
+$\mathcal L^\cut$ remembers only equivalence classes of words, not which concrete
+representatives of those classes actually occur in $\mathcal L$. As a result,
+passing from $\partial_{[a]_\cut}(\mathcal L^\cut)$ back to all representatives
+of its quotient words can introduce extra words that were never produced by the
+original fuzzy derivative.
+
+\begin{remark}[Counterexample]
+Let $\Sigma=\{a,b\}$ and let $\cut=0.8$. Define a fuzzy similarity relation by
+\[
+  \cR(a,a)=\cR(b,b)=1,
+  \qquad
+  \cR(a,b)=\cR(b,a)=0.9.
+\]
+Then $a\sim_\cut^\Sigma b$, so $\Sigma^\cut$ has a single equivalence class,
+namely $[a]_\cut=[b]_\cut$.
+
+Take the language
+\[
+  \mathcal L=\{aa\}.
+\]
+For the symbol $b$, the fuzzy derivative is
+\[
+  \partial_b^\cut(\mathcal L)=\{a\},
+\]
+because $b$ is $\cut$-similar to $a$, and removing the first symbol from the
+word $aa$ leaves only the suffix $a$.
+
+On the other hand,
+\[
+  \mathcal L^\cut=\{[a]_\cut [a]_\cut\},
+  \qquad
+  \partial_{[b]_\cut}(\mathcal L^\cut)=\{[a]_\cut\}.
+\]
+This means that, at the quotient level, the only suffix we see is the one-letter
+class-word $[a]_\cut$. To translate this back to ordinary words, we must collect
+all one-letter words whose class is $[a]_\cut$. Therefore
+\[
+  \{w\in\Sigma^* \mid [w]_\cut \in \partial_{[b]_\cut}(\mathcal L^\cut)\}
+  =
+  \{a,b\},
+\]
+because both one-letter words $a$ and $b$ belong to the same class
+$[a]_\cut=[b]_\cut$.
+
+\smallskip
+\noindent
+More explicitly,
+\[
+  q_\cut^*(a)=[a]_\cut,
+  \qquad
+  q_\cut^*(b)=[a]_\cut,
+\]
+so both $a$ and $b$ are counted by the set
+\[
+  \{w\in\Sigma^* \mid [w]_\cut \in \partial_{[b]_\cut}(\mathcal L^\cut)\}.
+\]
+Hence
+\[
+  \partial_b^\cut(\mathcal L)=\{a\}
+  \neq
+  \{a,b\}
+  =
+  \{w\in\Sigma^* \mid [w]_\cut \in \partial_{[b]_\cut}(\mathcal L^\cut)\}.
+\]
+So the earlier formulation is false.
+\end{remark}
+
+\medskip
+\noindent\textbf{When does the earlier formula become true?}
+The stronger identity does hold when $\mathcal L$ is saturated with respect to
+$\sim_\cut^{\Sigma^*}$, that is, whenever $w\in\mathcal L$ and
+$w\sim_\cut^{\Sigma^*} w'$, we also have $w'\in\mathcal L$. In that special
+case, every representative of a quotient word already belongs to $\mathcal L$,
+so no extra words are introduced when passing back from quotient classes to
+concrete words. In that case one may indeed write
+\[
+  \partial_a^\cut(\mathcal L)
+  =
+  \{w\in\Sigma^* \mid [w]_\cut \in \partial_{[a]_\cut}(\mathcal L^\cut)\}.
+\]
+}
 
 \noindent
 Just as in the classical setting, the notion of a fuzzy derivative with respect to a single symbol can be extended to handle derivatives with respect to an entire word. The idea remains the same: process the word one symbol at a time from left to right, taking the fuzzy derivative with respect to the first symbol and then applying the fuzzy derivative again to the result for the remaining suffix. This recursive approach naturally generalizes the single-symbol fuzzy derivative to arbitrary words, as formalized below.
