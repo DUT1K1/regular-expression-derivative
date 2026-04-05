@@ -8,7 +8,6 @@ src/ExamplesCanonicize.v
 src/Derivatives.v
 src/DerivativeExamples.v
 src/Similarity.v
+src/CanonicalizationCorrectness.v
 
-src/RegexBasics.v
 src/main_theorem.v
-src/der_proof.v
