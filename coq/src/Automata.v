@@ -1,7 +1,6 @@
 From mathcomp Require Import ssreflect ssrfun ssrbool eqtype ssrnat seq.
 
 From regexderiv Require Import Alphabet.
-From regexderiv Require Import FiniteAlphabet.
 From regexderiv Require Import Languages.
 From regexderiv Require Import RegexSemantics.
 From regexderiv Require Import Nullable.
@@ -13,7 +12,7 @@ Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.
 
-Module Automata (X : OFINSYM).
+Module Automata (X : OSYM).
   Import X.
 
   Module Export D := Derivatives X.
