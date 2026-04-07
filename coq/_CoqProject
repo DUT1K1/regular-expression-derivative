@@ -10,3 +10,6 @@ src/DerivativeExamples.v
 src/Similarity.v
 src/CanonicalizationCorrectness.v
 src/Automata.v
+src/FiniteAlphabet.v
+src/AutomataConstruction.v
+src/AutomataExample.v
