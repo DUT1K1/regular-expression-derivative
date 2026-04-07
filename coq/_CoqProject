@@ -9,5 +9,4 @@ src/Derivatives.v
 src/DerivativeExamples.v
 src/Similarity.v
 src/CanonicalizationCorrectness.v
-
-src/main_theorem.v
+src/Automata.v
