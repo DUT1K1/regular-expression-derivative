@@ -44,13 +44,13 @@ For $w_1,w_2\in A^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
 1 & \text{if } w_1=\epsilon \text{ and } w_2=\epsilon,\\[2pt]
 0 & \text{if } (w_1=\epsilon \text{ and } w_2\neq\epsilon)\ \text{or}\ (w_2=\epsilon \text{ and } w_1\neq\epsilon),\\[4pt]
 \min\!\bigl(\mathcal{R}(a_1,a_2),\,\mathcal{R}^w(w_1',w_2')\bigr)
-  & \text{if } w_i=a_iw_i'.
+    & \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'.
 \end{cases}
 \]
 \end{definition}
 
 {\color{red}
-A more interesting theory arises if we take the $\otimes$ opertor, rather than the minimum in Definition~\ref{def:Rw}.}
+A more interesting theory arises if we take the $\otimes$ operator, rather than the minimum in Definition~\ref{def:Rw}.}
 
 \begin{lemma}\label{lem:Rw-sim}
 $\mathcal{R}^w$ is a proximity relation on $A^*$ (reflexive and symmetric).
@@ -72,7 +72,7 @@ For languages $L_1,L_2\subseteq A^*$ define
 \end{lemma}
 
 \subsection{Similarity on Regular Expressions}
-This is a possible definition of similarity on syntactic regualr expressions.
+This is a possible definition of similarity on syntactic regular expressions.
 
 \begin{definition}[Syntactic similarity on regex]\label{def:Re}
 Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$.
@@ -116,6 +116,16 @@ Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$
 \end{itemize}
 \end{definition}
 
+\begin{remark}\label{rem:Re-syntax-sensitive}
+Definition~\ref{def:Re} is syntax-sensitive.
+Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^r$-similarity.
+For example, depending on the base relation on symbols, one may have
+\[
+\mathcal{R}^r(a+b,b+a)=0
+\]
+even though $L(a+b)=L(b+a)$.
+\end{remark}
+
 \begin{lemma} $\mathcal R^r$ is a similarity on regular expressions.
 \end{lemma}
 
@@ -127,15 +137,30 @@ For all regular expressions $r_1,r_2$,
 \end{lemma}
 
 
-%\begin{theorem}\label{}
-%For all regular expressions $r_1,r_2$, 
-%\[sup\{\mathcal{R}^r(r_{i_1},r_{i_2})\mid L(r_{i_1})=L(r_1), L(r_{i_2})=L(r_2)\}\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).\]
-%\end{theorem}
+% \begin{theorem}\label{}
+% For all regular expressions $r_1,r_2$, 
+% \[sup\{\mathcal{R}^r(r_{i_1},r_{i_2})\mid L(r_{i_1})=L(r_1), L(r_{i_2})=L(r_2)\}\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).\]
+% \end{theorem}
 
-We have:
-\begin{theorem}\label{}
-For all regular expressions $r_1,r_2$, 
+% We have:
+% \begin{theorem}\label{}
+% For all regular expressions $r_1,r_2$, 
+% \[
+% sup\{\mathcal{R}^r(r',s)\mid L(r')=L(r)\}\; = \;\mathcal{R}^L\bigl(L(r),L(s)\bigr).
+% \]
+% \end{theorem}
+
+\begin{theorem}\label{thm:Re-RL-bridge}
+For all regular expressions $r$ and $s$,
 \[
-sup\{\mathcal{R}^r(r',s)\mid L(r')=L(r)\}\; = \;\mathcal{R}^L\bigl(L(r),L(s)\bigr).
+\mathcal{R}^L\bigl(L(r),L(s)\bigr)
+=
+\sup\Bigl\{
+\min\bigl(\mathcal{R}^r(r',t),\mathcal{R}^r(s',u)\bigr)
+\;\Bigm|\;
+L(r')=L(r),\;
+L(s')=L(s),\;
+L(t)=L(u)
+\Bigr\}.
 \]
 \end{theorem}
