@@ -1101,6 +1101,193 @@ Module Similarity (X : OSYM).
             apply Rle_refl.
     Qed.
 
+    (* ============================================================ *)
+    (* Definition 3.3 (R^r): syntax-sensitive similarity on regex   *)
+    (* ============================================================ *)
+
+    Fixpoint Rr (r s : regex) : simval :=
+      match s with
+      | RS.Empty =>
+          match r with
+          | RS.Empty => 1
+          | _ => 0
+          end
+      | RS.Eps =>
+          match r with
+          | RS.Eps => 1
+          | _ => 0
+          end
+      | RS.Char a =>
+          match r with
+          | RS.Char b => R b a
+          | _ => 0
+          end
+      | RS.Star s1 =>
+          match r with
+          | RS.Star r1 => Rr r1 s1
+          | _ => 0
+          end
+      | RS.Seq s1 s2 =>
+          match r with
+          | RS.Seq r1 r2 => smin (Rr r1 s1) (Rr r2 s2)
+          | _ => 0
+          end
+      | RS.Alt s1 s2 =>
+          match r with
+          | RS.Alt r1 r2 => smin (Rr r1 s1) (Rr r2 s2)
+          | _ => 0
+          end
+      | RS.And s1 s2 =>
+          match r with
+          | RS.And r1 r2 => smin (Rr r1 s1) (Rr r2 s2)
+          | _ => 0
+          end
+      | RS.Neg s1 =>
+          match r with
+          | RS.Neg r1 => Rr r1 s1
+          | _ => 0
+          end
+      end.
+
+    Lemma smin_in01 (x y : simval) :
+      in01 x -> in01 y -> in01 (smin x y).
+    Proof.
+      move=> [Hx0 Hx1] [Hy0 Hy1].
+      split.
+      - apply le_smin; assumption.
+      - eapply Rle_trans.
+        + apply smin_lel.
+        + exact Hx1.
+    Qed.
+
+    Lemma Rr_range : forall r s, 0 <= Rr r s <= 1.
+    Proof.
+      intros r s; revert r.
+      induction s as [| | a | s1 IH1 s2 IH2 | s1 IH1 s2 IH2 | s IH
+                     | s1 IH1 s2 IH2 | s IH];
+        intros r.
+      - destruct r; simpl; lra.
+      - destruct r; simpl; lra.
+      - destruct r; simpl; try lra.
+        apply R_range.
+      - destruct r; simpl; try lra.
+        apply smin_in01; [apply IH1 | apply IH2].
+      - destruct r; simpl; try lra.
+        apply smin_in01; [apply IH1 | apply IH2].
+      - destruct r; simpl; try lra.
+        apply IH.
+      - destruct r; simpl; try lra.
+        apply smin_in01; [apply IH1 | apply IH2].
+      - destruct r; simpl; try lra.
+        apply IH.
+    Qed.
+
+    Lemma Rr_refl : forall r, Rr r r = 1.
+    Proof.
+      induction r as [| | a | r1 IH1 r2 IH2 | r1 IH1 r2 IH2 | r IH
+                     | r1 IH1 r2 IH2 | r IH].
+      - reflexivity.
+      - reflexivity.
+      - exact (R_refl a).
+      - simpl. by rewrite IH1 IH2 sminxx.
+      - simpl. by rewrite IH1 IH2 sminxx.
+      - simpl. exact IH.
+      - simpl. by rewrite IH1 IH2 sminxx.
+      - simpl. exact IH.
+    Qed.
+
+    Lemma Rr_sym : forall r s, Rr r s = Rr s r.
+    Proof.
+      intros r s; revert r.
+      induction s as [| | a | s1 IH1 s2 IH2 | s1 IH1 s2 IH2 | s IH
+                     | s1 IH1 s2 IH2 | s IH];
+        intros r.
+      - by destruct r.
+      - by destruct r.
+      - destruct r; simpl; try reflexivity.
+        apply R_sym.
+      - destruct r; simpl; try reflexivity.
+        by rewrite IH1 IH2.
+      - destruct r; simpl; try reflexivity.
+        by rewrite IH1 IH2.
+      - destruct r; simpl; try reflexivity.
+        exact (IH r).
+      - destruct r; simpl; try reflexivity.
+        by rewrite IH1 IH2.
+      - destruct r; simpl; try reflexivity.
+        exact (IH r).
+    Qed.
+
+    Local Ltac solve_nonneg :=
+      match goal with
+      | |- 0 <= 0 => lra
+      | |- 0 <= 1 => lra
+      | |- 0 <= R ?a ?b =>
+          exact (proj1 (R_range a b))
+      | |- 0 <= Rr ?r ?s =>
+          exact (proj1 (Rr_range r s))
+      | |- 0 <= smin ?x ?y =>
+          apply le_smin; [solve_nonneg | solve_nonneg]
+      end.
+
+    Lemma Rr_trans : forall r1 r2 r,
+      smin (Rr r1 r) (Rr r r2) <= Rr r1 r2.
+    Proof.
+      intros r1 r2 r; revert r1 r2.
+      induction r as [| | a | m1 IH1 m2 IH2 | m1 IH1 m2 IH2 | m IH
+                     | m1 IH1 m2 IH2 | m IH];
+        intros s1 s2; destruct s1; destruct s2; simpl;
+        try solve [rewrite sminxx; apply Rle_refl];
+        try solve [
+          eapply Rle_trans; [apply smin_lel | solve_nonneg]
+        ];
+        try solve [
+          eapply Rle_trans; [apply smin_ler | solve_nonneg]
+        ];
+        try solve [apply R_trans];
+        try solve [exact (IH _ _)];
+        try solve [
+          eapply Rle_trans;
+          [apply smin_shuffle |];
+          apply le_smin;
+          [ eapply Rle_trans; [apply smin_lel | exact (IH1 _ _)]
+          | eapply Rle_trans; [apply smin_ler | exact (IH2 _ _)]
+          ]
+        ].
+    Qed.
+
+
+    Lemma Rr_is_similarity : @is_similarity regex Rr.
+    Proof.
+      split.
+      - split.
+        + exact Rr_refl.
+        + exact Rr_sym.
+      - intros r1 r2 r.
+        exact (Rr_trans r1 r2 r).
+    Qed.
+
+    Lemma syntax_semantics_inequality :
+      forall r s, Rr r s <= RL (RS.den r) (RS.den s).
+    Proof.
+      (* TODO *)
+    Admitted.
+
+    Definition Rr_candidate_values (r s : regex) : simval -> Prop :=
+      fun x =>
+        exists r' s' t u,
+          RS.re_equiv r' r /\
+          RS.re_equiv s' s /\
+          RS.re_equiv t u /\
+          x = smin (Rr r' t) (Rr s' u).
+
+    Theorem Rr_RL_bridge :
+      forall r s,
+        is_lub (Rr_candidate_values r s) (RL (RS.den r) (RS.den s)).
+    Proof.
+      (* TODO *)
+    Admitted.
+
 
   End BaseSymbolSimilarity.
 
