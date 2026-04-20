@@ -4,7 +4,6 @@ Require Import Reals Lra ClassicalEpsilon.
 From regexderiv Require Import Languages.
 From regexderiv Require Import Alphabet.
 From regexderiv Require Import RegexSemantics.
-From regexderiv Require Import Derivatives.
 
 Set Implicit Arguments.
 Unset Strict Implicit.
@@ -15,8 +14,7 @@ Local Open Scope R_scope.
 Module Similarity (X : OSYM).
   Import X.
 
-  Module D  := Derivatives X.
-  Module RS := D.N.RS.
+  Module RS := RegexSemantics X.
 
   (* ============================================================ *)
   (* Common numeric layer (values in [0,1])                       *)
