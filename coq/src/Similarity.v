@@ -4,7 +4,6 @@ Require Import Reals Lra ClassicalEpsilon.
 From regexderiv Require Import Languages.
 From regexderiv Require Import Alphabet.
 From regexderiv Require Import RegexSemantics.
-From regexderiv Require Import Canonicalization. 
 From regexderiv Require Import Derivatives.
 
 Set Implicit Arguments.
@@ -18,7 +17,6 @@ Module Similarity (X : OSYM).
 
   Module D  := Derivatives X.
   Module RS := D.N.RS.
-  Module C  := Canonicalization X.
 
   (* ============================================================ *)
   (* Common numeric layer (values in [0,1])                       *)
