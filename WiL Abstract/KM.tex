@@ -1,55 +1,58 @@
 \documentclass{easychair}
 
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{marvosym}
 
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
 
-\title{Fuzzifying Derivatives of Regular Expressions\\
-\normalsize{(Extended Abstract)}}
+\title{Fuzzifying Derivatives of Regular Expressions}
 
 \author{
-Mariam Katamashvili\inst{1}\;\Letter\;\texttt{katamashvili.mariami@gmail.com}\\[2pt]
-David Maisuradze\inst{1}\;\Letter\;\texttt{david.maisuradze0920@gmail.com}
+Mariam Katamashvili\inst{1}\\[2pt]
+David Maisuradze\inst{1}
 }
 
 \institute{
 Kutaisi International University, Kutaisi, Georgia
 }
-%\authorrunning{Mariam Katamashvili and David Maisuradze}
-%\titlerunning{Derivative of Regular Expressions with Similarity Relation}
+\authorrunning{Mariam Katamashvili, David Maisuradze}
+\titlerunning{Fuzzifying Derivatives of Regular Expressions}
 
 \begin{document}
 
 \maketitle
-There is growing interest in the Computer Science and AI communities in moving from {\em exact},  {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative} and hence  ultimately {\em fuzzy} settings. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbols are fuzzy~\cite{DHMM}. Namely, we assume that the alphabet is enriched with a  {\em similarity
-relation} and matching is performed up to {\em cut} values. In this extended abstract we generalize the theory of  
-Brzozowski~\cite{B62} derivatives, which  gives a direct construction of automata from regular
-expressions: after reading a word, the current state is represented by the
-corresponding derivative of the expression. All our results are formalized in Rocq~\cite{Rocq}.
+There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbols are fuzzy~\cite{DHMM}. Namely, following similarity-based reasoning~\cite{Sessa2002},
+we assume that the alphabet is enriched with a {\em similarity relation}
+and that matching is performed up to {\em cut} values. In this extended abstract, we generalize the theory of
+Brzozowski~\cite{B62} derivatives, further developed and revisited
+in~\cite{OwensReppyTuron}, which gives a direct construction of automata
+from regular expressions: after reading a word, the current state is represented by the
+corresponding derivative of the expression. Most of our results are formalized in Rocq~\cite{Rocq}.
 
-Let $\Sigma$ be a finite alphabet and let $
-\mathcal R:\Sigma\times\Sigma\to[0,1]$
-be a {\em fuzzy similarity relation}, where $[0,1]$ is endowed with a left-continuous T-norm, which makes it into a residuated lattice~\cite{met05}. Throughout this extended abstract, we use the minimum T-norm for simplicity. A similarity relation satisfies reflexivity, symmetry and the reverse triangle inequality.
-%For $0<\mu\le1$, its $\mu$-cut is
-%\[\mathcal R_\mu=\{(a,b)\in\Sigma\times\Sigma\mid \mathcal R(a,b)\ge\mu\}.\]
+Let $\Sigma$ be a finite alphabet, and let
+$\mathcal R:\Sigma\times\Sigma\to[0,1]$
+be a {\em fuzzy similarity relation}, where $[0,1]$ is endowed with a
+left-continuous T-norm, making it a residuated lattice~\cite{met05}.
+Fix a cut value $0<\mu\le1$. Throughout this extended abstract, we use the minimum T-norm for simplicity. A similarity relation satisfies reflexivity, symmetry, and the reverse triangle inequality with respect to the T-norm.
+% For $0<\mu\le1$, its $\mu$-cut is
+% \[\mathcal R_\mu=\{(a,b)\in\Sigma\times\Sigma\mid \mathcal R(a,b)\ge\mu\}.\]
 
 Similarity is extended from symbols to words, languages, and regular expressions. 
 \begin{definition}\hfill\\
 $\bullet$ {\bf Similarity on words.}
-For $w_1,w_2\in\Sigma^\ast$, define $
+For $w_1,w_2\in\Sigma^\ast$ define $
 \mathcal R^w:\Sigma^\ast\times\Sigma^\ast\to[0,1]$
 recursively by\\ $
 \mathcal R^w(w_1,w_2)=
 \begin{cases}
 1 & \text{if } w_1=\varepsilon \text{ and } w_2=\varepsilon,\\[2pt]
 0 & \text{if } (w_1=\varepsilon \text{ and } w_2\neq\varepsilon)
-      \text{ or } (w_2=\varepsilon \text{ and } w_1\neq\varepsilon),\\[4pt]
+\text{ or } (w_2=\varepsilon \text{ and } w_1\neq\varepsilon),\\[4pt]
 \min\!\bigl(\mathcal R(a_1,a_2),\mathcal R^w(w_1',w_2')\bigr)
 & \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'.
+
 \end{cases}$\smallskip\\
 $\bullet$ {\bf Similarity on languages}
 For languages $L_1,L_2\subseteq\Sigma^\ast$, define
@@ -64,13 +67,13 @@ For languages $L_1,L_2\subseteq\Sigma^\ast$, define
 expressions, for lack of space. This definition is intentionally syntax-directed and therefore
 syntax-sensitive. Constructors such as intersection and complement do not preserve the
 desired syntax-to-semantics inequalities in general, so they are not amenable to a well-behaved fuzzification. Hence, the theorems are restricted to the fragment generated by $\emptyset,\varepsilon$,
-letters, union, concatenation, and Kleene star. 
+letters, union, concatenation, and Kleene star, which we call {\em restricted regular expressions}. 
 
 \begin{proposition} The relations $\mathcal R^w$, $\mathcal R^L$, and $\mathcal R^r$ are similarity relations. 
 \end{proposition}
 
 One of the main results of this work is that of establishing a connection between our fuzzy analogue of the theory of finite automata and the crisp version of the theory for a corresponding quotient language. Namely, we introduce the following definitions.
-\begin{definition}For a fixed cut value $\mu$, define the  following equivalence relations: \\
+\begin{definition}For a fixed cut value $\mu$, define the following equivalence relations: \\
 $\bullet$ $\boldsymbol{\sim_\mu^\Sigma}$ on the alphabet $\Sigma$ by
 
 $a\sim_\mu^\Sigma b
@@ -100,13 +103,15 @@ q_\mu^\ast(a_1\cdots a_n)
 =
 [a_1]_\mu\cdots[a_n]_\mu
 $ ; \\
-$\bullet$ the  quotient image  of $L\subseteq\Sigma^\ast$ by putting
+$\bullet$ the quotient image of $L\subseteq\Sigma^\ast$ by putting
 $ L^\mu=%q_\mu^\ast(L) =
 \{q_\mu^\ast(w)\mid w\in L\}
 \subseteq(\Sigma^\mu)^\ast.
 $ 
 \end{definition}
-Finally, we give the main definitions.\begin{definition}[Fuzzy language derivative]
+Finally, we give the main definitions and results.
+
+\begin{definition}[Fuzzy language derivative]
 For $L\subseteq\Sigma^\ast$ and $a\in\Sigma$, define\\
 \ \ \ \ $
 \partial_a^\mu(L)
@@ -120,46 +125,35 @@ bv\in L
 $
 \end{definition}
 \begin{definition}[Fuzzy expression derivative]
-For a regular expression $r$, the syntactic fuzzy derivative is
+For $a\in\Sigma$, let $S_a^\mu=\{b\in\Sigma\mid\mathcal R(a,b)\ge\mu\}$, and for $L\subseteq\Sigma^\ast$, let $\operatorname{Sat}_\mu(L)=\{w\in\Sigma^\ast\mid\exists v\in L:\ w\sim_\mu^{\Sigma^\ast}v\}$. For a regular expression $r$ the syntactic fuzzy derivative is
 $
-\mathcal D_a^\mu(r)
-=
-\operatorname{Sat}_\mu
-\left(
-\sum_{b\in S_a^\mu}\mathcal D_b(r)
-\right)
+\mathcal D_a^\mu(r)=
+\operatorname{Sat}_\mu\left(\sum_{b\in S_a^\mu}\mathcal D_b(r)\right),
 $
-where $\mathcal D_b(r)$ is the ordinary Brzozowski derivative, and for  $L\subseteq\Sigma^\ast$, the $\mu$-saturation is given by $
-\operatorname{Sat}_\mu(L)
-=
-\{w\in\Sigma^\ast\mid
-\exists v\in L \text{ such that } w\sim_\mu^{\Sigma^\ast}v\}.
-$
+where $\mathcal D_b(r)$ is the ordinary Brzozowski derivative.
 \end{definition}
 
-We are now in the position of giving the main results. 
 
-\begin{proposition} For all (restricted) regular expressions $r_1,r_2$,\\
+\begin{proposition} For all restricted regular expressions $r,s$,\\
 $\bullet$ 
 $
-\mathcal{R}^r(r_1,r_2)
+\mathcal{R}^r(r,s)
 \le
-\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
+\mathcal{R}^L\bigl(L(r),L(s)\bigr).
 $\\
 $\bullet$ $\mathcal{R}^L\bigl(L(r),L(s)\bigr)
 =
 \sup\Bigl\{
 \min\bigl(
-\mathcal{R}^r(r',t),
-\mathcal{R}^r(s',u)
+\mathcal{R}^r(r',p),
+\mathcal{R}^r(s',q)
 \bigr)
-\;\Bigm|\;% r',s',t,u \text{ are classical regular expressions}, \;
+\;\Bigm|\;% r',s',p,q \text{ are regular expressions}, \;
 L(r')=L(r),
 L(s')=L(s),
-L(t)=L(u)
+L(p)=L(q)
 \Bigr\}.$
 \end{proposition}
-
 
 \begin{theorem}
 $
@@ -179,6 +173,14 @@ $\partial_u^\mu(L)$
 is regular for every $u\in\Sigma^\ast$ and every $0<\mu\le1$.
 \end{theorem}
 
+\begin{theorem}[Finiteness]\label{finiteness}
+If $\Sigma$ is finite and $L\subseteq\Sigma^\ast$ is regular, then
+$
+\{\partial_u^\mu(L)\mid u\in\Sigma^\ast\}
+$
+is finite for every fixed $0<\mu\le1$.
+\end{theorem}
+
 \begin{theorem}[Semantic--syntactic correspondence]
 For every regular expression $r$, word $u\in\Sigma^\ast$, and cut value
 $0<\mu\le1$, $
@@ -188,26 +190,29 @@ L(\mathcal D_u^\mu(r))
 $
 \end{theorem}
 
-\begin{theorem}[Finiteness]\label{finiteness}
-If $\Sigma$ is finite and $L\subseteq\Sigma^\ast$ is regular, then
-$
-\{\partial_u^\mu(L)\mid u\in\Sigma^\ast\}
-$
-is finite for every fixed $0<\mu\le1$.
-\end{theorem}
-
 In conclusion, fuzzy automata can be viewed as quotients of ordinary derivative
 automata over the quotient alphabet $\Sigma^\mu$. 
-\begin{theorem}The language recognized by
-the resulting quotient automaton is the concrete $\mu$-saturation{\color{red}??}, namely
+\begin{theorem}(Opt. A)The language recognized by
+the resulting quotient automaton is the $\mu$-saturation, namely
 $
 \mathcal L_\Sigma^\mu(r)
 =
 (q_\mu^\ast)^{-1}(q_\mu^\ast(L(r))).
 $
 \end{theorem}
+\begin{theorem}(Opt. B)
+The automaton constructed from fuzzy derivatives recognizes the 
+$\mu$-saturation of $L(r)$:
+\[
+\mathcal L_\Sigma^\mu(r)
+=
+\operatorname{Sat}_\mu(L(r))
+=
+(q_\mu^\ast)^{-1}(q_\mu^\ast(L(r))).
+\]
+\end{theorem}
 
-All our results are formalized in Rocq~\cite{Rocq,RocqRegexpBrzozowski}, see~\cite{OurRocqRepo}. We build on the  Coquand--Siles~\cite{CoquandRegexEquality} formalization of
+Most of our results are formalized in Rocq~\cite{Rocq}, see~\cite{OurRocqRepo}. We build on the Coquand--Siles~\cite{CoquandRegexEquality,RocqRegexpBrzozowski} formalization of
 regular-expression equivalence via Brzozowski derivatives. Theorem~\ref{finiteness} is crucial in that all notions of finiteness are not equivalent in a constructive setting. We are currently working on proving a Kuratowski-finiteness result by working with normalized representatives of regular
 expressions, so that repeated derivatives can be checked to generate only finitely many distinct
 states using the equivalence procedure in~\cite{CoquandRegexEquality}. This should be a slight improvement in that the result in~\cite{CoquandRegexEquality} is based on a weaker notion of finiteness.
@@ -217,7 +222,16 @@ states using the equivalence procedure in~\cite{CoquandRegexEquality}. This shou
 
 \bibliographystyle{plain}
 
+\bibliographystyle{plain}
+
 \begin{thebibliography}{10}
+
+\bibitem{AlvesKesnerRamos2025}
+Sandra Alves, Delia Kesner, and Miguel Ramos.
+\newblock Extending the quantitative pattern-matching paradigm.
+\newblock In Oleg Kiselyov, editor, \emph{Programming Languages and Systems},
+pages 84--105.
+\newblock Springer Nature Singapore, Singapore, 2025.
 
 \bibitem{B62}
 Janusz A. Brzozowski.
@@ -225,32 +239,29 @@ Janusz A. Brzozowski.
 \newblock \emph{Mathematical Theory of Automata}, 12:529--561, 1962.
 
 \bibitem{C71}
-John H.Conway
-\newblock {\em Regular Algebra and Finite Machines}.
-\newblock {Chapman and Hall (London)}, 1971.
- 
-
+John H. Conway.
+\newblock \emph{Regular Algebra and Finite Machines}.
+\newblock Chapman and Hall, London, 1971.
 
 \bibitem{CoquandRegexEquality}
 Thierry Coquand and Vincent Siles.
-\newblock A Decision Procedure for Regular Expression Equivalence in Type Theory.
+\newblock A decision procedure for regular expression equivalence in type theory.
 \newblock In \emph{Proceedings of the 1st International Conference on Certified Programs and Proofs (CPP)}, 2011.
 
 \bibitem{DHMM}
 Besik Dundua, Furio Honsell, Mariam Katamashvili, and David Maisuradze.
-\newblock{\em Fuzzy Automata} (to appear).
+\newblock \emph{Fuzzy Automata}.
+\newblock To appear.
 
+\bibitem{met05}
+George Metcalfe.
+\newblock Fundamentals of fuzzy logic.
+\newblock \texttt{https://api.semanticscholar.org/CorpusID17549644}.
 
 \bibitem{OurRocqRepo}
 Mariam Katamashvili and David Maisuradze.
 \newblock Rocq formalization for regular-expression derivatives with similarity.
 \newblock \texttt{https://github.com/DUT1K1/regular-expression-derivative}.
-
-\bibitem{met05}
-{George Metcalfe},
-\newblock{Fundamentals of Fuzzy Logic},
-\newblock \texttt{https://api.semanticscholar.org/CorpusID 17549644}.
-
 
 \bibitem{OwensReppyTuron}
 Scott Owens, John Reppy, and Aaron Turon.
@@ -259,13 +270,25 @@ Scott Owens, John Reppy, and Aaron Turon.
 
 \bibitem{Rocq}
 The Rocq Prover Development Team.
-\newblock {The Rocq Prover (Version x.x)}, 202x.\\
-\newblock \texttt{https://rocq-prover.org}.
+\newblock The Rocq Prover, version 9.1.0.
+\newblock \texttt{https://rocq-prover.org/releases/9.1.0}, 2025.
 
 \bibitem{RocqRegexpBrzozowski}
 Rocq community.
 \newblock \emph{regexp-Brzozowski}.
 \newblock \texttt{https://github.com/rocq-community/regexp-Brzozowski}.
+
+\bibitem{Sessa2002}
+Maria I. Sessa.
+\newblock Approximate reasoning by similarity-based SLD resolution.
+\newblock \emph{Theoretical Computer Science}, 275(1--2):389--426, 2002.
+
+\bibitem{SilvaBonchiBonsangueRutten2011}
+Alexandra Silva, Filippo Bonchi, Marcello Bonsangue, and Jan Rutten.
+\newblock Quantitative Kleene coalgebras.
+\newblock \emph{Information and Computation}, 209(5):822--849, 2011.
+\newblock Special issue: 20th International Conference on Concurrency Theory
+(CONCUR 2009).
 
 \end{thebibliography}
 
