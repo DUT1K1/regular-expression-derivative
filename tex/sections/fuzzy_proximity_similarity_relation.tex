@@ -16,16 +16,19 @@ A fuzzy relation $\cR$ on a set $S$ is called a \emph{proximity relation}, if it
   \item[Symmetry:] $\cR(s_1,s_2)=\cR(s_2,s_1)$ for all $s_1,s_2\in S$.
 \end{description}
 
-Let $\wedge$ be a T-norm: an associative, commutative, non-decreasing binary operation on $[0,1]$ with $1$ as the unit element. A proximity relation (on $S$) is called a \emph{similarity relation} (on $S$) iff it is transitive:
+Let $\wedge$ be a left-continuous T-norm on $[0,1]$, so that $[0,1]$ carries
+the usual structure of a residuated lattice. A proximity relation (on $S$) is
+called a \emph{similarity relation} (on $S$) iff it satisfies the reverse
+triangle inequality with respect to this T-norm:
 \begin{description}
-  \item[Transitivity] $\cR(s_1,s_2)\ge \cR(s_1,s) \wedge \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
+  \item[Reverse triangle inequality:] $\cR(s_1,s_2)\ge \cR(s_1,s) \wedge \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
 \end{description}
 
-In this paper, in the role of T-norm we take the \emph{minimum} of two numbers, and write $\min$ instead of $\wedge$. In the role of $S$ we take a syntactic domain, defined in the next section.
+In this paper, in the role of T-norm we take G\"odel's \emph{minimum} T-norm, and write $\min$ instead of $\wedge$. In the role of $S$ we take a syntactic domain, defined in the next section.
 
 \paragraph{Standing conventions.}
 Throughout, we fix the T-norm to be the minimum and write $\min$ instead of $\wedge$.
-We use $\cR$ for the base fuzzy relation and $A$ for the alphabet.
+We use $\cR$ for the base fuzzy relation and $\Sigma$ for the alphabet.
 
 
 \subsection{Similarity on Words and Languages}
@@ -37,7 +40,7 @@ We defined similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \r
 
 
 \begin{definition}[Similarity on words]\label{def:Rw}
-For $w_1,w_2\in A^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
+For $w_1,w_2\in \Sigma^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
 \[
 \mathcal{R}^w(w_1,w_2)=
 \begin{cases}
@@ -53,12 +56,12 @@ For $w_1,w_2\in A^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
 A more interesting theory arises if we take the $\otimes$ operator, rather than the minimum in Definition~\ref{def:Rw}.}
 
 \begin{lemma}\label{lem:Rw-sim}
-$\mathcal{R}^w$ is a proximity relation on $A^*$ (reflexive and symmetric).
-Moreover, $\mathcal{R}^w$ is transitive, hence a similarity on $A^*$.
+$\mathcal{R}^w$ is a proximity relation on $\Sigma^*$ (reflexive and symmetric).
+Moreover, $\mathcal{R}^w$ satisfies the reverse triangle inequality, hence a similarity on $\Sigma^*$.
 \end{lemma}
 
 \begin{definition}[Similarity on languages]\label{def:RL}
-For languages $L_1,L_2\subseteq A^*$ define
+For languages $L_1,L_2\subseteq \Sigma^*$ define
 \[
 \mathcal{R}^L(L_1,L_2)\;=\;
 \min\!\Bigl\{
@@ -71,96 +74,128 @@ For languages $L_1,L_2\subseteq A^*$ define
 \begin{lemma} $\mathcal R^L$ is a similarity relation on languages.
 \end{lemma}
 
+\begin{definition}[Restricted regular expressions]
+A regular expression is called \emph{restricted} if it is generated from
+\[
+\emptyset,\ \varepsilon,\ a \in \Sigma
+\]
+using only the constructors $+$, $\cdot$, and ${}^\ast$.
+Equivalently, restricted regular expressions are those that do not use $\wedge$ or $\neg$.
+\end{definition}
+
 \subsection{Similarity on Regular Expressions}
 This is a possible definition of similarity on syntactic regular expressions.
 
 \begin{definition}[Syntactic similarity on regex]\label{def:Re}
-Let $r,s$ be regular expressions over $A$, and $\mathcal{R}$ a similarity on $A$.
+Let $r,s$ be restricted regular expressions over $\Sigma$, and $\mathcal{R}$ a similarity on $\Sigma$.
 \begin{itemize}
-%\item if $L(r_1)=L(r_2)$, then $\mathcal{R}^r(r_1,r_2)=1$;
-\item $\mathcal{R}^r(r,\emptyset)=
+%\item if $L(r_1)=L(r_2)$, then $\mathcal{R}^e(r_1,r_2)=1$;
+\item $\mathcal{R}^e(r,\emptyset)=
 \begin{cases}
 1 & \text{if } r=\emptyset\\
 0 & \text{otherwise;}
 \end{cases}$
-\item $\mathcal{R}^r(r,\varepsilon)=
+\item $\mathcal{R}^e(r,\varepsilon)=
 \begin{cases}
 1 & \text{if } r=\varepsilon,\\
 0 & \text{otherwise;}
 \end{cases}$
-\item $\mathcal{R}^r(r,a)=\begin{cases}
+\item $\mathcal{R}^e(r,a)=\begin{cases}
 \mathcal{R}(b,a) & \text{if } r=b,\\
 0 & \text{otherwise;}
 \end{cases}$
-\item $\mathcal{R}^r(r,s^\ast)=\begin{cases}
-\mathcal{R}^r(r_1,s) & \text{if } r=r_1^\ast,\\
+\item $\mathcal{R}^e(r,s^\ast)=\begin{cases}
+\mathcal{R}^e(r_1,s) & \text{if } r=r_1^\ast,\\
 0 & \text{otherwise;}
 \end{cases}$
 
-\item $\mathcal{R}^r(r,s_1\cdot s_2)=\begin{cases}
-\min\{\mathcal{R}^r(r_1,s_1),\mathcal{R}^r(r_2,s_2)\}
+\item $\mathcal{R}^e(r,s_1\cdot s_2)=\begin{cases}
+\min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}
 & \text{if } r=r_1\cdot r_2,\\
 0 & \text{otherwise.}
 \end{cases}$
 
-\item $\mathcal{R}^r(r,s_1+s_2)=\begin{cases}
-\min\{\mathcal{R}^r(r_1,s_1),\mathcal{R}^r(r_2,s_2)\}& \text{if } r=r_1+r_2,\\
+\item $\mathcal{R}^e(r,s_1+s_2)=\begin{cases}
+\min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}& \text{if } r=r_1+r_2,\\
 0 & \text{otherwise;}
 \end{cases}$;
-\item $\mathcal{R}^r(r,s_1\wedge s_2)=\begin{cases}
-\min\{\mathcal{R}^r(r_1,s_1),\mathcal{R}^r(r_2,s_2)\}& \text{if } r=r_1\wedge r_2,\\
+
+\item $\mathcal{R}^e(r,s_1\wedge s_2)=\begin{cases}
+\min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}& \text{if } r=r_1\wedge r_2,\\
 0 & \text{otherwise;}\end{cases}$
-\item $\mathcal{R}^r(r,\neg s)=\begin{cases}
-\mathcal{R}^r(r_1,s),& \text{if } r=\neg r_1,\\
+
+\item $\mathcal{R}^e(r,\neg s)=\begin{cases}
+\mathcal{R}^e(r_1,s),& \text{if } r=\neg r_1,\\
 0 & \text{otherwise.}\end{cases}$
 \end{itemize}
 \end{definition}
 
 \begin{remark}\label{rem:Re-syntax-sensitive}
 Definition~\ref{def:Re} is syntax-sensitive.
-Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^r$-similarity.
+Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^e$-similarity.
 For example, depending on the base relation on symbols, one may have
 \[
-\mathcal{R}^r(a+b,b+a)=0
+\mathcal{R}^e(a+b,b+a)=0
 \]
 even though $L(a+b)=L(b+a)$.
 \end{remark}
 
-\begin{lemma} $\mathcal R^r$ is a similarity on regular expressions.
+\begin{lemma} $\mathcal R^e$ is a similarity on restricted regular expressions.
 \end{lemma}
 
+\begin{remark}\label{rem:syntax-semantics-exceptions}
+The lemma~\ref{thm:syntax-semantics} below is not true for all regular expressions when $\wedge$ and $\neg$ are allowed.
+The reason is that $\mathcal{R}^e$ only compares the shape of the expressions.
+So $\mathcal{R}^e$ can stay positive as long as the corresponding subexpressions look similar, even if the whole languages become very different.
+
+For the restricted constructors $+$, $\cdot$, and ${}^\ast$, replacing a
+subexpression by a similar one can only make the set of possible matches larger,
+and this behavior is preserved by the whole expression. This is why the
+inequality works for the restricted part.
+
+Intersection and negation do not behave in this way. For $r_1 \wedge r_2$, a
+word must satisfy both parts at the same time, so two similar components may
+still produce no common word at all. For $\neg r$, enlarging the language of
+$r$ makes the language of $\neg r$ smaller, so the direction of the comparison
+is reversed. Thus we do not include $\wedge$ and $\neg$ in the main
+fuzzification of expression similarity.
+The same issue also affects Theorem~\ref{thm:Rr-RL-bridge}, because that theorem would imply the unrestricted syntax-to-semantics inequality.
+Therefore Theorem~\ref{thm:Rr-RL-bridge} must also be restricted to the restricted fragment.
+\end{remark}
+
 \begin{lemma}\label{thm:syntax-semantics}
-For all regular expressions $r_1,r_2$, 
+For all restricted regular expressions $r_1,r_2$,
 \[
-\mathcal{R}^r(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
+\mathcal{R}^e(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
 \]
 \end{lemma}
 
 
 % \begin{theorem}\label{}
 % For all regular expressions $r_1,r_2$, 
-% \[sup\{\mathcal{R}^r(r_{i_1},r_{i_2})\mid L(r_{i_1})=L(r_1), L(r_{i_2})=L(r_2)\}\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).\]
+% \[sup\{\mathcal{R}^e(r_{i_1},r_{i_2})\mid L(r_{i_1})=L(r_1), L(r_{i_2})=L(r_2)\}\; = \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).\]
 % \end{theorem}
 
 % We have:
 % \begin{theorem}\label{}
 % For all regular expressions $r_1,r_2$, 
 % \[
-% sup\{\mathcal{R}^r(r',s)\mid L(r')=L(r)\}\; = \;\mathcal{R}^L\bigl(L(r),L(s)\bigr).
+% sup\{\mathcal{R}^e(r',s)\mid L(r')=L(r)\}\; = \;\mathcal{R}^L\bigl(L(r),L(s)\bigr).
 % \]
 % \end{theorem}
 
 \begin{theorem}\label{thm:Rr-RL-bridge}
-For all regular expressions $r$ and $s$,
+For all restricted regular expressions $r$ and $s$,
 \[
 \mathcal{R}^L\bigl(L(r),L(s)\bigr)
 =
 \sup\Bigl\{
-\min\bigl(\mathcal{R}^r(r',t),\mathcal{R}^r(s',u)\bigr)
+\min\bigl(\mathcal{R}^e(r',p),\mathcal{R}^e(s',q)\bigr)
 \;\Bigm|\;
+ r',s',p,q \text{ are restricted regular expressions},\;
 L(r')=L(r),\;
 L(s')=L(s),\;
-L(t)=L(u)
+L(p)=L(q)
 \Bigr\}.
 \]
 \end{theorem}
