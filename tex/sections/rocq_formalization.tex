@@ -1,0 +1,13 @@
+\section*{Rocq Formalization}
+
+Most of our results are formalized in Rocq~\cite{Rocq}, see~\cite{OurRocqRepo}.
+We build on the Coquand--Siles~\cite{CoquandRegexEquality,RocqRegexpBrzozowski}
+formalization of regular-expression equivalence via Brzozowski derivatives.
+The finiteness result is important because all notions of finiteness are not
+equivalent in a constructive setting. In the Rocq development we are working
+toward a Kuratowski-finiteness result using normalized representatives of
+regular expressions, so that repeated derivatives can be checked to generate
+only finitely many distinct states using the equivalence procedure
+in~\cite{CoquandRegexEquality}. This should be a slight improvement, since the
+result in~\cite{CoquandRegexEquality} is based on a weaker constructive notion
+of finiteness.
