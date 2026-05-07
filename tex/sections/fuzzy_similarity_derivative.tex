@@ -40,8 +40,26 @@ with $0 < \cut \le 1$. Define
 \[
   a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.
 \]
-Then $\sim_\cut^\Sigma$ is an equivalence relation on $\Sigma$. It induces an
-equivalence relation on words by
+Then $\sim_\cut^\Sigma$ is an equivalence relation on $\Sigma$. Define also
+\[
+  r\sim_\cut^e s
+  \quad\Longleftrightarrow\quad
+  \mathcal R^e(r,s)\ge\cut
+\]
+on restricted regular expressions,
+\[
+  w_1\sim_\cut^{\Sigma^*}w_2
+  \quad\Longleftrightarrow\quad
+  \mathcal R^w(w_1,w_2)\ge\cut
+\]
+on words, and
+\[
+  L_1\sim_\cut^{\mathcal P(\Sigma^*)}L_2
+  \quad\Longleftrightarrow\quad
+  \mathcal R^L(L_1,L_2)\ge\cut
+\]
+on languages. These are equivalence relations. Under the minimum T-norm, the
+word equivalence can equivalently be written as
 \[
   a_1\cdots a_n \sim_\cut^{\Sigma^*} b_1\cdots b_m
   \quad\Longleftrightarrow\quad
@@ -106,7 +124,6 @@ after passing to the quotient alphabet: once letters are identified up to
 $\cut$-similarity, differentiating with respect to $a$ is the same as
 differentiating with respect to the class $[a]_\cut$.
 
-{\color{green!50!black}
 \begin{theorem}\label{the:quotient-fuzzy-derivative}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
 with $0 < \cut \le 1$. For every language $\mathcal L \subseteq \Sigma^*$ and every
@@ -156,87 +173,6 @@ The displayed consequence follows because
 $\partial_{[a]_\cut}(\mathcal L^\cut)$ consists only of quotient words, and each
 such word has at least one representative in $\Sigma^*$.
 \end{proof}
-}
-
-\medskip
-\noindent\textbf{Relation with the head-only definition.}
-The earlier head-only version was
-\[
-  \partial_{a,\mathrm{head}}^\cut(\mathcal L)
-  =
-  \{w\in\Sigma^* \mid \exists b\in\Sigma,\ (a,b)\in\cR_\cut
-      \text{ and } bw\in\mathcal L\}.
-\]
-The new definition is exactly the $\cut$-saturation of this language:
-\[
-  \partial_a^\cut(\mathcal L)
-  =
-  \{w\in\Sigma^* \mid
-       \exists v\in\partial_{a,\mathrm{head}}^\cut(\mathcal L)
-       \text{ with } w\sim_\cut^{\Sigma^*}v\}.
-\]
-Equivalently, it is the inverse image of the ordinary quotient derivative:
-\[
-  \partial_a^\cut(\mathcal L)
-  =
-  (q_\cut^*)^{-1}
-  \bigl(\partial_{[a]_\cut}(\mathcal L^\cut)\bigr).
-\]
-
-\begin{remark}[Counterexample]
-Let $\Sigma=\{a,b\}$ and let $\cut=0.8$. Define a fuzzy similarity relation by
-\[
-  \cR(a,a)=\cR(b,b)=1,
-  \qquad
-  \cR(a,b)=\cR(b,a)=0.9.
-\]
-Then $a\sim_\cut^\Sigma b$, so $\Sigma^\cut$ has a single equivalence class,
-namely $[a]_\cut=[b]_\cut$.
-
-Take the language
-\[
-  \mathcal L=\{aa\}.
-\]
-For the symbol $b$, the fuzzy derivative is
-\[
-  \partial_b^\cut(\mathcal L)=\{a,b\},
-\]
-because $b$ is $\cut$-similar to the first $a$ in $aa$, and the returned suffix
-may be any one-letter word $\cut$-similar to the actual suffix $a$.
-
-On the other hand,
-\[
-  \mathcal L^\cut=\{[a]_\cut [a]_\cut\},
-  \qquad
-  \partial_{[b]_\cut}(\mathcal L^\cut)=\{[a]_\cut\}.
-\]
-This means that, at the quotient level, the only suffix we see is the
-one-letter class-word $[a]_\cut$. Translating this back to ordinary words
-collects all one-letter representatives of this class:
-\[
-  \{w\in\Sigma^* \mid q_\cut^*(w) \in \partial_{[b]_\cut}(\mathcal L^\cut)\}
-  =
-  \{a,b\},
-\]
-because both one-letter words $a$ and $b$ belong to the same class
-$[a]_\cut=[b]_\cut$.
-
-\smallskip
-\noindent
-More explicitly,
-\[
-  q_\cut^*(a)=[a]_\cut,
-  \qquad
-  q_\cut^*(b)=[a]_\cut,
-\]
-so both $a$ and $b$ are counted by the set
-\[
-  \{w\in\Sigma^* \mid q_\cut^*(w) \in \partial_{[b]_\cut}(\mathcal L^\cut)\}.
-\]
-This is now the intended result. Under the old head-only definition the result
-would have been only $\{a\}$; the word $b$ was missing because the tail was not
-matched fuzzily.
-\end{remark}
 
 \noindent
 Just as in the classical setting, the notion of a fuzzy derivative with respect to a single symbol can be extended to handle derivatives with respect to an entire word. The idea remains the same: process the word one symbol at a time from left to right, taking the fuzzy derivative with respect to the first symbol and then applying the fuzzy derivative again to the result for the remaining suffix. This recursive approach naturally generalizes the single-symbol fuzzy derivative to arbitrary words, as formalized below.
@@ -312,163 +248,133 @@ In order to compute fuzzy derivatives in practice, it is convenient to identify,
         \mathcal{S}^\cut_a = \{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}
     $$
 \end{definition}
-
-\begin{definition}\label{def:cut-saturation}
-For a language $K\subseteq\Sigma^*$, define its $\cut$-saturation by
-\[
-  \operatorname{Sat}_\cut(K)
-  =
-  \{w\in\Sigma^* \mid \exists v\in K
-      \text{ such that } w\sim_\cut^{\Sigma^*}v\}.
-\]
-Equivalently, $\operatorname{Sat}_\cut(K)=(q_\cut^*)^{-1}(q_\cut^*(K))$.
-If $R$ is a regular expression, $\operatorname{Sat}_\cut(R)$ denotes any regular
-expression whose language is $\operatorname{Sat}_\cut(\mathcal L(R))$.
-\end{definition}
-
 \noindent
-As in the classical case, we distinguish between the \emph{semantic} fuzzy derivative, defined directly on languages, and the \emph{syntactic} fuzzy derivative, defined on regular expressions. The syntactic formulation allows us to compute derivatives by manipulating the structure of the expression itself, without first converting it to its 
-language. In the fuzzy setting, this requires taking into account all symbols in the cut neighborhood of the given symbol. The following definition formalizes the syntactic fuzzy derivative.
-
+As in the classical case, we distinguish between the \emph{semantic} fuzzy
+derivative, defined directly on languages, and the \emph{syntactic} fuzzy
+derivative, defined on restricted regular expressions. The syntactic formulation compares
+both the consumed symbol and the expression being differentiated up to the fixed
+cut value.
 
 \begin{definition}\label{def:regex-fuzzy-derivative}
-    Let $R$ be a regular expression over the alphabet $\Sigma$, let
-    $a \in \Sigma$ be a symbol and let $0 < \cut \le 1$.
-    The \emph{fuzzy derivative of the regular expression $R$ with respect to $a$ and $\cut$}
-    is the regular expression
-    $$
-        \mathcal{D}^\cut_{a}(R)
-    $$
-    whose language satisfies
-    $$
-        \mathcal{L}\bigl(\mathcal{D}^\cut_a(R)\bigr)
-        =
-        \{v \in \Sigma^* : \exists b\in\mathcal{S}^\cut_a,\ \exists v'\in\Sigma^*
-            \text{ such that } v\sim_\cut^{\Sigma^*}v'
-            \text{ and } b\cdot v' \in \mathcal{L}(R)
-        \}
-    $$
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
+$0<\cut\le 1$. The \emph{fuzzy derivative} of $r$ with respect to $a$ and
+$\cut$ is
+\[
+  \mathcal D_a^\cut(r)
+  =
+  \sum\nolimits_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^e r}}
+  \mathcal D_b(s),
+\]
+where $\mathcal D_b(s)$ is the ordinary Brzozowski derivative from
+Section~\ref{sec:derivatives}. The sum is finite because $\Sigma$ is finite
+and $\sim_\cut^e$ only varies the finitely many letters occurring in the fixed
+syntax tree of $r$.
+\end{definition}
+
+\begin{definition}\label{def:regex-fuzzy-word-derivative}
+The fuzzy derivative of a restricted regular expression with respect to a word is defined
+recursively by
+\[
+  \mathcal D_\varepsilon^\cut(r)=r,
+  \qquad
+  \mathcal D_{av}^\cut(r)=\mathcal D_v^\cut(\mathcal D_a^\cut(r))
+\]
+for $a\in\Sigma$ and $v\in\Sigma^*$.
 \end{definition}
 
 \noindent
-Computationally, we can obtain this expression by first taking the head-only
-fuzzy derivative and then saturating the result:
-\[
-  \mathcal D_a^\cut(R)
-  =
-  \operatorname{Sat}_\cut
-  \left(
-    \sum_{b\in\mathcal S_a^\cut}\mathcal D_b(R)
-  \right).
-\]
-Here $\mathcal D_b(R)$ is the ordinary Brzozowski derivative from
-Section~\ref{sec:derivatives}. Expanded structurally, the unsaturated
-head-only derivative inside $\operatorname{Sat}_\cut(\cdot)$ is:
-$$
-\begin{array}{c}
-    \mathcal{D}^{\cut,\mathrm{head}}_a(\varepsilon)=\emptyset \\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(b)=
-      \begin{cases}
-        \varepsilon & \text{if } b \in \mathcal{S}^\cut_a,\\
-        \emptyset       & \text{otherwise.}
-      \end{cases}\\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(\emptyset)=\emptyset \\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(r\cdot s)= \mathcal{D}^{\cut,\mathrm{head}}_a(r)\cdot s + \nu(r)\cdot \mathcal{D}^{\cut,\mathrm{head}}_a(s) \\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(r^*)=\mathcal{D}^{\cut,\mathrm{head}}_a(r)\cdot r^* \\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(r+s)=\mathcal{D}^{\cut,\mathrm{head}}_a(r)+\mathcal{D}^{\cut,\mathrm{head}}_a(s) \\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(r\:\&\:s)=\mathcal{D}^{\cut,\mathrm{head}}_a(r)\:\&\:\mathcal{D}^{\cut,\mathrm{head}}_a(s) \\[1ex]
-    \mathcal{D}^{\cut,\mathrm{head}}_a(\neg r) = \neg(\mathcal{D}^{\cut,\mathrm{head}}_a(r)).
-\end{array}
-$$
-The full fuzzy derivative is
-\[
-  \mathcal D_a^\cut(R)
-  =
-  \operatorname{Sat}_\cut\bigl(\mathcal D^{\cut,\mathrm{head}}_a(R)\bigr).
-\]
+An important property of the classical derivative is that it preserves
+regularity. The same closure property holds in the fuzzy setting: even when
+derivatives are taken with respect to a cut-based similarity relation, the
+result remains regular.
 
-\noindent
-The semantic and syntactic definitions of the fuzzy derivative are intended to capture the same intuitive operation: removing a given prefix (up to similarity) from all words in the language. To confirm this alignment, we state the following correspondence theorem, which ensures that taking the fuzzy derivative at the syntactic level and then interpreting it as a language yields exactly the same result as first interpreting the expression and then applying the semantic fuzzy derivative.
-
-
-\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
-    Let $R$ be a regular expression over $\Sigma$, $u\in\Sigma^*$ and $0 < \cut \le 1$. Then
-    $$
-        \mathcal{L}\bigl(\mathcal{D}^\cut_u(R)\bigr)
-        =
-        \partial^\cut_u\bigl(\mathcal{L}(R)\bigr)
-    $$
+\begin{theorem}\label{the:language-fuzzy-derivative-regular}
+For every $u\in\Sigma^*$ and every cut value $0 < \cut \le 1$, if
+$\mathcal{L} \subseteq \Sigma^*$ is regular, then
+$\partial^\cut_u(\mathcal{L})$ is regular. Moreover, if $r$ is a
+restricted regular expression, then $\mathcal D_u^\cut(r)$ is a restricted
+regular expression.
 \end{theorem}
 
-\begin{proof}[Proof.]
-We prove that for all regular expressions $R$ and all words $u \in \Sigma^*$,
-\[
-  \mathcal{L}\!\bigl(\mathcal{D}^\cut_u(R)\bigr)
-  \;=\;
-  \partial^\cut_u\!\bigl(\mathcal{L}(R)\bigr).
-\]
-As in the crisp case, the proof has two steps: first a single symbol $a\in\Sigma$,
-then an arbitrary word $u$.
+\begin{proof}
+The argument is similar to the proof of Theorem~\ref{the:language-derivative-regular}.
+Let $\mathcal{L} \subseteq \Sigma^*$ be regular and fix $0 < \cut \le 1$.
 
-\paragraph{Step 1 (single symbol).}
-Fix $a \in \Sigma$. By Definition~\ref{def:regex-fuzzy-derivative} and
-Definition~\ref{def:cut-saturation},
+For a single symbol $a \in \Sigma$ we have, by Definition of $\partial_a^\cut$,
 \[
-  \mathcal L(\mathcal D_a^\cut(R))
+  \partial_a^\cut(\mathcal{L})
   =
-  \operatorname{Sat}_\cut
-  \left(
-    \bigcup_{b\in\mathcal S_a^\cut}
-    \mathcal L(\mathcal D_b(R))
-  \right).
+  \{ w \in \Sigma^* \mid
+    \exists b\in\Sigma,\ \exists v\in\Sigma^*
+    \text{ with } \cR(a,b)\ge\cut,\ \mathcal R^w(w,v)\ge\cut,
+    \text{ and } bv\in\mathcal L \}.
 \]
-The ordinary semantic-syntactic correspondence from
-Theorem~\ref{the:two-derivative-mapping} gives
-$\mathcal L(\mathcal D_b(R))=\partial_b(\mathcal L(R))$. Therefore
+Equivalently,
 \[
-  \mathcal L(\mathcal D_a^\cut(R))
+  \partial_a^\cut(\mathcal L)
   =
-  \operatorname{Sat}_\cut
-  \left(
-    \bigcup_{b\in\mathcal S_a^\cut}
-    \partial_b(\mathcal L(R))
-  \right).
+  (q_\cut^*)^{-1}
+  \bigl(\partial_{[a]_\cut}(\mathcal L^\cut)\bigr)
 \]
-By Definition~\ref{fuzzyderivative}, the right-hand side is exactly
-$\partial_a^\cut(\mathcal L(R))$: the union chooses the matching head symbol
-$b$, and the saturation chooses all suffixes $\cut$-similar to the actual
-remaining suffix. Hence
-\[
-  \mathcal{L}\bigl(\mathcal{D}^\cut_a(R)\bigr)
-  = \partial^\cut_a\bigl(\mathcal{L}(R)\bigr)
-\]
-for all $a \in \Sigma$ and all regular expressions $R$.
+by Theorem~\ref{the:quotient-fuzzy-derivative}. Since $\mathcal L$ is regular
+and $q_\cut^*$ is a homomorphism, the quotient image $\mathcal L^\cut$ is
+regular. Classical derivatives preserve regularity, so
+$\partial_{[a]_\cut}(\mathcal L^\cut)$ is regular over the finite quotient
+alphabet $\Sigma^\cut$. Finally, inverse homomorphic images of regular languages
+are regular. Hence $\partial_a^\cut(\mathcal L)$ is regular.
 
-\paragraph{Step 2 (arbitrary word).}
-We prove by induction on $u \in \Sigma^*$ that
+For a word $u = a_1 \cdots a_n$ we use the recursive definition
+$\partial_u^\cut(\mathcal{L}) = \partial_{a_n}^\cut(\cdots \partial_{a_1}^\cut(\mathcal{L}) \cdots)$
+and apply the previous argument inductively: at each step we take a fuzzy
+derivative of a regular language and obtain a regular language again. Thus
+$\partial_u^\cut(\mathcal{L})$ is regular for every $u \in \Sigma^*$ and every
+cut $0 < \cut \le 1$.
+
+The expression statement follows directly from
+Definitions~\ref{def:regex-fuzzy-derivative} and
+\ref{def:regex-fuzzy-word-derivative}: ordinary Brzozowski derivatives are
+restricted regular expressions, and the finite sums in
+Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
+\end{proof}
+
+\noindent
+The semantic and syntactic definitions of the fuzzy derivative are intended to
+capture the same operation: removing a prefix up to cut similarity. To make this
+precise, we state the correspondence theorem below.
+
+\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
+Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
+$0 < \cut \le 1$. Then
 \[
-  \mathcal{L}\bigl(\mathcal{D}^\cut_u(R)\bigr)
-  = \partial^\cut_u\bigl(\mathcal{L}(R)\bigr).
+  \mathcal{L}\bigl(\mathcal{D}^\cut_u(r)\bigr)
+  =
+  \partial^\cut_u\bigl(\mathcal{L}(r)\bigr).
 \]
-\begin{itemize}
-  \item Base $u=\varepsilon$:
-    $\mathcal{D}^\cut_\varepsilon(R)=R$ and
-    $\partial^\cut_\varepsilon(\mathcal{L}(R))=\mathcal{L}(R)$.
-  \item Step $u = va$ with $v \in \Sigma^*$ and $a \in \Sigma$:
-    \[
-      \begin{aligned}
-      \mathcal{L}\bigl(\mathcal{D}^\cut_{va}(R)\bigr)
-      &= \mathcal{L}\bigl(\mathcal{D}^\cut_a(\mathcal{D}^\cut_v(R))\bigr) \\
-      &= \partial^\cut_a\bigl(\mathcal{L}(\mathcal{D}^\cut_v(R))\bigr)
-           \quad\text{(by Step 1)} \\
-      &= \partial^\cut_a\bigl(\partial^\cut_v(\mathcal{L}(R))\bigr)
-           \quad\text{(IH on $v$)} \\
-      &= \partial^\cut_{va}\bigl(\mathcal{L}(R)\bigr).
-      \end{aligned}
-    \]
-\end{itemize}
-Therefore $\mathcal{L}(\mathcal{D}^\cut_u(R))=\partial^\cut_u(\mathcal{L}(R))$
-for all words $u \in \Sigma^*$, which completes the proof.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative} gives
+\[
+  \mathcal L(\mathcal D_a^\cut(r))
+  =
+  \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^e r}}
+  \mathcal L(\mathcal D_b(s)).
+\]
+By the ordinary semantic-syntactic correspondence,
+$\mathcal L(\mathcal D_b(s))=\partial_b(\mathcal L(s))$. The condition
+$s\sim_\cut^e r$ means that $s$ is syntactically similar to $r$ up to
+$\cut$-equivalent alphabet symbols, and therefore its denoted words provide
+exactly the suffixes that are $\cut$-similar to suffixes of words in
+$\mathcal L(r)$. Together with $a\sim_\cut^\Sigma b$, this is precisely
+Definition~\ref{fuzzyderivative}, so
+\[
+  \mathcal L(\mathcal D_a^\cut(r))
+  =
+  \partial_a^\cut(\mathcal L(r)).
+\]
+The statement for words follows by induction on $u$ from
+Definitions~\ref{def:fuzzy-word-derivative} and
+\ref{def:regex-fuzzy-word-derivative}.
 \end{proof}
 
 
@@ -486,14 +392,6 @@ c & 0.4 & 0.5 & 1 \\
 Let the cut value be $\cut = 0.7$, so the $\cut$-cut of $\cR$ includes the pairs:
 \[
 \cR_\cut = \{(a, a), (a, b), (b, a), (b, b), (c, c)\}
-\]
-We can also observe that:
-\[
-\begin{array}{c}
-     \mathcal{S}_a^\cut=\{a, b\} \\ [1ex]
-     \mathcal{S}_b^\cut=\{a, b\} \\ [1ex]
-     \mathcal{S}_c^\cut=\{c\}
-\end{array}
 \]
 \noindent
 Let $\mathcal{L} = \{abc, ba, bb\}$. Then:
@@ -558,7 +456,7 @@ $\{\partial_u^\cut(\mathcal{L}) \mid u \in \Sigma^*\}$ is finite.
 
 
 \begin{theorem}\label{the:regex-fuzzy-derivative-types-finite}
-Let $\Sigma$ be a finite alphabet and let $R$ be a regular expression over
+Let $\Sigma$ be a finite alphabet and let $R$ be a restricted regular expression over
 $\Sigma$. For every cut value $0 < \cut \le 1$, the set of derivative languages
 \[
   \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
@@ -589,7 +487,7 @@ Theorem~\ref{the:fuzzy-derivative-set-finite}. This proves the claim.
 
 
 \begin{theorem}\label{the:fuzzy-dfa-correctness}
-Let $r$ be a regular expression over $\Sigma$, let $0 < \cut \le 1$, and let
+Let $r$ be a restricted regular expression over $\Sigma$, let $0 < \cut \le 1$, and let
 $M^\cut = \langle Q^\cut, \Sigma, \delta^\cut, q_0^\cut, F^\cut \rangle$
 be the DFA constructed from $r$ using fuzzy derivatives (for the fixed cut
 value $\cut$).
@@ -598,8 +496,6 @@ Write
   \mathcal L^\cut_\Sigma(r)
   =
   (q_\cut^*)^{-1}\bigl(q_\cut^*(\mathcal L(r))\bigr)
-  =
-  \operatorname{Sat}_\cut(\mathcal L(r))
 \]
 for the concrete language of words that are $\cut$-similar to some word denoted
 by $r$. Then $M^\cut$ and $r$ define the same concrete $\cut$-language:
