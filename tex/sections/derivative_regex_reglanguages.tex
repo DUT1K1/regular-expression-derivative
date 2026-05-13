@@ -71,7 +71,58 @@ This recursive approach leads to the following definition.
 \end{definition}
 
 \noindent
-An important property of derivatives is that they preserve regularity: if we start with a regular language, then taking its derivative with respect to any symbol or word ayields another regular language. This fact ensures that derivatives can be used in algorithms and constructions (such as building deterministic finite automata) without leaving the class of regular languages. The following theorem formalizes this property.
+So far, we have defined derivatives at the \emph{semantic} level, 
+that is, as operations on languages themselves.  
+However, in practice we often work with the syntactic representation of a language, 
+namely a regular expression.  
+To apply derivatives directly to regular expressions, we need a corresponding 
+\emph{syntactic} definition.  
+This allows us to compute derivatives by manipulating the structure of the 
+expression, rather than first interpreting it as a language.  
+Although the semantic and syntactic derivatives capture the same underlying idea 
+--- removing a given prefix from all words in the language --- they operate on 
+different objects.  
+The following definitions formalize the derivative in the syntactic setting,
+first with respect to a single symbol and then with respect to a word.
+
+\begin{definition}[Syntactic derivative with respect to a symbol]\label{def:regex-symbol-derivative}
+Let \(r\) be a regular expression over \(\Sigma\) and let \(a\in\Sigma\).
+The derivative \(\mathcal D_a(r)\) is defined recursively by:
+\[
+\begin{array}{rcl}
+    \mathcal{D}_a(\emptyset) &=& \emptyset,\\[0.5ex]
+    \mathcal{D}_a(\varepsilon) &=& \emptyset,\\[0.5ex]
+    \mathcal{D}_a(a) &=& \varepsilon,\\[0.5ex]
+    \mathcal{D}_a(b) &=& \emptyset \quad \text{for } a\neq b,\\[0.5ex]
+    \mathcal{D}_a(r+s) &=& \mathcal{D}_a(r)+\mathcal{D}_a(s),\\[0.5ex]
+    \mathcal{D}_a(r\:\&\:s) &=& \mathcal{D}_a(r)\:\&\:\mathcal{D}_a(s),\\[0.5ex]
+    \mathcal{D}_a(\neg r) &=& \neg(\mathcal{D}_a(r)),\\[0.5ex]
+    \mathcal{D}_a(r\cdot s) &=& \mathcal{D}_a(r)\cdot s + \nu(r)\cdot \mathcal{D}_a(s),\\[0.5ex]
+    \mathcal{D}_a(r^*) &=& \mathcal{D}_a(r)\cdot r^*.
+\end{array}
+\]
+\end{definition}
+
+\begin{definition}[Syntactic derivative with respect to a word]\label{def:regex-derivative}
+Let \(r\) be a regular expression over \(\Sigma\). The derivative of \(r\) with
+respect to a word is defined recursively by
+\[
+     \mathcal{D}_\varepsilon(r)=r,
+     \qquad
+     \mathcal{D}_{aw}(r)=\mathcal{D}_w(\mathcal{D}_a(r))
+\]
+for \(a\in\Sigma\) and \(w\in\Sigma^*\).
+\end{definition}
+
+\textbf{Examples:}
+\begin{itemize}
+    \item $\mathcal{D}_a(a+b)=\mathcal{D}_a(a) + \mathcal{D}_a(b)=\varepsilon+\emptyset=\varepsilon$
+    \item $\mathcal{D}_{aaa}(a^*)=\mathcal{D}_{aa}(\mathcal{D}_a(a^*))=\mathcal{D}_{aa}(\mathcal{D}_a(a)\cdot a^*)=\mathcal{D}_{aa}(\varepsilon \cdot a^*)=\mathcal{D}_{aa}(a^*)=\cdots=a^*$
+    \item $\mathcal{D}_c\left(\left(a+b\right)^*\cdot c\right)= \mathcal{D}_c((a+b)^*)\cdot c + \nu((a+b)^*)\cdot \mathcal{D}_c(c)= \emptyset \cdot c + \varepsilon \cdot \varepsilon= \emptyset+ \varepsilon=\varepsilon$
+\end{itemize}
+
+\noindent
+An important property of derivatives is that they preserve regularity: if we start with a regular language, then taking its derivative with respect to any symbol or word yields another regular language. This fact ensures that derivatives can be used in algorithms and constructions (such as building deterministic finite automata) without leaving the class of regular languages. The following theorem formalizes this property.
 
 
 \begin{theorem}\label{the:language-derivative-regular}
@@ -263,71 +314,6 @@ which is again a union of terms \((\mathcal{D}_t (p))\cdot p^*\).
 \smallskip
 This completes the induction. Therefore the set \(\{\mathcal{L}(\mathcal{D}_u(r)) \mid u\in\Sigma^*\}\) is finite, and so \(\{\partial_u(L)\mid u\in\Sigma^*\}\) is finite as well.
 \end{proof}
-
-
-\noindent
-So far, we have defined derivatives at the \emph{semantic} level, 
-that is, as operations on languages themselves.  
-However, in practice we often work with the syntactic representation of a language, 
-namely a regular expression.  
-To apply derivatives directly to regular expressions, we need a corresponding 
-\emph{syntactic} definition.  
-This allows us to compute derivatives by manipulating the structure of the 
-expression, rather than first interpreting it as a language.  
-Although the semantic and syntactic derivatives capture the same underlying idea 
---- removing a given prefix from all words in the language --- they operate on 
-different objects.  
-The following definition formalizes the derivative in the syntactic setting.
-
-
-\begin{definition}\label{def:regex-derivative}
-    Let \(r\) be a regular expression over the alphabet \(\Sigma\) and let
-    \(u \in \Sigma^{*}\) be a word.
-    The \emph{derivative of the regular expression \(r\) with respect to \(u\)}
-    is the regular expression
-    \[
-        \mathcal{D}_{u}(r)
-    \]
-    whose language satisfies
-    \[
-        \mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)
-        \;=\;
-        \{\, v \in \Sigma^{*} \mid u\cdot v \in \mathcal{L}(r) \}.
-    \]
-\end{definition}
-
-
-\noindent
-Since we have now defined the meaning of nullable and have a general understanding of derivative we can write the following:
-$$
-\begin{array}{c}
-    \mathcal{D}_a(\varepsilon)=\emptyset \\[1ex]
-    \mathcal{D}_a(a)=\varepsilon \\[1ex]
-    \mathcal{D}_a(b)=\emptyset \text{ for } a\neq b \\[1ex]
-    \mathcal{D}_a(\emptyset)=\emptyset \\[1ex]
-    \mathcal{D}_a(r\cdot s)= \mathcal{D}_a(r)\cdot s + \nu(r)\cdot \mathcal{D}_a(s) \\[1ex]
-    \mathcal{D}_a(r^*)=\mathcal{D}_a(r)\cdot r^* \\[1ex]
-    \mathcal{D}_a(r+s)=\mathcal{D}_a(r)+\mathcal{D}_a(s) \\[1ex]
-    \mathcal{D}_a(r\:\&\:s)=\mathcal{D}_a(r)\:\&\:\mathcal{D}_a(s) \\[1ex]
-    \mathcal{D}_a(\neg r) = \neg(\mathcal{D}_a(r))
-\end{array}
-$$
-
-\noindent
-Additional rules may need to be added for special cases, one is for derivative with respect to empty string and the other is for derivative with respect to multiple regular expressions:
-$$
-\begin{array}{c}
-     \mathcal{D}_\varepsilon(r)=r  \\[1ex]
-     \mathcal{D}_{aw}(r)=\mathcal{D}_w(\mathcal{D}_a(r))
-\end{array}
-$$
-\textbf{Examples:}
-\begin{itemize}
-    \item $\partial_a(a+b)=\partial_a(a) + \partial_a(b)=\varepsilon+\emptyset=\varepsilon$
-    \item $\partial_{aaa}(a^*)=\partial_{aa}(\partial_a(a^*))=\partial_{aa}(\partial_a(a)\cdot a^*)=\partial_{aa}(\varepsilon \cdot a^*)=\partial_{aa}(a^*)=\cdots=a^*$
-    \item $\partial_c\left(\left(a+b\right)^*\cdot c\right)= \partial_c((a+b)^*)\cdot c + \nu((a+b)^*)\cdot \partial_c(c)= \emptyset \cdot c + \varepsilon \cdot \varepsilon= \emptyset+ \varepsilon=\varepsilon$
-\end{itemize}
-
 \noindent
 We have introduced two notions of derivative: 
 (i) the \emph{semantic derivative}\/ $\partial_{u}(L)$ of a regular language $L\!\subseteq\!\Sigma^{*}$ (Definition~\ref{def:derivative}), and 
