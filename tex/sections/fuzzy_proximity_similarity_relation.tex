@@ -113,10 +113,10 @@ Let $r,s$ be restricted regular expressions over $\Sigma$, and $\mathcal{R}$ a s
 \mathcal{R}(b,a) & \text{if } r=b,\\
 0 & \text{otherwise;}
 \end{cases}$
-\item $\mathcal{R}^e(r,s^\ast)=\begin{cases}
-\mathcal{R}^e(r_1,s) & \text{if } r=r_1^\ast,\\
+\item $\mathcal{R}^e(r,s_1+s_2)=\begin{cases}
+\min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}& \text{if } r=r_1+r_2,\\
 0 & \text{otherwise;}
-\end{cases}$
+\end{cases}$;
 
 \item $\mathcal{R}^e(r,s_1\cdot s_2)=\begin{cases}
 \min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}
@@ -124,10 +124,10 @@ Let $r,s$ be restricted regular expressions over $\Sigma$, and $\mathcal{R}$ a s
 0 & \text{otherwise.}
 \end{cases}$
 
-\item $\mathcal{R}^e(r,s_1+s_2)=\begin{cases}
-\min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}& \text{if } r=r_1+r_2,\\
+\item $\mathcal{R}^e(r,s^\ast)=\begin{cases}
+\mathcal{R}^e(r_1,s) & \text{if } r=r_1^\ast,\\
 0 & \text{otherwise;}
-\end{cases}$;
+\end{cases}$
 
 \end{itemize}
 \end{definition}
