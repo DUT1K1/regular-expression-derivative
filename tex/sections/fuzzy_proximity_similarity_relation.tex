@@ -8,6 +8,18 @@ A binary \emph{fuzzy relation} on a set $S$ is a mapping from $S\times S$ to the
   \cR_\cut := \{(s_1,s_2) \mid \cR(s_1,s_2) \ge \cut \}.
 \]
 
+\begin{definition}[T-norm]
+A \emph{T-norm} is a binary operation
+$\otimes:[0,1]\times[0,1]\to[0,1]$ such that, for all
+$x,y,z\in[0,1]$:
+\begin{description}
+  \item[Commutativity:] $x\otimes y = y\otimes x$;
+  \item[Associativity:] $(x\otimes y)\otimes z = x\otimes (y\otimes z)$;
+  \item[Monotonicity:] if $x\le y$, then $x\otimes z \le y\otimes z$;
+  \item[Neutral element:] $x\otimes 1 = x$.
+\end{description}
+\end{definition}
+
 % We define basic notions about similarity relations following \cite{DBLP:journals/tcs/Sessa02,DBLP:journals/fss/IranzoR17}.
 
 A fuzzy relation $\cR$ on a set $S$ is called a \emph{proximity relation}, if it is reflexive and symmetric:
@@ -16,18 +28,18 @@ A fuzzy relation $\cR$ on a set $S$ is called a \emph{proximity relation}, if it
   \item[Symmetry:] $\cR(s_1,s_2)=\cR(s_2,s_1)$ for all $s_1,s_2\in S$.
 \end{description}
 
-Let $\wedge$ be a left-continuous T-norm on $[0,1]$, so that $[0,1]$ carries
+Let $\otimes$ be a left-continuous T-norm on $[0,1]$, so that $[0,1]$ carries
 the usual structure of a residuated lattice. A proximity relation (on $S$) is
 called a \emph{similarity relation} (on $S$) iff it satisfies the reverse
 triangle inequality with respect to this T-norm:
 \begin{description}
-  \item[Reverse triangle inequality:] $\cR(s_1,s_2)\ge \cR(s_1,s) \wedge \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
+  \item[Reverse triangle inequality:] $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
 \end{description}
 
-In this paper, in the role of T-norm we take G\"odel's \emph{minimum} T-norm, and write $\min$ instead of $\wedge$. In the role of $S$ we take a syntactic domain, defined in the next section.
+In this paper, in the role of T-norm we take G\"odel's \emph{minimum} T-norm, and write $\min$ instead of $\otimes$. In the role of $S$ we take a syntactic domain, defined in the next section.
 
 \paragraph{Standing conventions.}
-Throughout, we fix the T-norm to be the minimum and write $\min$ instead of $\wedge$.
+Throughout, we fix the T-norm to be the minimum and write $\min$ instead of $\otimes$.
 We use $\cR$ for the base fuzzy relation and $\Sigma$ for the alphabet.
 
 
@@ -117,13 +129,6 @@ Let $r,s$ be restricted regular expressions over $\Sigma$, and $\mathcal{R}$ a s
 0 & \text{otherwise;}
 \end{cases}$;
 
-\item $\mathcal{R}^e(r,s_1\wedge s_2)=\begin{cases}
-\min\{\mathcal{R}^e(r_1,s_1),\mathcal{R}^e(r_2,s_2)\}& \text{if } r=r_1\wedge r_2,\\
-0 & \text{otherwise;}\end{cases}$
-
-\item $\mathcal{R}^e(r,\neg s)=\begin{cases}
-\mathcal{R}^e(r_1,s),& \text{if } r=\neg r_1,\\
-0 & \text{otherwise.}\end{cases}$
 \end{itemize}
 \end{definition}
 
