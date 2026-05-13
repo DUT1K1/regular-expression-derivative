@@ -178,7 +178,7 @@ such word has at least one representative in $\Sigma^*$.
 Just as in the classical setting, the notion of a fuzzy derivative with respect to a single symbol can be extended to handle derivatives with respect to an entire word. The idea remains the same: process the word one symbol at a time from left to right, taking the fuzzy derivative with respect to the first symbol and then applying the fuzzy derivative again to the result for the remaining suffix. This recursive approach naturally generalizes the single-symbol fuzzy derivative to arbitrary words, as formalized below.
 
 
-\begin{definition}
+\begin{definition}\label{def:fuzzy-word-derivative}
     The fuzzy derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
     $$
     \partial^\cut_u(\mathcal{L}) = \partial^\cut_v(\partial^\cut_a(\mathcal{L}))
@@ -186,12 +186,6 @@ Just as in the classical setting, the notion of a fuzzy derivative with respect 
 \end{definition}
 
 
-{\color{red} A more interesting theory arises if we take
-$$
-    \partial^{\mu\otimes\mu'}_u(\mathcal{L}) = \partial^{\mu'}_v(\partial^\cut_a(\mathcal{L}))
-    $$
-
-}
 \noindent
 An important property of the classical derivative is that it preserves regularity. This ensures that repeated differentiation never produces a language outside the regular class, making the operation suitable for automata-based  algorithms. The same closure property holds in the fuzzy setting: even when derivatives are taken with respect to a cut-based similarity relation, the resulting language remains regular. The following theorem states this formally.
 
