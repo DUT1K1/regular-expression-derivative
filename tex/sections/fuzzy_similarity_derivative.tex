@@ -67,6 +67,49 @@ word equivalence can equivalently be written as
 \]
 \end{proposition}
 
+\begin{theorem}\label{the:Re-cut-structural}
+Let $r$ and $s$ be restricted regular expressions over $\Sigma$, and let
+$0<\cut\le 1$. The relation $\sim_\cut^e$ from
+Proposition~\ref{prop:cut-equivalence} is exactly the cut of the syntactic
+similarity $\mathcal R^e$ from Definition~\ref{def:Re}. Equivalently,
+$r\sim_\cut^e s$ holds in the following cases:
+\begin{itemize}
+  \item $r=s=\emptyset$;
+  \item $r=s=\varepsilon$;
+  \item $r=a$, $s=b$, and $a\sim_\cut^\Sigma b$;
+  \item $r=r_1+r_2$, $s=s_1+s_2$, and
+        $r_1\sim_\cut^e s_1$, $r_2\sim_\cut^e s_2$;
+  \item $r=r_1\cdot r_2$, $s=s_1\cdot s_2$, and
+        $r_1\sim_\cut^e s_1$, $r_2\sim_\cut^e s_2$;
+  \item $r=r_1^\ast$, $s=s_1^\ast$, and $r_1\sim_\cut^e s_1$.
+\end{itemize}
+In all other syntactic cases, $r\not\sim_\cut^e s$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:cut-equivalence},
+\[
+  r\sim_\cut^e s \quad\Longleftrightarrow\quad
+  \mathcal R^e(r,s)\ge\cut.
+\]
+Unfold Definition~\ref{def:Re}. For constants, the value of
+$\mathcal R^e$ is $1$ when the same constant is compared with itself and $0$
+otherwise. For letters, $\mathcal R^e(a,b)=\mathcal R(a,b)$, hence
+$\mathcal R^e(a,b)\ge\cut$ iff $a\sim_\cut^\Sigma b$.
+For sums and concatenations, Definition~\ref{def:Re} gives a minimum of the
+corresponding subexpression similarities, and
+$0$ otherwise. Since $0<\cut$,
+\[
+  \min(x,y)\ge\cut
+  \quad\Longleftrightarrow\quad
+  x\ge\cut \text{ and } y\ge\cut.
+\]
+Thus a sum, respectively a concatenation, is $\cut$-similar exactly when the two
+matching pairs of subexpressions are $\cut$-similar. For stars,
+Definition~\ref{def:Re} reduces the comparison to the two starred
+subexpressions, again giving exactly the shown condition.
+\end{proof}
+
 \begin{definition}\label{def:quotient-language-fuzzy}
 Let $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$ and let
 $q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.
