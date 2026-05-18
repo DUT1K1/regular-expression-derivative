@@ -43,15 +43,19 @@ Throughout, we fix the T-norm to be the minimum and write $\min$ instead of $\ot
 We use $\cR$ for the base fuzzy relation and $\Sigma$ for the alphabet.
 
 
+
 \subsection{Similarity on Words and Languages}
-We defined similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we can define similarity between words to be
+We defined similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we can define similarity between  {\color{red}  regular expressions and words as follows.
+\begin{definition}[similarity on regular expressions] Given a similarity relation $\mathcal R$ on the alphabet, define a similarity o regular expressions
+ $\mathcal{R}^{\mathcal E}:\mathcal E \times \mathcal e \rightarrow [0,1]$ is defined as follows
+$$\mathcal R^{\mathcal E}(e_1,e_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) & \mbox{ if } e_1=e[a_1,\ldots,a_n] \mbox{ and }e_2 =[b_1,\ldots,b_n]\\
+0& \mbox{  otherwise }
+\end{cases}$$
+\end{definition}
+The  above definition naturally extends to words viewed as regular expressions.}
 
-\[
-  \mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]
-\]
 
-
-\begin{definition}[Similarity on words]\label{def:Rw}
+\begin{definition}[Similarity on words]\label{def:Rw}Given a similarity relation $\mathcal R$ on the alphabet, define a similarity o regular words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:
 For $w_1,w_2\in \Sigma^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
 \[
 \mathcal{R}^w(w_1,w_2)=
@@ -63,6 +67,11 @@ For $w_1,w_2\in \Sigma^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
 \end{cases}
 \]
 \end{definition}
+
+\begin{lemma}\label{lem:RE-sim}
+$\mathcal{R}^w$ is a proximity relation on $\mathcal E$ (reflexive and symmetric).
+Moreover, $\mathcal{E}^w$ satisfies the reverse triangle inequality, hence a similarity on $\Sigma^*$.
+\end{lemma}
 
 \begin{lemma}\label{lem:Rw-sim}
 $\mathcal{R}^w$ is a proximity relation on $\Sigma^*$ (reflexive and symmetric).
@@ -144,8 +153,9 @@ even though $L(a+b)=L(b+a)$.
 \end{remark}
 
 
-{\color{red} \begin{remark} We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive initary definition can be given
-\end{remark}}
+{\color{red} \begin{remark} We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example we can put $\mathcal R^e(e_1,d_1) = \mathcal R^e(e_1,d_2)$ if ${\sf nf}(d_1)={\sf nf}(d_2)$ .
+\end{remark}
+}
 
 \begin{lemma} $\mathcal R^e$ is a similarity on restricted regular expressions.
 \end{lemma}

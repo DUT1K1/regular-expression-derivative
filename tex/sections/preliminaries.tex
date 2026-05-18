@@ -14,7 +14,7 @@ We start by providing the foundational definitions necessary for understanding t
 \end{definition}
 
 \begin{definition}
-Regular expressions over an alphabet $\Sigma$ are formally defined by the following grammar:
+Regular expressions over an alphabet $\Sigma$, {\color{red} $\mathcal E$}, are formally defined by the following grammar:
 
 $$
 r ::= \emptyset \mid \varepsilon \mid a\,(a \in \Sigma) \mid r+r \mid r\cdot r \mid r^* \mid r \& r \mid \neg r
@@ -53,6 +53,15 @@ language $\mathcal{L}(r) \subseteq \Sigma^*$ defined inductively by:
 \end{aligned}
 \]
 \end{definition}
+
+{\color{red}\paragraph{Notation} Given a regular expression $e$ we will write it as $e[a_1,\ldots,a_n]$ in order to denote some occurrences $a_1,\ldots,a_n$ of alphabet symbols which occur in $e$. By $e_1[e_2]$ we denote the regular expression obtained by replacing $e_2$ in place of $a$ in $e_1[a]$.
+\begin{definition} 
+Given a regular expression $e[a]$ by $e[a]^\#$ we denote the regular expression such that $L(e[a]^\#)= \bigcup_{n \geq 0} \mathcal{L}(e[a]^\#_n)$ 
+   where $ \mathcal L(e[a]_{n+1})=\mathcal L(e[e[a]_n])${ and }$\mathcal{L}(e[a]_0)=  \mathcal L(e[a]).$
+\end{definition}}
+
+
+
 
 \begin{definition}[Nullable regular expressions]\label{def:nullable}
 In many constructions involving regular expressions it is useful to know
@@ -131,6 +140,6 @@ construction and proofs of Coquand--Siles~\cite{CoquandRegexEquality}, where $\s
 \end{remark}
 
 {\color{red} \begin{remark}{\bf On the Algebra of Regular Events}
-There are various equational systems which imply language equality between regular expressions. In this paper we consider the one by Brzozowski and the one underpinning Definition~\cite{def:canonize}. It is well-known that there is no purely equational finite characterization, see~\ref{Salomaa,Kozen}. This derives from the existence of the $\ast$ operator which equationally can only be finitely approximated. For instance, language-equivalent regular expressions which are not similar, in the sense of Brzozowski are $a^\ast$ and $\epsilon +aa^\ast$, while $a^\ast$ and $(\epsilon+a)^\ast$. The significance of Brzozowski result lies also in that he was the first to realize that even if there is no finite equational axiomatization, nevertheless a finite approximation of the equaity is enough to achieve finiteness in many situations.  
+There are various equational systems which imply language equality between regular expressions. In this paper we consider the one by Brzozowski and the one underpinning Definition~\cite{def:canonize}. It is well-known that there is no purely equational finite characterization, see~\ref{Salomaa,Kozen}. This derives from the existence of the $\ast$ operator which equationally can only be finitely approximated. For instance, language-equivalent regular expressions which are not similar, in the sense of Brzozowski are $a^\ast$ and $\epsilon +aa^\ast$, while $a^\ast$ and $(\epsilon+a)^\ast$. The significance of Brzozowski result lies also in that he was the first to realize that even if there is no finite equational axiomatization, nevertheless a finite approximation of the equality is enough to achieve finiteness of states.  
 \end{remark}}
 

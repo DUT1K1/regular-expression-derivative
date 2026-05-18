@@ -1,0 +1,6 @@
+a∗      ε+aa∗    Brzozowski
+
+a∗     (ε+a)∗          Coquand ans Siles
+
+The difficulty in finding a complete system of equations lies in the * operator.
+Dexter Kozen has a complete axiomatizarion but there re rules

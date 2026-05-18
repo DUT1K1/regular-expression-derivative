@@ -372,6 +372,32 @@ Definitions~\ref{def:fuzzy-word-derivative} and
 \ref{def:regex-fuzzy-word-derivative}.
 \end{proof}
 
+{\color{red}\subsection{Beyond G\"odel's T-norm}
+\begin{definition}\label{fuzzyderivative}
+Let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. The \emph{general $\cut$-fuzzy
+derivative} of $\mathcal{L}$ with respect to $a$ is
+$$
+\partial_a^\cut(\mathcal{L})
+=
+\{w \in \Sigma^* \mid
+  \exists b \in \Sigma,\ \exists v\in\Sigma^*
+  \text{ such that }
+  \cR(a,b)\otimes \mathcal{R}^w(w,v)\ge\cut,\ \text{and } bv \in \mathcal{L}
+\}.
+$$
+\end{definition}
+\begin{definition}\label{def:regex-fuzzy-derivative}
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
+$0<\cut\le 1$. The \emph{general fuzzy derivative} of $r$ with respect to $a$ and
+$\cut$ is
+\[
+  \mathcal D_a^\cut(r)
+  =
+  \sum\nolimits_{\mathcal R(a, b)\otimes \mathcal R^{\mathcal E}( s, r)\geq \mu}
+  \mathcal D_b(s),
+\]
+\end{definition}}
+
 
 \subsection*{Examples}
 Assume the alphabet $\Sigma = \{a, b, c\}$ and a fuzzy similarity relation $\cR$ on $\Sigma$ defined as follows:

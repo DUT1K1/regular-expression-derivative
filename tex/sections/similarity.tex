@@ -105,6 +105,7 @@ $${\mathcal R}^L(L_1,L_2)= \min\{\inf_{w_1\in L_1}\sup_{w_2\in L_2}{\mathcal R}^
 \begin{proposition}The relations ${\mathcal R}^w$ and ${\mathcal R}^L$ defined in Definition~\ref{ext} are similarity relations.
 \end{proposition}
 
+
 \begin{definition}\label{symexp} Let $e_1,e_2\subseteq A^*$ be regular expressions and  ${\mathcal R}$ be a similarity relation on $A$. We define a relation on regular expressions as follows:
 \begin{itemize}
 \item ${\mathcal R}^e(0,e) = \begin{cases} 1 & \mbox{ if } e=\emptyset\\
@@ -123,6 +124,9 @@ $${\mathcal R}^L(L_1,L_2)= \min\{\inf_{w_1\in L_1}\sup_{w_2\in L_2}{\mathcal R}^
 \end{itemize}
 \end{definition}
 \noindent The last clause is more elaborate because we have to take care of the cases in which some  $e$ may be equal to some $f_i$.
+
+{\color{red} \begin{remark} We can incorporate in the above definition finite equational properties among regualr expressions.
+\end{remark}}
 
 \begin{conjecture}  The relation ${\mathcal R}^e$ defined in Definition~\ref{symexp} are similarity relations and moreover ${\mathcal R}^e(e_1,e_2)={\mathcal R}^L(L(e_1),L(e_2)).$
 \end{conjecture}
