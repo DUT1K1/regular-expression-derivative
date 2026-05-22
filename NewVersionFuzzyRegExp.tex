@@ -1,0 +1,1052 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{microtype}
+
+\usepackage{listings}
+\lstdefinestyle{thesiscode}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  frame=single,
+  numbers=left,
+  numbersep=8pt,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.75\baselineskip,
+  belowskip=0.75\baselineskip,
+  breaklines=true
+}
+
+
+\usepackage{listings}
+
+\usepackage{hyperref}
+\lstdefinestyle{thesiscode}{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  frame=single,
+  numbers=left,
+  numbersep=8pt,
+  xleftmargin=1em,
+  xrightmargin=1em,
+  aboveskip=0.75\baselineskip,
+  belowskip=0.75\baselineskip,
+  breaklines=true
+}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+
+\newcommand{\cR}{{\mathcal R}}
+\def\cut{\mu}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+
+\title{Fuzzifying Regular Expressions}
+\author{
+Besik Dundua\textsuperscript{1,2}\\
+Furio Honsell\textsuperscript{3}\\
+Mariam Katamashvili\textsuperscript{1}\\
+David Maisuradze\textsuperscript{1}\\[0.75em]
+\small \textsuperscript{1}Kutaisi International University, Kutaisi, Georgia\\
+\small \textsuperscript{2}VIAM, Tbilisi State University, Tbilisi, Georgia\\
+\small \textsuperscript{3}University of Udine, Udine, Italy
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Basic Definitions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{definition}[Alphabet, words, and languages]
+\mbox{}\\[-0.5em]
+\begin{itemize}
+    \item An \emph{alphabet} $\Sigma$ is a finite nonempty set of symbols.
+    \item A \emph{word} over $\Sigma$ is a finite sequence of symbols from $\Sigma$.
+    \item The \emph{empty word} is denoted by $\varepsilon$.
+    \item The \emph{set of all words} over $\Sigma$ is $\Sigma^*$.
+    \item A \emph{language} over $\Sigma$ is a subset $\mathcal{L} \subseteq \Sigma^*$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[(Restricted) Regular Expressions]
+\hfill 
+\begin{enumerate}
+\item {\em Regular expressions} or {\em Regular events}, $E^\Sigma$,  over an alphabet $\Sigma$ are formally defined by the following grammar:
+$$
+r ::= \emptyset \mid \varepsilon \mid a\,(a \in \Sigma) \mid r+r \mid r\cdot r \mid r^* \mid r \& r \mid \neg r 
+$$
+where $r$ ranges over regular expressions and $a$ ranges over symbols in $\Sigma$.
+\item {\em Restricted Regular expressions}, $R^\Sigma$ are the regular expressions over $\Sigma$ such in which the constructors $\&$ and $\neg $ do not appear.
+\end{enumerate}
+\end{definition}
+
+
+\begin{definition}[Semantic interpretation]
+
+For a regular expression $r$ over $\Sigma$, its semantic interpretation is the
+language $\mathcal{L}(r) \subseteq \Sigma^*$ defined inductively by:
+\[
+\begin{aligned}
+\mathcal{L}(\emptyset)   &= \emptyset, \\
+\mathcal{L}(\varepsilon) &= \{\varepsilon\}, \\
+\mathcal{L}(a)           &= \{a\}, \quad a \in \Sigma, \\[0.5ex]
+\mathcal{L}(r + s)       &= \mathcal{L}(r) \cup \mathcal{L}(s), \\
+\mathcal{L}(r \cdot s)   &= \{uv \mid u \in \mathcal{L}(r),\ v \in \mathcal{L}(s)\}, \\
+\mathcal{L}(r^*)         &= \bigcup_{n \geq 0} \mathcal{L}(r)^n,
+   \quad \text{where } \mathcal{L}(r)^0 = \{\varepsilon\},\
+   \mathcal{L}(r)^{n+1} = \mathcal{L}(r)^n \cdot \mathcal{L}(r), \\
+\mathcal{L}(r \& s)      &= \mathcal{L}(r) \cap \mathcal{L}(s), \\
+\mathcal{L}(\neg r)      &= \Sigma^* \setminus \mathcal{L}(r).
+\end{aligned}
+\]
+\end{definition}
+\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$ possibly with indices and apexes.  We will write $r[a_1,\ldots,a_n]$ in order to highlight the occurrences $a_1,\ldots,a_n$ of alphabet symbols  in $r$. By $r[s]$ we denote the regular expression obtained by replacing $s$ in place of $a$ in $r[a]$.
+
+
+It is useful to know
+whether the language described by a given expression contains the empty word
+$\varepsilon$. 
+
+
+\begin{definition}[Nullable regular expressions]\label{def:nullable}
+A regular expression $r$ is called \emph{nullable} if
+$\varepsilon \in \mathcal{L}(r)$.
+
+We define the \emph{nullable} function $\nu$ by
+\[
+\nu(r) =
+\begin{cases}
+  \varepsilon & \text{if $r$ is nullable},\\
+  \emptyset   & \text{otherwise}.
+\end{cases}
+\]
+
+Equivalently, $\nu$ is characterized by the following equations:
+\[
+\begin{array}{c}
+     \nu(\emptyset)=\emptyset \\[1ex]
+     \nu(\varepsilon)=\varepsilon  \\[1ex]
+     \nu(a)=\emptyset \quad (a \in \Sigma) \\[1ex]
+     \nu(r+s) = \nu(r) + \nu(s) \\[1ex]
+     \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) \\[1ex]
+     \nu(r^*) = \varepsilon \\[1ex]
+     \nu(r\:\&\:s) = \nu(r) \: \& \: \nu(s) \\[1ex]
+     \nu(\neg r)= 
+     \begin{cases}
+         \varepsilon & \text{if } \nu(r) = \emptyset, \\
+         \emptyset   & \text{if } \nu(r) = \varepsilon.
+     \end{cases}
+\end{array}
+\]
+\end{definition}
+
+\begin{definition}[Semantic equivalence]\label{def:semantic-equivalence}
+For regular expressions $r,s$ over $\Sigma$, we write
+\[
+  r \equiv s \quad\Longleftrightarrow\quad \mathcal{L}(r)=\mathcal{L}(s).
+\]
+\end{definition}
+
+ \begin{remark}{\bf On the Algebra of Regular Events}
+There are various equational systems which ensure semantic equivalence between regular expressions. In this paper we consider the one by Brzozowski see~\cite{B62} and its extension by Coquand--Siles~\cite{CoquandRegexEquality}, see Definition~\ref{def:similarity}. It is well-known that there is no purely equational finite characterization, see~\cite{Salomaa,Kozen}. This derives from the existence of the $\ast$ operator which equationally can only be finitely approximated. Examples of semantic equivalent regular expressions which are not similar, in the sense of Coquand  and Siles are $a^\ast$ and $(\epsilon+a)^\ast$. Brzozowski results are significant in that  even if there is no finite equational axiomatization of semantic equivalence, nevertheless a finite approximation of  equality is enough to achieve  finiteness in derivatives and hence in states.  
+\end{remark}
+
+\begin{definition}[Similarity ($\sim$)\cite{CoquandRegexEquality}]\label{def:similarity}
+We utilize a decidable \emph{similarity} relation $\sim$ on regular expressions,
+generated by standard equational laws for $+$ (idempotence, commutativity, associativity),
+and extended with additional simplifying laws (e.g.\ $r+\emptyset\sim r$, $\neg\neg r\sim r$, etc.). {\color{red} Please give the full list}
+\end{definition}
+
+\begin{lemma}[Soundness of normalization]\label{lem:similarity-sound}
+If $r \sim s$, then $\mathcal{L}(r)=\mathcal{L}(s)$, hence $r \equiv s$.
+\end{lemma}
+
+\begin{lemma}[Canonicalization]\label{def:canonize} The equations in Definition~\ref{def:similarity} can be used to define a 
+{\em  canonicalization function}, $\sf nf(\ )$ on regular expressions such that:
+\[
+  r \sim s \quad\Longleftrightarrow\quad \mathsf{nf}(r)=\mathsf{nf}(s),
+\]
+where $=$ is syntactic (structural) equality.
+We write $[r]$ as shorthand for $\mathsf{nf}(r)$.
+\end{lemma}
+\begin{proof}
+We do not re-prove the correctness of $\sim$ or $\mathsf{nf}$ here; we rely on the
+construction and proofs of Coquand--Siles~\cite{CoquandRegexEquality}, where $\sim$ is implemented by normalization
+(\texttt{canonize}) using smart constructors enforcing the equational laws.
+\end{proof}
+
+
+\begin{definition} \label{extension}
+Given a regular expression $r[a]$ by $r[a]^\#$ we denote the formal expression such that $L(r[a]^\#)= \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n)$ 
+   where $ \mathcal L(r[a]_{n+1})=\mathcal L(r[r[a]_n])${ and }$\mathcal{L}(r[a]_0)=  \mathcal L(r[a]).$
+\end{definition}
+
+\begin{proposition}
+The constructors in Definition~\ref{extension} generate regular languages.
+\end{proposition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fuzzy Proximity and Similarity Relations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% We define basic notions about similarity relations following \cite{DBLP:journals/tcs/Sessa02,DBLP:journals/fss/IranzoR17}.
+
+
+\begin{definition}[T-norm]
+A \emph{T-norm} is a binary operation
+$\otimes:[0,1]\times[0,1]\to[0,1]$ such that, for all
+$x,y,z\in[0,1]$:
+\begin{enumerate}
+  \item{\bf Commutativity}: $x\otimes y = y\otimes x$;
+  \item {\bf Associativity}: $(x\otimes y)\otimes z = x\otimes (y\otimes z)$;
+  \item {\bf Monotonicity} if $x\le y$, then $x\otimes z \le y\otimes z$;
+  \item {\bf Neutral element}: $x\otimes 1 = x$.
+\end{enumerate}
+\end{definition}
+
+% We define basic notions about similarity relations following \cite{DBLP:journals/tcs/Sessa02,DBLP:journals/fss/IranzoR17}.
+
+\begin{definition}\begin{enumerate}
+\item A binary \emph{fuzzy relation} on a set $S$ is a mapping from $S\times S$ to the real interval $[0,1]$. If $\cR$ is a fuzzy relation on $S$ and $\cut$ is a number $0<\cut \le 1$ (called \emph{cut value}), then the \emph{$\cut$-cut} of $\cR$ on $S$, denoted $\cR_\cut$, is an ordinary (crisp) relation on $S$ defined as
+\[
+  \cR_\cut := \{(s_1,s_2) \mid \cR(s_1,s_2) \ge \cut \}.
+\]
+\item A fuzzy relation $\cR$ on a set $S$ is called a \emph{proximity relation}, if it is reflexive and symmetric:
+\begin{description}
+  \item[Reflexivity:] $\cR(s,s)=1$ for all $s\in S$;
+  \item[Symmetry:] $\cR(s_1,s_2)=\cR(s_2,s_1)$ for all $s_1,s_2\in S$.
+\end{description}
+
+\item Let $\otimes$ be a left-continuous T-norm on $[0,1]$.%, so that $[0,1]$ carries the usual structure of a residuated lattice. 
+A proximity relation (on $S$) is
+called a \emph{T-similarity relation} (on $S$) iff it satisfies the reverse
+triangle inequality with respect to $\otimes$:
+\begin{description}
+  \item[Reverse triangle inequality:] $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
+\end{description}
+\end{enumerate}
+\end{definition}
+
+In this paper, when we take as T-norm G\"odel's \emph{minimum} T-norm, we often write $\min$ instead of $\otimes$. 
+%In the role of $S$ we take a syntactic domain, defined in the next section.
+
+
+
+
+\subsection{Similarity on Words and Languages}
+We define similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we can define similarity between   regular expressions and words as follows.
+\begin{definition}[Similarity on Regular Expressions] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a similarity o regular expressions
+ $\mathcal{R}^{E}:E \times E \rightarrow [0,1]$ is defined as follows
+$$\mathcal R^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) & \mbox{ if } r_1=r[a_1,\ldots,a_n] \mbox{ and }r_2 =r[b_1,\ldots,b_n]\\
+0& \mbox{  otherwise }
+\end{cases}$$
+\end{definition}
+The  above definition naturally extends to words viewed as regular expressions.
+
+
+\begin{definition}[Similarity on words]\label{def:Rw}Given a similarity relation $\mathcal R$ on $\Sigma$, define a similarity on  words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:
+For $w_1,w_2\in \Sigma^*$ define $\mathcal{R}^w(w_1,w_2)$ by:
+\[
+\mathcal{R}^w(w_1,w_2)=
+\begin{cases}
+1 & \text{if } w_1=\epsilon \text{ and } w_2=\epsilon,\\[2pt]
+0 & \text{if } (w_1=\epsilon \text{ and } w_2\neq\epsilon)\ \text{or}\ (w_2=\epsilon \text{ and } w_1\neq\epsilon),\\[4pt]
+\bigl(\mathcal{R}(a_1,a_2) \otimes \mathcal{R}^w(w_1',w_2')\bigr)
+    & \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'.
+\end{cases}
+\]
+\end{definition}
+
+
+\begin{definition}[Similarity on languages]\label{def:RL}
+For languages $L_1,L_2\subseteq \Sigma^*$ define
+\[
+\mathcal{R}^L(L_1,L_2)\;=\;
+\min\!\Bigl\{
+\inf_{w_1\in L_1}\ \sup_{w_2\in L_2}\ \mathcal{R}^w(w_1,w_2)\ ,\
+\inf_{w_2\in L_2}\ \sup_{w_1\in L_1}\ \mathcal{R}^w(w_1,w_2)
+\Bigr\}.
+\]
+\end{definition}
+
+\begin{lemma} \hfill \begin{enumerate}
+\item $\mathcal{R}^{E}$ is a similarity  relation on $E$ and hence on restricted regular expressions;
+\item $\mathcal{R}^w$ is a similarity  relation on $\Sigma^*$;
+\item$\mathcal R^L$ is a similarity relation on languages.
+\end{enumerate}
+\end{lemma}
+
+
+
+%\begin{definition}[Restricted regular expressions]
+%A regular expression is called \emph{restricted} if it is generated from
+%\[\emptyset,\ \varepsilon,\ a \in \Sigma\]using only the constructors $+$, $\cdot$, and ${}^\ast$.Equivalently, restricted regular expressions are those that do not use $\wedge$ or $\neg$.\end{definition}
+
+
+
+\begin{lemma}\label{thm:syntax-semantics}
+For all restricted regular expressions $r_1,r_2\in R^\Sigma$,
+\[
+\mathcal{R}^{E}(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
+\]
+\end{lemma}
+\begin{theorem}\label{thm:Rr-RL-bridge}
+For all restricted regular expressions $r$ and $s$, the value
+$\mathcal{R}^L\bigl(L(r),L(s)\bigr)$ is given by:
+\[\sup\Bigl\{
+\min\bigl(\mathcal{R}^E(r',p),\mathcal{R}^E(s',q)\bigr)
+\;\Bigm|\;
+ r',s',p,q \in R^\Sigma,\;
+L(r')=L(r),\;
+L(s')=L(s),\;
+L(p)=L(q)
+\Bigr\}.
+\]
+\end{theorem}
+
+
+
+
+
+\begin{remark}\label{rem:syntax-semantics-exceptions}
+\hfill \begin{enumerate}
+\item Definition~\ref{def:Rexp} is syntax-sensitive.
+Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^E$-similarity.
+For example, depending on the base relation on symbols, one may have
+\[
+\mathcal{R}^e(a+b,b+a)=0
+\]
+even though $L(a+b)=L(b+a)$.
+\item We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example we can put $\mathcal R^e(e_1,d_1) = \mathcal R^e(e_1,d_2)$ if ${\sf nf}(d_1)={\sf nf}(d_2)$. we shall not pursue this.
+\item 
+Lemma~\ref{thm:syntax-semantics}  and Theorem~\ref{thm:Rr-RL-bridge} are not true for  regular expressions when $\wedge$ and $\neg$ are allowed.
+The reason is that $\mathcal{R}^E$ only compares the shape of the expressions.
+So $\mathcal{R}^E$ can be positive as long as the corresponding subexpressions look similar, even if the crisp languages are empty or different.
+\end{enumerate}
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Derivatives and their Fuzzification}
+
+\subsection{Crisp definitions}\label{crisp-derivative}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{definition}\label{def:derivative}
+    The derivative of a language $L \subseteq \Sigma^*$ with respect to symbol $a \in \Sigma$ is defined to be:
+    $$
+        \partial_a(L)=\{ w \in \Sigma^* \mid a \cdot w \in L \}
+    $$
+\end{definition}
+
+\begin{definition}\label{def:derivative-string}
+    The derivative of a language $L \subseteq \Sigma^*$ with respect to a word $u=a\cdot w \in \Sigma^*$ where $a \in \Sigma$ and $w \in \Sigma^*$ is defined to be:
+    $$
+        \partial_u(L)=\partial_w(\partial_a(L))
+    $$
+\end{definition}
+
+\begin{definition}[Syntactic derivative with respect to a symbol]\label{def:regex-symbol-derivative}
+Let \(r\) be a regular expression over \(\Sigma\) and let \(a\in\Sigma\).
+The derivative \(\mathcal D_a(r)\) is defined recursively by:
+\[
+\begin{array}{rcl}
+    \mathcal{D}_a(\emptyset) &=& \emptyset,\\[0.5ex]
+    \mathcal{D}_a(\varepsilon) &=& \emptyset,\\[0.5ex]
+    \mathcal{D}_a(a) &=& \varepsilon,\\[0.5ex]
+    \mathcal{D}_a(b) &=& \emptyset \quad \text{for } a\neq b,\\[0.5ex]
+    \mathcal{D}_a(r+s) &=& \mathcal{D}_a(r)+\mathcal{D}_a(s),\\[0.5ex]
+    \mathcal{D}_a(r\cdot s) &=& \mathcal{D}_a(r)\cdot s + \nu(r)\cdot \mathcal{D}_a(s),\\[0.5ex]
+    \mathcal{D}_a(r^*) &=& \mathcal{D}_a(r)\cdot r^*,\\[0.5ex]
+    \mathcal{D}_a(r\:\&\:s) &=& \mathcal{D}_a(r)\:\&\:\mathcal{D}_a(s),\\[0.5ex]
+    \mathcal{D}_a(\neg r) &=& \neg(\mathcal{D}_a(r)).
+\end{array}
+\]
+\end{definition}
+
+\begin{definition}[Syntactic derivative with respect to a word]\label{def:regex-derivative}
+Let \(r\) be a regular expression over \(\Sigma\). The derivative of \(r\) with
+respect to a word is defined recursively by
+\[
+     \mathcal{D}_\varepsilon(r)=r,
+     \qquad
+     \mathcal{D}_{aw}(r)=\mathcal{D}_w(\mathcal{D}_a(r))
+\]
+for \(a\in\Sigma\) and \(w\in\Sigma^*\).
+\end{definition}
+
+\begin{theorem}\label{the:language-derivative-regular}
+    $$\text{If }L\subseteq\Sigma^* \text{ is regular then } \partial_u(L) \text{ is also regular for any word } u\in\Sigma^*$$
+\end{theorem}
+
+We have introduced two notions of derivative: 
+(i) the \emph{semantic derivative}\/ $\partial_{u}(L)$ of a regular language $L\!\subseteq\!\Sigma^{*}$ (Definition~\ref{def:derivative}), and 
+(ii) the \emph{syntactic derivative}\/ $\mathcal{D}_{u}(r)$ of a regular expression $r$ (Definition~\ref{def:regex-derivative}). 
+Both operations embody the same intuition—``what remains of a word after removing the prefix $u$''—yet they are defined on different objects.  
+The following Theorem shows that the two definitions coincide under the semantics mapping.
+
+\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-derivative-mapping}
+  Let \(r\) be a regular expression over \(\Sigma\) and \(u\in\Sigma^{*}\).
+  Then
+  \[
+      \mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)
+      \;=\;
+      \partial_{u}\bigl(\mathcal{L}(r)\bigr).
+  \]
+  In words, taking the derivative at the level of regular expressions and
+  then interpreting the result as a language yields exactly the same set of
+  strings as first interpreting \(r\) semantically and then taking the
+  derivative of the resulting language.
+\end{theorem}
+
+\begin{theorem}\label{the:derivative-set-is-finite}
+    Let $\Sigma$ be a finite alphabet and let $L \subseteq \Sigma^*$ be a regular language.
+    Then the set of all derivatives of $L$ with respect to words over $\Sigma$,
+    \[
+        \bigl\{\, \partial_{u}(L) \;\bigm|\; u \in \Sigma^* \bigr\},
+    \]
+    is finite.
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Fuzzy Derivatives}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{definition}[Fuzzy Language Derivative]\label{fuzzyderivative}
+Let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. The \emph{$\cut$-fuzzy
+expression derivative} of $\mathcal{L}$ with respect to $a$ is
+$$
+\partial_a^\cut(\mathcal{L})
+=
+\{w \in \Sigma^* \mid
+  \exists b \in \Sigma,\ \exists v\in\Sigma^*
+  \text{ such that }
+  \cR(a,b)\otimes \mathcal{R}^w(w,v)\ge\cut,\ \text{and } bv \in \mathcal{L}
+\}.
+$$
+\end{definition}[Fuzzy Expression  Derivative]\label{def:regex-fuzzy-derivative}
+\begin{definition}
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
+$0<\cut\le 1$. The \emph{fuzzy derivative} of $r$ with respect to $a$ and
+$\cut$ is
+\[
+  \mathcal D_a^\cut(r)
+  =
+  \sum\nolimits_{\mathcal R(a, b)\otimes \mathcal R^{\mathcal E}( s, r)\geq \mu}
+  \mathcal D_b(s),
+\]
+\end{definition}
+
+\begin{definition}\label{def:fuzzy-word-derivative}
+    The fuzzy derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
+    $$
+    \partial^\cut_u(\mathcal{L}) = \partial^\cut_v(\partial^\cut_a(\mathcal{L}))
+    $$
+\end{definition}
+
+\begin{definition}\label{def:regex-fuzzy-word-derivative}
+The fuzzy derivative of a restricted regular expression with respect to a word is defined
+recursively by
+\[
+  \mathcal D_\varepsilon^\cut(r)=r,
+  \qquad
+  \mathcal D_{av}^\cut(r)=\mathcal D_v^\cut(\mathcal D_a^\cut(r))
+\]
+for $a\in\Sigma$ and $v\in\Sigma^*$.
+\end{definition}
+
+
+
+\begin{conjecture}\hfill \begin{enumerate}
+\item Regularity of fuzzy derivatives of regular expressions.
+\item Correspondence between fuzzy language derivatives and fuzzy  expression derivatives.
+\item Finiteness of expression derivatives of a regular expression up to Brzozowski equivalence and hence semantic equivalence. 
+\end{enumerate}
+\end{conjecture}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Fuzzy Derivatives when using G\"odel's T-norm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Troughout this section we take as T-norm G\"odel's minimal T-norm
+
+\begin{proposition}\label{prop:cut-equivalence}
+Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$.
+The following hold. 
+\begin{enumerate}
+\item  The relation \[
+  a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.
+\]$\sim_\cut^\Sigma$ is an equivalence relation on $\Sigma$. 
+\item The relation  on $E^\Sigma$
+\[
+  r\sim_\cut^E s
+  \quad\Longleftrightarrow\quad
+  \mathcal R^E(r,s)\ge\cut
+\]
+ is an equivalence relation on restricted regular expressions.
+\item The relation on $\Sigma^\ast$
+
+\[
+  w_1\sim_\cut^{\Sigma^*}w_2
+  \quad\Longleftrightarrow\quad
+  \mathcal R^w(w_1,w_2)\ge\cut
+\]
+ is an equivalence relation on words.
+\item The relation on $\mathcal P(\Sigma^\ast)$
+
+\[
+  L_1\sim_\cut^{\mathcal P(\Sigma^*)}L_2
+  \quad\Longleftrightarrow\quad
+  \mathcal R^L(L_1,L_2)\ge\cut
+\]
+is an equivalence relation on languages. 
+\end{enumerate}
+\end{proposition}
+
+capitalising on G\"odel's T-norm, language fuzzy derivatives can be rephrased as follows.
+
+\begin{definition}\label{fuzzyderivativeGodel}
+Let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. The \emph{$\cut$-fuzzy
+derivative} of $\mathcal{L}$ with respect to $a$ is
+$$
+\partial_a^\cut(\mathcal{L})
+=
+\{w \in \Sigma^* \mid
+  \exists b \in \Sigma,\ \exists v\in\Sigma^*
+  \text{ such that }
+  \cR(a,b) \ge \cut,\ \mathcal{R}^w(w,v)\ge\cut,\ \text{and } bv \in \mathcal{L}
+\}.
+$$
+Alternatively:
+$$
+\partial_a^\cut(\mathcal{L})
+=
+\{w \in \Sigma^* \mid
+  \exists b \in \Sigma,\ \exists v\in\Sigma^*
+  \text{ such that }
+  (a,b)\in\cR_\cut,\ w\sim_\cut^{\Sigma^*}v,\ \text{and } bv\in\mathcal{L}
+\}.
+$$
+\end{definition}
+
+
+\begin{definition}\label{def:quotient-language-fuzzy}
+Let $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$ and let
+$q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.
+Extend $q_\cut$ to words by
+\[
+  q_\cut^*(a_1\cdots a_n) = [a_1]_\cut \cdots [a_n]_\cut.
+\]
+For a language $\mathcal L \subseteq \Sigma^*$, define its quotient image by
+\[
+  \mathcal L^\cut := q_\cut^*(\mathcal L)
+  = \{q_\cut^*(w)\mid w\in\mathcal L\}
+  \subseteq (\Sigma^\cut)^*.
+\]
+\end{definition}
+
+\noindent
+The map $q_\cut$ maps each symbol to its $\cut$-equivalence class. The map
+$q_\cut^*$ does exactly the same thing for a whole word, letter by letter.
+
+The next theorem explains how the fuzzy derivative becomes an ordinary derivative
+after passing to the quotient alphabet, {\em ie}  once letters are identified up to
+$\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
+differentiating with respect to the class $[a]_\cut$.
+
+\begin{theorem}\label{the:quotient-fuzzy-derivative}
+Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$. For every language $\mathcal L \subseteq \Sigma^*$ and every
+$a\in\Sigma$,
+\[
+  \partial_a^\cut(\mathcal L)
+  \;=\;
+  \{w\in\Sigma^* \mid q_\cut^*(w)\in
+       \partial_{[a]_\cut}\bigl(\mathcal L^\cut\bigr)\}.
+\]
+Hence,
+\[
+  q_\cut^*\bigl(\partial_a^\cut(\mathcal L)\bigr)
+  =
+  \partial_{[a]_\cut}\bigl(\mathcal L^\cut\bigr).
+\]
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+We prove the two inclusions.
+
+Let $w\in\partial_a^\cut(\mathcal L)$. By Definition~\ref{fuzzyderivative},
+there are $b\in\Sigma$ and $v\in\Sigma^*$ such that $\cR(a,b)\ge\cut$,
+$w\sim_\cut^{\Sigma^*}v$, and $bv\in\mathcal L$. Hence
+$[b]_\cut=[a]_\cut$ and $q_\cut^*(w)=q_\cut^*(v)$, so
+\[
+  [a]_\cut q_\cut^*(w)
+  =
+  [b]_\cut q_\cut^*(v)
+  =
+  q_\cut^*(bv)
+  \in \mathcal L^\cut.
+\]
+Thus $q_\cut^*(w)\in\partial_{[a]_\cut}(\mathcal L^\cut)$.
+
+Conversely, suppose $q_\cut^*(w)\in\partial_{[a]_\cut}(\mathcal L^\cut)$. Then
+$[a]_\cut q_\cut^*(w)\in\mathcal L^\cut$, so there is a word $bv\in\mathcal L$
+such that
+\[
+  q_\cut^*(bv)=[a]_\cut q_\cut^*(w).
+\]
+It follows that $[b]_\cut=[a]_\cut$, hence $\cR(a,b)\ge\cut$, and also
+$q_\cut^*(v)=q_\cut^*(w)$, hence $w\sim_\cut^{\Sigma^*}v$. Therefore
+$w\in\partial_a^\cut(\mathcal L)$.
+
+The displayed consequence follows because
+$\partial_{[a]_\cut}(\mathcal L^\cut)$ consists only of quotient words, and each
+such word has at least one representative in $\Sigma^*$.
+\end{proof}
+
+
+\begin{definition}\label{def:cut-neighborhood}
+    For $a\in\Sigma$ and $0<\cut\le 1$, define the cut neighborhood of $a$ by
+    $$
+        \mathcal{S}^\cut_a = \{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}
+    $$
+\end{definition}
+
+Taking G\"odel's T-norm,  Definition~\ref{def:regex-fuzzy-derivative} of $\mu$-fuzzy language derivatives simplifies in the following way.
+
+\begin{definition}\label{def:regex-fuzzy-derivative}
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
+$0<\cut\le 1$. The \emph{fuzzy derivative} of $r$ with respect to $a$ and
+$\cut$ is
+\[
+  \mathcal D_a^\cut(r)
+  =
+  \sum\nolimits_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
+  \mathcal D_b(s),
+\]
+where $\mathcal D_b(s)$ is the ordinary Brzozowski derivative from
+Section~\ref{crisp-derivative}. The sum is finite because $\Sigma$ is finite
+and $\sim_\cut^e$ only varies the finitely many letters occurring in the fixed
+syntax tree of $r$.
+\end{definition}
+
+\begin{theorem}\label{the:language-fuzzy-derivative-regular}
+For every $u\in\Sigma^*$ and every cut value $0 < \cut \le 1$, if
+$\mathcal{L} \subseteq \Sigma^*$ is regular, then
+$\partial^\cut_u(\mathcal{L})$ is regular. Moreover, if $r$ is a
+restricted regular expression, then $\mathcal D_u^\cut(r)$ is a restricted
+regular expression.
+\end{theorem}
+
+\begin{proof}
+The argument is similar to the proof of Theorem~\ref{the:language-derivative-regular}.
+Let $\mathcal{L} \subseteq \Sigma^*$ be regular and fix $0 < \cut \le 1$.
+
+For a single symbol $a \in \Sigma$ we have, by Definition of $\partial_a^\cut$,
+\[
+  \partial_a^\cut(\mathcal{L})
+  =
+  \{ w \in \Sigma^* \mid
+    \exists b\in\Sigma,\ \exists v\in\Sigma^*
+    \text{ with } \cR(a,b)\ge\cut,\ \mathcal R^w(w,v)\ge\cut,
+    \text{ and } bv\in\mathcal L \}.
+\]
+Equivalently,
+\[
+  \partial_a^\cut(\mathcal L)
+  =
+  (q_\cut^*)^{-1}
+  \bigl(\partial_{[a]_\cut}(\mathcal L^\cut)\bigr)
+\]
+by Theorem~\ref{the:quotient-fuzzy-derivative}. Since $\mathcal L$ is regular
+and $q_\cut^*$ is a homomorphism, the quotient image $\mathcal L^\cut$ is
+regular. Classical derivatives preserve regularity, so
+$\partial_{[a]_\cut}(\mathcal L^\cut)$ is regular over the finite quotient
+alphabet $\Sigma^\cut$. Finally, inverse homomorphic images of regular languages
+are regular. Hence $\partial_a^\cut(\mathcal L)$ is regular.
+
+For a word $u = a_1 \cdots a_n$ we use the recursive definition
+$\partial_u^\cut(\mathcal{L}) = \partial_{a_n}^\cut(\cdots \partial_{a_1}^\cut(\mathcal{L}) \cdots)$
+and apply the previous argument inductively: at each step we take a fuzzy
+derivative of a regular language and obtain a regular language again. Thus
+$\partial_u^\cut(\mathcal{L})$ is regular for every $u \in \Sigma^*$ and every
+cut $0 < \cut \le 1$.
+
+The expression statement follows directly from
+Definitions~\ref{def:regex-fuzzy-derivative} and
+\ref{def:regex-fuzzy-word-derivative}: ordinary Brzozowski derivatives are
+restricted regular expressions, and the finite sums in
+Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
+\end{proof}
+
+\begin{definition}[Fuzzy semantic interpretation] For a restricted regular expression r over $\Sigma$, and and let
+$0 < \cut \le 1$,  its {\em fuzzy semantic interpretation} is the language $\mathcal L^\mu(r)\subseteq \Sigma^{\ast}$ defined as follows 
+\[\mathcal L^\mu (r)=\{w\mid \mathcal w\sim_\mu^{\Sigma^\ast}v)\mbox{ for } u\in \mathcal L(r)\}.\]
+\end{definition}
+
+\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
+Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
+$0 < \cut \le 1$. Then
+\[
+  \mathcal{L}^\mu\bigl(\mathcal{D}^\cut_u(r)\bigr)
+  =
+  \partial^\cut_u\bigl(\mathcal{L}(r)\bigr).
+\] 
+\end{theorem}
+
+\begin{proof}[Proof sketch]{\color{red} Needs to be checked}
+For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative} gives
+\[
+  \mathcal L(\mathcal D_a^\cut(r))
+  =
+  \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
+  \mathcal L(\mathcal D_b(s)).
+\]
+By the ordinary semantic-syntactic correspondence,
+$\mathcal L(\mathcal D_b(s))=\partial_b(\mathcal L(s))$. The condition
+$s\sim_\cut^e r$ means that $s$ is syntactically similar to $r$ up to
+$\cut$-equivalent alphabet symbols, and therefore its denoted words provide
+exactly the suffixes that are $\cut$-similar to suffixes of words in
+$\mathcal L(r)$. Together with $a\sim_\cut^\Sigma b$, this is precisely
+Definition~\ref{fuzzyderivative}, so
+\[
+  \mathcal L(\mathcal D_a^\cut(r))
+  =
+  \partial_a^\cut(\mathcal L(r)).
+\]
+The statement for words follows by induction on $u$ from
+Definitions~\ref{def:fuzzy-word-derivative} and
+\ref{def:regex-fuzzy-word-derivative}.
+\end{proof}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Automata}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Crisp Automata}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We construct a finite deterministic automaton (DFA) from a regular expression $r$, using the derivative operator $\mathcal{D}_a(\cdot)$
+and the nullable function $\nu(\cdot)$. Each DFA state denotes the remaining
+language of $r$ after consuming the prefix. Transitions are computed by taking one-step
+derivatives with respect to input symbols.
+
+We construct the derivative DFA using canonical representatives to reduce the number of states.
+\begin{definition}
+Let $\mathsf{nf}(\cdot)$ be the normalization from Definition~\ref{def:canonize},
+and write $[r] := \mathsf{nf}(r)$.
+
+We define the DFA $M=\langle Q, \Sigma, \delta, q_0, F\rangle$ as follows.
+
+\begin{itemize}
+  \item $Q \;=\; \{\, [\,\mathcal{D}_u(r)\,] \mid u \in \Sigma^* \,\}$ is the set of states,
+        where $[t]=\mathsf{nf}(t)$ is the canonical form.
+
+  \item $\Sigma$ is a finite alphabet.
+
+  \item $\delta: Q \times \Sigma \to Q$ is defined by canonicalizing derivatives:
+        \[
+          \delta(q,a) \;=\; \bigl[\,\mathcal{D}_a(q)\,\bigr].
+        \]
+
+  \item $q_0 = [\,r\,] \in Q$ is the initial state.
+
+  \item $F \subseteq Q$ is the set of accepting states:
+        \[
+          F \;=\; \{\, q \in Q \mid \nu(q)=\varepsilon \,\}.
+        \]
+\end{itemize}
+\end{definition}
+
+
+
+By Theorem~\ref{the:two-derivative-mapping},
+$\mathcal{L}(\mathcal{D}_u(r))=\partial_u(\mathcal{L}(r))$, running the DFA corresponds exactly to repeatedly taking derivatives.
+
+\begin{theorem}\label{the:dfa-correctness}
+Let $r$ be a regular expression over $\Sigma$, and let
+$M = \langle Q, \Sigma, \delta, q_0, F \rangle$
+be the DFA constructed from $r$.
+Then $M$ and $r$ define the same language:
+\[
+  \mathcal{L}(M) \;=\; \mathcal{L}(r).
+\]
+Equivalently, for every word $u \in \Sigma^*$,
+\[
+  M \text{ accepts } u
+  \;\;\Longleftrightarrow\;\;
+  u \in \mathcal{L}(r).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\delta^* : Q \times \Sigma^* \to Q$ be the extension of
+$\delta$ to words:
+\[
+  \delta^*(q,\varepsilon) = q,
+  \qquad
+  \delta^*(q,wa) = \delta\bigl(\delta^*(q,w),a\bigr)
+  \text{ for } w \in \Sigma^*, a \in \Sigma.
+\]
+
+We first show by induction on $w \in \Sigma^*$ that
+\[
+  \delta^*(q_0,w) = \bigl[\,\mathcal{D}_w(r)\,\bigr].
+\]
+\emph{Base case:} For $u = \varepsilon$ we have
+$q_0 = [r] = [\mathcal{D}_\varepsilon(r)]$, so the claim holds.
+
+\emph{Inductive step:} Let $u = wa$ with $w \in \Sigma^*$ and $a \in \Sigma$.
+By the induction hypothesis,
+$\delta^*(q_0,w) = [\mathcal{D}_w(r)]$.
+Then, by the definition of $\delta$,
+\[
+  \begin{aligned}
+    \delta^*(q_0,wa)
+  &= \delta\bigl(\delta^*(q_0,w),a\bigr) \\
+  &= \delta\bigl([\mathcal{D}_w(r)],a\bigr) \\
+  &= \bigl[\,\mathcal{D}_a(\mathcal{D}_w(r))\,\bigr] \\
+  &= \bigl[\,\mathcal{D}_{wa}(r)\,\bigr],
+  \end{aligned}
+\]
+using the rule $\mathcal{D}_{wa}(r) = \mathcal{D}_a(\mathcal{D}_w(r))$.
+This proves the claim.
+
+Now let $u \in \Sigma^*$. Then:
+\[
+\begin{aligned}
+u \text{ is accepted by } M
+&\Longleftrightarrow \delta^*(q_0,u) \in F \\[0.5ex]
+&\Longleftrightarrow \delta^*(q_0,u) = [\mathcal{D}_u(r)]
+             \text{ and } [\mathcal{D}_u(r)] \in F
+             \quad\\[0.5ex]
+&\Longleftrightarrow \nu\bigl(\mathcal{D}_u(r)\bigr) = \varepsilon \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \mathcal{L}\bigl(\mathcal{D}_u(r)\bigr) \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \partial_u\bigl(\mathcal{L}(r)\bigr)
+     \quad\text{(by Theorem~\ref{the:two-derivative-mapping})} \\[0.5ex]
+&\Longleftrightarrow u\varepsilon \in \mathcal{L}(r)
+     \quad\text{(by the definition of }\partial_u\text{)} \\[0.5ex]
+&\Longleftrightarrow u \in \mathcal{L}(r)
+     \quad\text{(since }u\varepsilon = u\text{).}
+\end{aligned}
+\]
+Hence $\mathcal{L}(M) = \mathcal{L}(r)$.
+
+\end{proof}
+
+
+
+ If we would take derivatives up to semantic equivalence then we would get minimal automata. If we take derivatives only up to canonical form than this is not the case. For example consider the restricted regualr expressions $a^\ast$ and $(\epsilon+a)^\ast$. These are semantically equivalent but are not canonically equal.
+The Brzozowski automaton that we get has two derivatives, namely itself and $\mathcal D_a((\epsilon+a)^\ast) =\mathcal D_a(\epsilon+a)\cdot(\epsilon+a)^\ast=\ldots =a^\ast$, but $a^\ast$ is its own derivative. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fuzzy Automata} {\color{red}Currently uses G\"odel's T-norm, but it does not seem necessary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{theorem}\label{the:fuzzy-derivative-set-finite}
+Let $\Sigma$ be a finite alphabet and let $\mathcal{L} \subseteq \Sigma^*$ be a
+regular language. For every cut value $0 < \cut \le 1$, the set of fuzzy
+derivatives
+\[
+  \bigl\{\, \partial_u^\cut(\mathcal{L}) \;\bigm|\; u \in \Sigma^* \bigr\}
+\]
+is finite.
+\end{theorem}
+
+\begin{proof}
+Fix $0 < \cut \le 1$ and let $\mathcal{L}$ be regular. Since $q_\cut^*$ is a
+homomorphism, the quotient image $\mathcal L^\cut$ is a regular language over
+the finite alphabet $\Sigma^\cut$. By Theorem~\ref{the:derivative-set-is-finite},
+the set
+\[
+  D^\cut
+  =
+  \{\,\partial_x(\mathcal L^\cut) \mid x\in(\Sigma^\cut)^*\,\}
+\]
+is finite. By repeated use of Theorem~\ref{the:quotient-fuzzy-derivative},
+every fuzzy derivative has the form
+\[
+  \partial_u^\cut(\mathcal L)
+  =
+  (q_\cut^*)^{-1}
+  \bigl(\partial_{q_\cut^*(u)}(\mathcal L^\cut)\bigr).
+\]
+Thus the possible fuzzy derivatives are inverse images of elements of the finite
+set $D^\cut$. Hence
+$\{\partial_u^\cut(\mathcal{L}) \mid u \in \Sigma^*\}$ is finite.
+\end{proof}
+
+
+
+\begin{theorem}\label{the:regex-fuzzy-derivative-types-finite}
+Let $\Sigma$ be a finite alphabet and let $R$ be a restricted regular expression over
+$\Sigma$. For every cut value $0 < \cut \le 1$, the set of derivative languages
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
+\]
+is finite.
+\end{theorem}
+
+\begin{proof}
+Let $0 < \cut \le 1$ be fixed and $\mathcal{L} = \mathcal{L}(R)$.
+By Theorem~\ref{the:two-fuzzy-derivative-mapping}, for every word $w \in \Sigma^*$,
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_w(R)\bigr)
+  \;=\;
+  \partial^\cut_w\bigl(\mathcal{L}(R)\bigr)
+  \;=\;
+  \partial^\cut_w(\mathcal{L}).
+\]
+Hence
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \mid w \in \Sigma^* \bigr\}
+  \;=\;
+  \bigl\{\, \partial^\cut_w(\mathcal{L}) \mid w \in \Sigma^* \bigr\},
+\]
+and the right-hand set is finite by
+Theorem~\ref{the:fuzzy-derivative-set-finite}. This proves the claim.
+\end{proof}
+
+
+
+\begin{theorem}\label{the:fuzzy-dfa-correctness}
+Let $r$ be a restricted regular expression over $\Sigma$, let $0 < \cut \le 1$, and let
+$M^\cut = \langle Q^\cut, \Sigma, \delta^\cut, q_0^\cut, F^\cut \rangle$
+be the DFA constructed from $r$ using fuzzy derivatives (for the fixed cut
+value $\cut$).
+Write
+\[
+  \mathcal L^\cut_\Sigma(r)
+  =
+  (q_\cut^*)^{-1}\bigl(q_\cut^*(\mathcal L(r))\bigr)
+\]
+for the concrete language of words that are $\cut$-similar to some word denoted
+by $r$. Then $M^\cut$ and $r$ define the same concrete $\cut$-language:
+\[
+  \mathcal{L}(M^\cut) \;=\; \mathcal{L}^\cut_\Sigma(r).
+\]
+Equivalently, for every word $w \in \Sigma^*$,
+\[
+  M^\cut \text{ accepts } w
+  \;\;\Longleftrightarrow\;\;
+  w \in \mathcal{L}^\cut_\Sigma(r).
+\]
+\end{theorem}
+
+\begin{proof}[Proof.]
+Let $\delta^{\cut *} : Q^\cut \times \Sigma^* \to Q^\cut$ be the standard
+extension of $\delta^\cut$ to words:
+\[
+  \delta^{\cut *}(q,\varepsilon) = q,
+  \qquad
+  \delta^{\cut *}(q,wa) = \delta^\cut\bigl(\delta^{\cut *}(q,w),a\bigr)
+  \text{ for } w \in \Sigma^*, a \in \Sigma.
+\]
+
+We first show by induction on $w \in \Sigma^*$ that
+\[
+  \delta^{\cut *}(q_0^\cut,w) = \bigl[\,\mathcal{D}^\cut_w(r)\,\bigr].
+\]
+
+\emph{Base case:} For $w = \varepsilon$ we have
+$q_0^\cut = [r] = [\mathcal{D}^\cut_\varepsilon(r)]$, so the claim holds.
+
+\emph{Inductive step:} Let $w = ua$ with $u \in \Sigma^*$ and $a \in \Sigma$.
+By the induction hypothesis,
+$\delta^{\cut *}(q_0^\cut,u) = [\mathcal{D}^\cut_u(r)]$.
+Then, by the definition of $\delta^\cut$,
+\[
+  \delta^{\cut *}(q_0^\cut,ua)
+  = \delta^\cut\bigl(\delta^{\cut *}(q_0^\cut,u),a\bigr)
+  = \delta^\cut\bigl([\mathcal{D}^\cut_u(r)],a\bigr)
+  = \bigl[\,\mathcal{D}^\cut_a(\mathcal{D}^\cut_u(r))\,\bigr]
+  = \bigl[\,\mathcal{D}^\cut_{ua}(r)\,\bigr],
+\]
+using the rule $\mathcal{D}^\cut_{ua}(r) = \mathcal{D}^\cut_a(\mathcal{D}^\cut_u(r))$.
+This proves the claim.
+
+Now let $w \in \Sigma^*$. Then:
+\[
+\begin{aligned}
+w \text{ is accepted by } M^\cut
+&\Longleftrightarrow \delta^{\cut *}(q_0^\cut,w) \in F^\cut \\[0.5ex]
+&\Longleftrightarrow \delta^{\cut *}(q_0^\cut,w) = [\mathcal{D}^\cut_w(r)]
+             \text{ and } [\mathcal{D}^\cut_w(r)] \in F^\cut
+             \quad\text{(by the claim above and def.\ of $F^\cut$)} \\[0.5ex]
+&\Longleftrightarrow \nu\bigl(\mathcal{D}^\cut_w(r)\bigr) = \varepsilon \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \mathcal{L}\bigl(\mathcal{D}^\cut_w(r)\bigr) \\[0.5ex]
+&\Longleftrightarrow \varepsilon \in \partial^\cut_w\bigl(\mathcal{L}(r)\bigr)
+     \quad\text{(by Theorem~\ref{the:two-fuzzy-derivative-mapping})} \\[0.5ex]
+&\Longleftrightarrow w \in \mathcal{L}^\cut_\Sigma(r)
+     \quad\text{(by the definition of $\mathcal{L}^\cut_\Sigma(r)$).}
+\end{aligned}
+\]
+Hence $\mathcal{L}(M^\cut) = \mathcal{L}^\cut_\Sigma(r)$, as required.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\color{red}\begin{remark} The transition function on the quotient automaton can be viewed as a fuzzy  transition. Namely if $[\ ]$ is defined by $\mu$-similarity,  we can write $\delta(q_1,[a])=q_2$ as $((q_1,a),q_2)\in_\mu \delta$, where $\epsilon$ is fuzzy set membership with value $\mu$. 
+\end{remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formalization in Rocq}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{biblio}
+
+
+\end{document}
