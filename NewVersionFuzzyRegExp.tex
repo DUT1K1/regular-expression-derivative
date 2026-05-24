@@ -199,14 +199,10 @@ construction and proofs of Coquand--Siles~\cite{CoquandRegexEquality}, where $\s
 \end{proof}
 
 
-\begin{definition} \label{extension}
-Given a regular expression $r[a]$ by $r[a]^\#$ we denote the formal expression such that $L(r[a]^\#)= \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n)$ 
-   where $ \mathcal L(r[a]_{n+1})=\mathcal L(r[r[a]_n])${ and }$\mathcal{L}(r[a]_0)=  \mathcal L(r[a]).$
-\end{definition}
+{\bf An side on substitution} \label{extension}
+Given a regular expression $r[a]$, using substitution we can generalize along the definition of $(\ )^\ast$ the iteration of the substitution. For instance we can define $L(r[a]^\#)= \{\epsilon\}\cup \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n)$ 
+   where $ \mathcal L(r[a]_{n+1})=\mathcal L(r[r[a]_n])${ and }$\mathcal{L}(r[a]_0)=  \mathcal L(r[a]).$. This operation would take us otuside regular languages, if we go beyond tail-recursive sustitution. For instance if we take $r=a[a]b$ we have that $L(r[a]^\#)= \{\epsilon\}\cup \{ a^{n+1}b^n\mid n\in \mathbb	\}$ which is ot a regular language.
 
-\begin{proposition}
-The constructors in Definition~\ref{extension} generate regular languages.
-\end{proposition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -339,10 +335,10 @@ L(p)=L(q)
 Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^E$-similarity.
 For example, depending on the base relation on symbols, one may have
 \[
-\mathcal{R}^e(a+b,b+a)=0
+\mathcal{R}^E(a+b,b+a)=0
 \]
 even though $L(a+b)=L(b+a)$.
-\item We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example we can put $\mathcal R^e(e_1,d_1) = \mathcal R^e(e_1,d_2)$ if ${\sf nf}(d_1)={\sf nf}(d_2)$. we shall not pursue this.
+\item We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example we can put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. we shall not pursue this.
 \item 
 Lemma~\ref{thm:syntax-semantics}  and Theorem~\ref{thm:Rr-RL-bridge} are not true for  regular expressions when $\wedge$ and $\neg$ are allowed.
 The reason is that $\mathcal{R}^E$ only compares the shape of the expressions.
@@ -711,7 +707,7 @@ Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
 
 \begin{definition}[Fuzzy semantic interpretation] For a restricted regular expression r over $\Sigma$, and and let
 $0 < \cut \le 1$,  its {\em fuzzy semantic interpretation} is the language $\mathcal L^\mu(r)\subseteq \Sigma^{\ast}$ defined as follows 
-\[\mathcal L^\mu (r)=\{w\mid \mathcal w\sim_\mu^{\Sigma^\ast}v)\mbox{ for } u\in \mathcal L(r)\}.\]
+\[\mathcal L^\mu (r)=\{w\mid  w\sim_\mu^{\Sigma^\ast}v)\mbox{ for } u\in \mathcal L(r)\}.\]
 \end{definition}
 
 \begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
