@@ -43,7 +43,7 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 
-
+\def\eg{{\em e.g. }}
 \newcommand{\cR}{{\mathcal R}}
 \def\cut{\mu}
 \newtheorem{definition}{Definition}[section]
@@ -256,7 +256,7 @@ In this paper, when we take as T-norm G\"odel's \emph{minimum} T-norm, we often 
 
 \subsection{Similarity on Words and Languages}
 We define similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we can define similarity between   regular expressions and words as follows.
-\begin{definition}[Similarity on Regular Expressions] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a similarity o regular expressions
+\begin{definition}[Similarity on Regular Expressions] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a similarity on regular expressions
  $\mathcal{R}^{E}:E \times E \rightarrow [0,1]$ is defined as follows
 $$\mathcal R^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) & \mbox{ if } r_1=r[a_1,\ldots,a_n] \mbox{ and }r_2 =r[b_1,\ldots,b_n]\\
 0& \mbox{  otherwise }
@@ -289,6 +289,13 @@ For languages $L_1,L_2\subseteq \Sigma^*$ define
 \Bigr\}.
 \]
 \end{definition}
+
+{\color{red} CAVEAT For an arbitrary tensor this notion is too strict. If $\mathcal R(a,b)\leq 1$ then $\mathcal R(a^\ast,b\ast)$ is usually 0 for a generic T-norm, \eg\ Gougen's product T-norm. Of course we can use some speial combination of Godel and Gougen such as 
+
+$T(x,y)=\begin{cases} \min(x,y) & x,y>p\\ x\times y & \mbox{ otherwise. }
+\end{cases}$
+
+Thus many of the results in the paper \eg Lemma\ref{thm:syntax-semantics} fail for a  general T-norm.}
 
 \begin{lemma} \hfill \begin{enumerate}
 \item $\mathcal{R}^{E}$ is a similarity  relation on $E$ and hence on restricted regular expressions;
@@ -463,7 +470,7 @@ $\cut$ is
 \begin{definition}\label{def:fuzzy-word-derivative}
     The fuzzy derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
     $$
-    \partial^\cut_u(\mathcal{L}) = \partial^\cut_v(\partial^\cut_a(\mathcal{L}))
+    \partial^\cut_u(\mathcal{L}) = \bigcup_{\cut'\otimes \cut''\geq \cut}\partial^{\cut'}_v(\partial^{\cut''}_a(\mathcal{L}))
     $$
 \end{definition}
 
