@@ -289,7 +289,7 @@ For languages $L_1,L_2\subseteq \Sigma^*$ define
 \end{definition}
 
 {\color{red} \begin{remark} The reason for introducing the non-repeating condition for arbitrary T-norms is that if we take the unrestricted definition we have that  $\mathcal R(a,b)\leq 1$ then $\mathcal R^L(\mathcal L(a^\ast),\mathcal L(b^\ast))$ is 0, \eg\ Goguen's product T-norm. Thus many of the results in the paper \eg Lemma\ref{thm:syntax-semantics} fail for a  general T-norm. Of course in some special cases, \eg\ if we  use some specific combination of G\"odel's  and Goguen's T-norm such as 
-$$T(x,y)=\begin{cases} \min(x,y) & x,y>p\\ x\times y & \mbox{ otherwise }
+$$T(x,y)=\begin{cases}\frac{1}{2}+ 2(x-\frac{1}{2})(y-\frac{1}{2}) & x,y\geq\frac{1}{2}\\ \min(x,y) & \mbox{ otherwise }
 \end{cases}$$
 the proviso can be dropped and the theorems can be partially recovered. 
 \end{remark}}
