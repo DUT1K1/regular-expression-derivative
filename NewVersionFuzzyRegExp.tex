@@ -123,7 +123,7 @@ language $\mathcal{L}(r) \subseteq \Sigma^*$ defined inductively by:
 \end{aligned}
 \]
 \end{definition}
-\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$ possibly with indices and apexes.  We will write $r[a_1,\ldots,a_n]$ in order to highlight the occurrences $a_1,\ldots,a_n$ of alphabet symbols  in $r$. By $r[s]$ we denote the regular expression obtained by replacing $s$ in place of $a$ in $r[a]$.
+\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$ possibly with indices and apexes.  We will write $r[\underbrace{a_1,\ldots,a_1}_{n_1}, \ldots, \underbrace{a_n,\ldots, a_n}_{n_n}]$ in order to highlight the occurrences $a_1,\ldots,a_n$ with multicplicities $n_1$, ldots, $n_n$ respctively of alphabet symbols  in $r$. By $r[s]$ we denote the regular expression obtained by replacing $s$ in place of $a$ in $r[a]$.
 
 
 It is useful to know
@@ -295,13 +295,14 @@ In this paper, when we take as T-norm G\"odel's \emph{minimum} T-norm, we often 
 We define similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we can define similarity between   regular expressions and words as follows. 
 \begin{definition}[Similarity on Regular Expressions] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a similarity on regular expressions
  $\mathcal{R}^{E}:E \times E \rightarrow [0,1]$ is defined as follows
-$$\mathcal R^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &{\color{red} \mbox{ without repeating equal pairs } (a_i,b_i)}\\ & \mbox{ if } r_1=r[a_1,\ldots,a_n] \mbox{ and }r_2 =r[b_1,\ldots,b_n]
+$$\mathcal R^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } r_1=r[\underbrace{a_1, \ldots, a_1}_{n_1},\ldots,\underbrace{a_n,\ldots,a_n}_{n_n}]\\ & \mbox{ and }r_2 =r[\underbrace {b_1, \ldots, b_1}_{n-1},\ldots,\underbrace{b_n,\ldots,b_n}_{n_n}]
 \\ 
 0& \mbox{  otherwise }
 \end{cases}$$
-{\color{red}If we take as T-norm  G\"odel's T-norm, the non-repetitions proviso can be dropped.}
+In Remark~\ref{general-norms} we will motivate why we do not take into account multiplicities of occurrences of alphabet symbols. Clearly if 
+ we take as T-norm  G\"odel's T-norm  it is immaterial.
 \end{definition}
-The  above definition naturally extends to words viewed as regular expressions.
+The  above definition naturally extends to words viewed as regular expressions. We will denote with $\mathcal R^w(\ ,\ )$, the similarity relation $\mathcal R^E(\ ,\ )$ when referring to words.
 
 
 %\begin{definition}[Similarity on words]\label{def:Rw}Given a similarity relation $\mathcal R$ on $\Sigma$, define a similarity on  words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:
@@ -325,11 +326,11 @@ For languages $L_1,L_2\subseteq \Sigma^*$ define
 \]
 \end{definition}
 
-{\color{red} \begin{remark} The reason for introducing the non-repeating condition for arbitrary T-norms is that if we take the unrestricted definition we have that  $\mathcal R(a,b)\leq 1$ then $\mathcal R^L(\mathcal L(a^\ast),\mathcal L(b^\ast))$ is 0, \eg\ Goguen's product T-norm. Thus many of the results in the paper \eg Lemma\ref{thm:syntax-semantics} fail for a  general T-norm. Of course in some special cases, \eg\ if we  use some specific combination of G\"odel's  and Goguen's T-norm such as 
+\begin{remark} \label{general-norms} The reason for not taking into account multiplicities of occurrences in Definition~\ref{def:Rexp} of similarity of regular expressions is that when considering  arbitrary T-norms, we have that in general  if $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^\ast),\mathcal L(b^\ast))\lneq \mathcal R(a,b)$ unless $R(a,b)$ is idempotent. But a norm where all vlaues are idempotent is necessarily G\"odel's minimum T-norm. Thus many of the results in the paper, \eg	\ Lemma~\ref{thm:syntax-semantics} would fail for a  general T-norm. \\ Nevertheless for specific  T-norms, \eg\ 
 $$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p\\ \min(x,y) & \mbox{ otherwise }
-\end{cases}$$
-the proviso can be rephrased and the theorems can be partially recovered. 
-\end{remark}}
+\end{cases}$$, where $p\in [0,1]$,
+ theorems can be modified in signficant ways, even taking into account multiplicities of occurrences, but we shall not pursue this here. 
+\end{remark}
 
 \begin{lemma} \hfill \begin{enumerate}
 \item $\mathcal{R}^{E}$ is a similarity  relation on $E$ and hence on restricted regular expressions;
