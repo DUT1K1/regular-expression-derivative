@@ -286,16 +286,16 @@ triangle inequality with respect to $\otimes$:
 \end{definition}
 
 In this paper, when we take as T-norm G\"odel's \emph{minimum} T-norm, we often write $\min$ instead of $\otimes$. 
-%In the role of $S$ we take a syntactic domain, defined in the next section.
+
 
 
 
 
 \subsection{Similarity on Words and Languages}
 We define similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we  define similarities between words and languages as follows.
-\begin{definition}[Similarity on Words]\label{def:Rw}Given a similarity relation $\mathcal R$ on $\Sigma$, define a proximity relation on  words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:$$\mathcal R^{w}(w_1,w_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } w_1=a_1\ldots a_n\mbox{ and }w_2 =b_1 \ldots b_n
+\begin{definition}[Similarity on Words]\label{def:Rw}Given a similarity relation $\mathcal R$ on $\Sigma$, define a proximity relation on  words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:$$\mathcal R^{w}(w_1,w_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } w_1=a_1\ldots a_n\mbox{ and }w_2 =b_1 \ldots b_n;
 \\ 
-0& \mbox{  otherwise }
+0& \mbox{  otherwise. }
 \end{cases}$$
 \end{definition}
 \begin{definition}[Similarity on languages]\label{def:RL}
@@ -310,11 +310,10 @@ For languages $L_1,L_2\subseteq \Sigma^*$ define a procxmity relation $\mathcal{
 \end{definition}
 
 Viewing words as regular expressions,  Definition~\ref{def:Rw} naturally extends to regular expressions, when we take G\"odel's T-norm, .
-\begin{definition}[Similarity on Regular Expressions - G\"odel's T-norm] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a proximity on regular expressions
- $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$ is defined as follows
-$$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } r_1=r[a_1,\ldots,a_n]\mbox{ and }r_2 =r[b_1,\ldots,b_n]
+\begin{definition}[Similarity on Regular Expressions - G\"odel's T-norm] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a proximity on regular expressions,  $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$, defined as follows
+$$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } r_1=r[a_1,\ldots,a_n]\mbox{ and }r_2 =r[b_1,\ldots,b_n];
 \\ 
-0& \mbox{  otherwise }
+0& \mbox{  otherwise. }
 \end{cases}$$
 \end{definition}
 
@@ -324,19 +323,19 @@ $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i
 %& \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'. \end{cases}\]
 %\end{definition}
 
-If we consider arbitrary T-norms, Definition~\ref{def:Rexp} is too generous over regular expressions. If $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^\ast),\mathcal L(b^\ast))\lneq \mathcal R(a,b)$ unless $R(a,b)$ is idempotent. But a norm where all values are idempotent is necessarily G\"odel's minimum T-norm. 
+If we consider arbitrary T-norms, Definition~\ref{def:Rexp} is too generous over regular expressions. If $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^\ast),\mathcal L(b^\ast))= \mathcal R(a,b)$ only if  $R(a,b)$ is idempotent. But a norm where all values are idempotent is necessarily G\"odel's minimum T-norm. 
 \\ Nevertheless there are many non-idempotent T-norms which we do want to consider, \eg\ 
-$$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p\\ \min(x,y) & \mbox{ otherwise }
-\end{cases}$$, where $p\in [0,1]$. 
+$$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p;\\ \min(x,y) & \mbox{ otherwise,}
+\end{cases}$$ where $p\in [0,1]$. 
 
-Thus Definition~\ref{def:Rexp} needs to be conservatively extended as follows.
+Thus, Definition~\ref{def:Rexp} needs to be conservatively extended as follows.
 
 \begin{definition}[Similarity on Regular Expressions - General T-norm] \label{def:Rexpg}
 Let $r,s$ be restricted regular expressions over $\Sigma$, and $\mathcal{R}$ a similarity on $\Sigma$, define inductively the following proximity relation
 $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                        \mathcal{R}(a,b)  & \mbox{ if } r=a \mbox{ and } s=b; \\
-                                                       \otimes \mathcal{R}^E(r_1,s_1)+\mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
-                                                       \otimes \mathcal{R}^E(r_1,s_1)\cdot\mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1\cdot r_2 \mbox{ and } s=s_1\cdot s_2; \\
+                                                      \mathcal{R}^E(r_1,s_1)  \otimes\mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
+                                                      \mathcal{R}^E(r_1,s_1) \otimes \mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1\cdot r_2 \mbox{ and } s=s_1\cdot s_2; \\
                                                        \bigwedge_n \otimes^n \mathcal{R}^E(r_1,s_1)  & \mbox{ if } r=r_1^\ast \mbox{ and } s=s_1^\ast; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
@@ -385,7 +384,7 @@ L(p)=L(q)
 
 \begin{remark}\label{rem:syntax-semantics-exceptions}
 \hfill \begin{enumerate}
-\item Definition~\ref{def:Rexp} is syntax-sensitive.
+\item Definition~\ref{def:Rexp} is syntax-sensitive, see Lemma~\ref{lemma:syntactic-similarity}.
 Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^E$-similarity.
 For example, depending on the base relation on symbols, one may have
 \[
@@ -399,6 +398,13 @@ The reason is that $\mathcal{R}^E$ only compares the shape of the expressions.
 So $\mathcal{R}^E$ can be positive as long as the corresponding subexpressions look similar, even if the crisp languages are empty or different.
 \end{enumerate}
 \end{remark}
+
+\begin{lemma}[Finite Syntactic Similarity]\label{lemma:syntactic-similarity}
+If $\Sigma$ is finite for for all $r$ the set $\{ s\mid \mathcal R^E(s,r)\}$ is finite.
+\end{lemma}
+\begin{proof}
+By induction.
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -501,36 +507,40 @@ $$
   \cR(a,b)\otimes \mathcal{R}^w(w,v)\ge\cut,\ \text{and } bv \in \mathcal{L}
 \}.
 $$
-\end{definition}[Fuzzy Expression  Derivative]\label{def:regex-fuzzy-derivative}
-\begin{definition}
+\end{definition}
+
+\begin{definition}[Fuzzy Expression  Derivative]\label{def:regex-fuzzy-derivative}
 Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
 $0<\cut\le 1$. The \emph{fuzzy derivative} of $r$ with respect to $a$ and
 $\cut$ is
 \[
   \mathcal D_a^\cut(r)
   =
-  \sum\nolimits_{\mathcal R(a, b)\otimes \mathcal R^{\mathcal E}( s, r)\geq \mu}
-  \mathcal D_b(s),
+  \sum_{\mathcal R(a, b)\otimes \mathcal R^{E}( s, r)\geq \mu}
+  \mathcal D_b(s).
 \]
 \end{definition}
 
 \begin{definition}\label{def:fuzzy-word-derivative}
-    The fuzzy derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
+    The $\mu$-fuzzy derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
     $$
-    \partial^\cut_u(\mathcal{L}) = \bigcup_{\cut'\otimes \cut''\geq \cut}\partial^{\cut'}_v(\partial^{\cut''}_a(\mathcal{L}))
+    \partial^\cut_u(\mathcal{L}) = \bigcup_{\cut'\otimes \cut''\geq \cut}\partial^{\cut'}_v(\partial^{\cut''}_a(\mathcal{L})).
     $$
 \end{definition}
 
+
 \begin{definition}\label{def:regex-fuzzy-word-derivative}
-The fuzzy derivative of a restricted regular expression with respect to a word is defined
+The $\mu$-fuzzy derivative of a restricted regular expression with respect to a word is defined
 recursively by
 \[
   \mathcal D_\varepsilon^\cut(r)=r,
   \qquad
-  \mathcal D_{av}^\cut(r)=\mathcal D_v^\cut(\mathcal D_a^\cut(r))
+  \mathcal D_{av}^\cut(r)=\sum_{\mu'\otimes\mu''\geq \mu}\mathcal D_v^{\cut'}(\mathcal D_a^{\cut''}(r))
 \]
 for $a\in\Sigma$ and $v\in\Sigma^*$.
 \end{definition}
+Notice that both Definition~\ref{def:regex-fuzzy-derivative} and Definition~\ref{def:regex-fuzzy-word-derivative} are purely syntactic in that, by Lemma~\ref{lemma:syntactic-similarity}, the summands in the sums are finite. 
+ 
 
 
 
