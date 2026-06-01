@@ -15,15 +15,8 @@ Module CanonicalizationCorrectness (X : OSYM).
   Module Export RS := RegexSemantics X.
   Module Export C  := Canonicalization X.
 
-
-  Lemma conc_void_l (K : language) :
-    Languages.conc (A:=A) (Languages.void (A:=A)) K =i Languages.void (A:=A).
-  Proof.
-    move=> w; rewrite /Languages.void.
-    apply/negP => H.
-    have [u [v [_ [Hu _]]]] := Languages.concP (A:=A) H.
-    by rewrite /pred0 in Hu.
-  Qed.
+  (* Basic language facts used to justify the normalization rules for
+     concatenation and Kleene star. *)
 
   Lemma conc_void_r (L : language) :
     Languages.conc (A:=A) L (Languages.void (A:=A)) =i Languages.void (A:=A).
@@ -144,7 +137,7 @@ Module CanonicalizationCorrectness (X : OSYM).
     }
     move=> w; apply/idP/idP.
     - move=> H.
-      have [xs [_ [Hflat Hall]]] := Languages.starP (A:=A) H.
+      have [xs [Hxs Hall]] := Languages.starP (A:=A) H.
       have Hfold :
         forall ys, Languages.all_in (A:=A) (Languages.star (A:=A) L) ys ->
           Languages.star (A:=A) L (Languages.flatten_words ys).
@@ -154,9 +147,9 @@ Module CanonicalizationCorrectness (X : OSYM).
           exact (star_cat _ _ Hx (IH Hys)).
       }
       have : Languages.star (A:=A) L (Languages.flatten_words xs) := Hfold xs Hall.
-      by move/eqP: Hflat => <-.
+      by rewrite (Languages.splits_flatten (w:=w) Hxs).
     - move=> H.
-      have [xs [Hxs [Hflat Hall]]] := Languages.starP (A:=A) H.
+      have [xs [Hxs Hall]] := Languages.starP (A:=A) H.
       have Hall_star :
         forall ys, Languages.all_in (A:=A) L ys ->
           Languages.all_in (A:=A) (Languages.star (A:=A) L) ys.
@@ -167,9 +160,12 @@ Module CanonicalizationCorrectness (X : OSYM).
       }
       have Hall' : Languages.all_in (A:=A) (Languages.star (A:=A) L) xs := Hall_star xs Hall.
       exact: (Languages.starP_inv (A:=A) (L:=Languages.star (A:=A) L) (w:=w) (xs:=xs)
-                                  Hxs Hflat Hall').
+                                  Hxs Hall').
   Qed.
 
+
+  (* Equality facts for the ordering used by normalization. When sorting and
+     removing duplicates, an Eq comparison must mean literal syntax equality. *)
 
   Lemma cmpR_eq : forall r s, cmpR r s = Eq -> r = s.
   Proof.
@@ -211,6 +207,9 @@ Module CanonicalizationCorrectness (X : OSYM).
     by rewrite E.
   Qed.
 
+
+  (* Membership facts for normalized sums. They show that filtering Empty,
+     sorting, and removing duplicates preserve the language of a plus-chain. *)
 
   Lemma mem_Top (w : word) : (w \in Top) = true.
   Proof. by rewrite /Top -topredE /= /Languages.void. Qed.
@@ -308,6 +307,9 @@ Module CanonicalizationCorrectness (X : OSYM).
     rewrite /xs0 has_cat (mem_plus_terms r w) (mem_plus_terms s w).
     by [].
   Qed.
+
+  (* Membership facts for normalized intersections. They mirror the plus-chain
+     facts, using all instead of has because intersection means conjunction. *)
 
   Lemma mem_mkAnd_list (xs : seq regex) (w : word) :
     (w \in mkAnd_list xs) = all (fun r => w \in r) xs.
@@ -428,21 +430,23 @@ Module CanonicalizationCorrectness (X : OSYM).
   Qed.
 
 
-  Lemma Seq_Eps_l (r : regex) : (forall w, (w \in Seq Eps r) = (w \in r)).
+  (* Semantic facts for normalized concatenation chains. *)
+
+  Lemma seq_eps_l (r : regex) : (forall w, (w \in Seq Eps r) = (w \in r)).
   Proof.
     move=> w.
     rewrite -topredE /=.
     exact: (conc_eps_l (den r) w).
   Qed.
 
-  Lemma Seq_Eps_r (r : regex) : (forall w, (w \in Seq r Eps) = (w \in r)).
+  Lemma seq_eps_r (r : regex) : (forall w, (w \in Seq r Eps) = (w \in r)).
   Proof.
     move=> w.
     rewrite -topredE /=.
     exact: (conc_eps_r (den r) w).
   Qed.
 
-  Lemma Seq_assoc (r1 r2 r3 : regex) : Seq (Seq r1 r2) r3 ≈ Seq r1 (Seq r2 r3).
+  Lemma seq_assoc (r1 r2 r3 : regex) : Seq (Seq r1 r2) r3 ≈ Seq r1 (Seq r2 r3).
   Proof.
     move=> w.
     rewrite -!topredE /=.
@@ -456,10 +460,10 @@ Module CanonicalizationCorrectness (X : OSYM).
       mkConc_list (us ++ vs) ≈ Seq (mkConc_list us) (mkConc_list vs).
     {
       elim=> [|x us IH] vs w /=.
-      - by rewrite (Seq_Eps_l (mkConc_list vs) w).
+      - by rewrite (seq_eps_l (mkConc_list vs) w).
       - case: us IH => [|x2 us' IH] /=.
         + case: vs => [|y vs] /=.
-          * by rewrite (Seq_Eps_r x w).
+          * by rewrite (seq_eps_r x w).
           * by [].
         + have Hseq :
               Seq x (mkConc_list ((x2 :: us') ++ vs)) ≈
@@ -469,7 +473,7 @@ Module CanonicalizationCorrectness (X : OSYM).
             - exact: (IH vs).
           }
           move: (Hseq w).
-          rewrite -(Seq_assoc x (mkConc_list (x2 :: us')) (mkConc_list vs) w).
+          rewrite -(seq_assoc x (mkConc_list (x2 :: us')) (mkConc_list vs) w).
           by [].
     }
     exact: (aux xs zs).
@@ -498,7 +502,7 @@ Module CanonicalizationCorrectness (X : OSYM).
         have -> : x = Eps.
         { move: Ex; rewrite /isEps; by case: x. }
         move=> w.
-        rewrite (Seq_Eps_l (mkConc_list (y :: ys)) w).
+        rewrite (seq_eps_l (mkConc_list (y :: ys)) w).
         exact: (IH w).
       + (* keep x *)
         move=> w.
@@ -572,6 +576,9 @@ Module CanonicalizationCorrectness (X : OSYM).
       by rewrite Heps.
   Qed.
 
+  (* Each smart constructor preserves the language of the raw constructor it
+     normalizes. These are the direct building blocks for canonize_correct. *)
+
   Lemma mkStar_correct (r : regex) (w : word) :
     (w \in mkStar r) = (w \in Star r).
   Proof.
@@ -599,9 +606,9 @@ Module CanonicalizationCorrectness (X : OSYM).
     by rewrite negbK.
   Qed.
 
-  (* ------------------------------------------------------------------ *)
-  (* Main theorem: canonicalization preserves denotation                *)
-  (* ------------------------------------------------------------------ *)
+  (* Canonicalization does not change the language of a regex: every word is
+     accepted by the normal form exactly when it is accepted by the original
+     expression. *)
 
   Theorem canonize_correct (r : regex) (w : word) :
     (w \in canonize r) = (w \in r).
@@ -624,14 +631,64 @@ Module CanonicalizationCorrectness (X : OSYM).
       exact: ((RS.re_equiv_Neg IH) w).
   Qed.
 
-
-  Lemma canonize_equiv (r : regex) : canonize r ≈ r.
-  Proof. by move=> w; exact: canonize_correct. Qed.
-
-  Lemma canonize_idem_lang (r : regex) : canonize (canonize r) ≈ canonize r.
+  (* If the executable structural equality test returns true, the two regexes
+     are literally the same Coq value. *)
+  Lemma eq_regex_sound : forall r s, eq_regex r s -> r = s.
   Proof.
-    move=> w; rewrite !canonize_correct.
-    reflexivity.
+    elim=> [| |a |r1 IH1 r2 IH2 |r1 IH1 r2 IH2 |r IH |r1 IH1 r2 IH2 |r IH]
+          [| |b |s1 s2 |s1 s2 |s |s1 s2 |s] //= H.
+    - by move/eqP: H => ->.
+    - move/andP: H => [H1 H2].
+      have -> : r1 = s1 := IH1 _ H1.
+      have -> : r2 = s2 := IH2 _ H2.
+      by [].
+    - move/andP: H => [H1 H2].
+      have -> : r1 = s1 := IH1 _ H1.
+      have -> : r2 = s2 := IH2 _ H2.
+      by [].
+    - by have -> : r = s := IH _ H.
+    - move/andP: H => [H1 H2].
+      have -> : r1 = s1 := IH1 _ H1.
+      have -> : r2 = s2 := IH2 _ H2.
+      by [].
+    - by have -> : r = s := IH _ H.
   Qed.
 
+  (* Every regex is structurally equal to itself according to eq_regex. *)
+  Lemma eq_regex_refl : forall r, eq_regex r r.
+  Proof.
+    elim=> [| |a |r1 IH1 r2 IH2 |r1 IH1 r2 IH2 |r IH |r1 IH1 r2 IH2 |r IH] /=;
+      by rewrite ?eqxx ?IH ?IH1 ?IH2.
+  Qed.
+
+  (* Literal Coq equality implies that the executable equality test succeeds. *)
+  Lemma eq_regex_complete : forall r s, r = s -> eq_regex r s.
+  Proof.
+    move=> r s ->.
+    exact: eq_regex_refl.
+  Qed.
+
+  (* Canonicalization/Normalization:
+     r ~ s <-> nf(r) = nf(s). *)
+  Theorem similar_iff_nf_eq (r s : regex) :
+    similar r s <-> nf r = nf s.
+  Proof.
+    split.
+    - move=> H.
+      exact: eq_regex_sound H.
+    - move=> H.
+      exact: eq_regex_complete H.
+  Qed.
+
+  (* Soundness of normalization:
+     if r ~ s, then L(r) = L(s), hence r ≡ s. *)
+  Theorem similar_sound (r s : regex) :
+    similar r s -> r ≈ s.
+  Proof.
+    move=> H w.
+    have Hcanon : canonize r = canonize s := eq_regex_sound H.
+    rewrite -(canonize_correct r w).
+    rewrite -(canonize_correct s w).
+    by rewrite Hcanon.
+  Qed.
 End CanonicalizationCorrectness.

@@ -21,33 +21,10 @@ Module BoolSym <: OSYM.
     | true,  true  => Eq
     end.
 
-  Lemma cmpA_refl : forall a, cmpA a a = Eq.
-  Proof. by case. Qed.
-
   Lemma cmpA_eq_axiom : forall a b, reflect (a = b)
     (if cmpA a b is Eq then true else false).
   Proof.
     by case; case; constructor.
-  Qed.
-
-  Lemma cmpA_trans : forall a b c (x : comparison),
-      cmpA a b = x -> cmpA b c = x -> cmpA a c = x.
-  Proof.
-    by case; case; case; case; simpl; try congruence.
-  Qed.
-
-  Lemma cmpA_neg : forall a b, cmpA b a = CompOpp (cmpA a b).
-  Proof. by case; case. Qed.
-
-  Definition leA : rel A :=
-    fun a b => if cmpA a b is Gt then false else true.
-
-  Lemma leA_refl : reflexive leA.
-  Proof. by move=> a; rewrite /leA cmpA_refl. Qed.
-
-  Lemma leA_total : total leA.
-  Proof.
-    move=> a b; rewrite /leA cmpA_neg; by case: (cmpA b a).
   Qed.
 End BoolSym.
 
@@ -57,6 +34,17 @@ Import C.
 (* Shorthand symbols *)
 Definition a : regex := Char false.
 Definition b : regex := Char true.
+
+(* Example/checking helpers. These are not part of the formal definition of
+   similarity; they just make the Compute examples below easier to read. *)
+Definition same_syntax (r s : regex) : bool :=
+  eq_regex r s.
+
+Definition same_after_canon (r s : regex) : bool :=
+  similar r s.
+
+Definition different_but_canon_same (r s : regex) : bool :=
+  ~~ same_syntax r s && same_after_canon r s.
 
 (* Example 1: (a + ∅) + (b + a)  vs  (a + b) *)
 Definition r1 : regex := Alt (Alt a Empty) (Alt b a).

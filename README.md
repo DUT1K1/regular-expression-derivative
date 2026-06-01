@@ -13,7 +13,7 @@ The repository has two main parts:
 
 The paper develops the theory in the following order.
 
-1. **Preliminaries**
+1. **Basic definitions**
 
    The paper defines alphabets, words, languages, regular expressions, semantic interpretation, nullability, canonical forms, and semantic equivalence.
 
@@ -36,6 +36,19 @@ The paper develops the theory in the following order.
 ## Paper-to-Rocq map
 
 The following table maps the main definitions, lemmas, propositions, and theorems from the paper to their Rocq locations.
+
+### Section 2: Basic Definitions
+
+| Paper item | Rocq formalization |
+|---|---|
+| Definition: Alphabet, words, and languages | Alphabet: `coq/src/Alphabet.v`, module types `SYM`, `OSYM`, `FINSYM`, `OFINSYM`. Words and languages: `coq/src/Languages.v`, definitions `word`, `language`. Language operations: `coq/src/Languages.v`, definitions `void`, `eps`, `atom`, `plus`, `conc`, `star`, `prod`, `compl` |
+| Definition: (Restricted) Regular Expressions | `coq/src/RegexSemantics.v`, inductive definition `regex`; definition `restricted_regex` |
+| Definition: Semantic interpretation | `coq/src/RegexSemantics.v`, definition `den`; language-side definitions imported from `coq/src/Languages.v`: `void`, `eps`, `atom`, `plus`, `conc`, `star`, `prod`, `compl` |
+| Definition: Nullable regular expressions | `coq/src/Nullable.v`, definitions `has_eps`, `nu`; proofs `nullable_correct`, `mem_nu` |
+| Definition: Semantic equivalence | `coq/src/RegexSemantics.v`, definitions `lang_eq`, `re_equiv`, `semantic_equiv`; proofs `lang_eq_refl`, `lang_eq_sym`, `lang_eq_trans`, `re_equiv_refl`, `re_equiv_sym`, `re_equiv_trans` |
+| Definition: Similarity (`~`) | `coq/src/Canonicalization.v`, definitions `nf`, `similar`; normalization definitions `mkPlus`, `mkConc`, `mkStar`, `mkAnd`, `mkNot`, `canonize`, `eq_regex` |
+| Lemma: Canonicalization/Normalization | `coq/src/CanonicalizationCorrectness.v`, theorem/proof `similar_iff_nf_eq`; supporting proofs `eq_regex_sound`, `eq_regex_refl`, `eq_regex_complete` |
+| Lemma: Soundness of normalization | `coq/src/CanonicalizationCorrectness.v`, theorem/proof `similar_sound`; supporting proof `canonize_correct` |
 
 | Paper item | Paper location | Rocq location |
 |---|---|---|
