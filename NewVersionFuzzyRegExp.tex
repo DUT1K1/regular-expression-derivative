@@ -44,6 +44,8 @@
 \usetikzlibrary{arrows.meta,positioning}
 
 \def\eg{{\em e.g. }}
+\def\ie{{\em i.e. }}
+\def\Eg{{\em E.g. }}
 \newcommand{\cR}{{\mathcal R}}
 \def\cut{\mu}
 \newtheorem{definition}{Definition}[section]
@@ -336,10 +338,11 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                        \mathcal{R}(a,b)  & \mbox{ if } r=a \mbox{ and } s=b; \\
                                                       \mathcal{R}^E(r_1,s_1)  \otimes\mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
                                                       \mathcal{R}^E(r_1,s_1) \otimes \mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1\cdot r_2 \mbox{ and } s=s_1\cdot s_2; \\
-                                                       \bigwedge_n \otimes^n \mathcal{R}^E(r_1,s_1)  & \mbox{ if } r=r_1^\ast \mbox{ and } s=s_1^\ast; \\
+                                                       \inf_n( \otimes^n \mathcal{R}^E(r_1,s_1) ) & \mbox{ if } r=r_1^\ast \mbox{ and } s=s_1^\ast; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
 \end{definition}
+{\color{red} I think that the definition of $\ ^\ast$ is now too strict for a general T-norm. I don't think we can achieve a satisfactory definition for a general T-norm, unless we replace it with a finite union.}
 
 
 
@@ -400,7 +403,7 @@ So $\mathcal{R}^E$ can be positive as long as the corresponding subexpressions l
 \end{remark}
 
 \begin{lemma}[Finite Syntactic Similarity]\label{lemma:syntactic-similarity}
-If $\Sigma$ is finite for for all $r$ the set $\{ s\mid \mathcal R^E(s,r)\}$ is finite.
+If $\Sigma$ is finite for all $r$ the set $\{ s\mid \mathcal R^E(s,r)\neq 0\}$ is finite.
 \end{lemma}
 \begin{proof}
 By induction.
@@ -1090,6 +1093,36 @@ Hence $\mathcal{L}(M^\cut) = \mathcal{L}^\cut_\Sigma(r)$, as required.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Formalization in Rocq}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparison with Related Work (tentative)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Since the introduction of fuzzy automata by Santos [31–33] and Wee [39,40] in the late 1960s, many authors have addressed the topic of fuzzyfying the theory of regular languages. Most of these approaches have taken the standard view of fuzzy sets as functions in some lattice ordered monoid. In an important line of research, see \cite{LP06,SC12,GJT17}, fuzzification of regular expressions is achieved by introducing a scalar $\lambda\in \mathcal L$ to the algebra of regualr expressions with the intendend meaning that membership to the induced language is multiplied by $\lambda$. Our approach is somewhat different, since we have taken a more quantitative and metric view, using the notion of proximity and hence similarity in the forefront. 
+
+Nevertheless the two approaches can be related as follows, where we take $\mathcal L$ to be just [0,1]. Given a crisp alphabet $\Sigma$, where similarity between characters is 0, we may introduced for each $a\in \Sigma$  new alphabet symbols $a^\lambda$ for $\lambda\in [0,1]$, with the intended meaning that $a^1$ stands for $a$, and define a similarity relation as follows\\
+$\mathcal R^\lambda(a_1,a_2)=\begin{cases} \lambda_1 \otimes \lambda_2& \mbox{ if } a_1=a^{\lambda_1} \mbox{ and } a_2=a^{\lambda_2} \\
+                                                           0 & \mbox{ otherwise.}
+\end{cases}$\\ We denote with $\Sigma^\Lambda$ the extended alphabet.
+
+Given any $\alpha \in \mathcal R \mathcal L$ we can inductively define a regular expression $r^{\alpha,\lambda}\in E$ as follows:\\
+$r^{\alpha,\lambda}=\begin{cases} a^{\lambda'\otimes \lambda} & \mbox{ if } \alpha=\lambda' a;\\
+ a_1^{\alpha_1,\lambda\otimes \lambda'} & \mbox{ if } \alpha=\lambda \alpha_1;\\
+ a_1^{\alpha_1,\lambda}\cdot  a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 \cdot \alpha_2;\\
+ a_1^{\alpha_1,\lambda}+  a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 + \alpha_2;\\
+ (a_1^{\alpha_1,\lambda})^\ast & \mbox{ if } \alpha= ( \alpha_1)^\ast.
+
+\end{cases}$\\
+
+One can prove that the following holds, using the notation in \cite{SC12}.
+\begin{proposition} Let $\alpha \in \mathcal R \mathcal L$, then for all $\mu$, we have $||\alpha ||(a_1\ldots a_n)\geq \mu$  then:
+\begin{enumerate} 
+\item there exists $\lambda_1,\ldots \lambda_n$ such that  $\lambda_1\otimes  \ldots \otimes \lambda_n\geq \lambda$ and $a_1^{\lambda_1}\ldots a_n^{\lambda_N}\in \mathcal L(r^{\alpha,1})$;
+%\item given $\alpha\in \mathcal{LR}$ denote by $\overline{\alpha}$ the regular expression where all scalars are erased, \ie taken to be 1, then $\mathcal R^E(\overline{\alpha}, r^{\alpha,\lambda})$
+\end{enumerate}
+\end{proposition}
+
+
 
 
 
