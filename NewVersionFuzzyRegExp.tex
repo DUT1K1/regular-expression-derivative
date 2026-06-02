@@ -146,14 +146,14 @@ We define the \emph{nullable} function $\nu$ by
 
 Equivalently, $\nu$ is characterized by the following equations:
 \[
-\begin{array}{c}
-     \nu(\emptyset)=\emptyset \\[1ex]
+\begin{array}{ll}
+     \nu(\emptyset)=\emptyset &
      \nu(\varepsilon)=\varepsilon  \\[1ex]
-     \nu(a)=\emptyset \quad (a \in \Sigma) \\[1ex]
+     \nu(a)=\emptyset \quad (a \in \Sigma)&
      \nu(r+s) = \nu(r) + \nu(s) \\[1ex]
-     \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) \\[1ex]
+     \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) &
      \nu(r^*) = \varepsilon \\[1ex]
-     \nu(r\:\&\:s) = \nu(r) \: \& \: \nu(s) \\[1ex]
+     \nu(r\:\&\:s) = \nu(r) \: \& \: \nu(s) &
      \nu(\neg r)= 
      \begin{cases}
          \varepsilon & \text{if } \nu(r) = \emptyset, \\
@@ -357,8 +357,8 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
 \end{definition}
-{\color{red} I think that the definition of $\ ^\ast$ is now too strict for a general T-norm. I don't think we can achieve a satisfactory definition for a general T-norm, unless we replace it with a finite union.}
 
+The definition of similarity for $(\ )^\ast$ is indeed rather strict for a general T-norm, but no definition for a general T-norm seems reasonable unless we replace it with a finite union. 
 
 
 \begin{lemma} \hfill \begin{enumerate}
@@ -376,11 +376,11 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
 
 
 
-\begin{lemma}\label{thm:syntax-semantics}
-For all restricted regular expressions $r_1,r_2\in R^\Sigma$,
-\[
-\mathcal{R}^{E}(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).
-\]
+\begin{lemma}\label{thm:syntax-semantics}For all restricted regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in L(r_1)$ and $w_2\in L(r_2)$ of the same length:\begin{enumerate}
+\item $\mathcal{R}^{E}(r_1,r_2)\; \leq \;\mathcal R^w(u,v);$
+\item $\mathcal{R}^{E}(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).$
+
+\end{enumerate}
 \end{lemma}
 \begin{theorem}\label{thm:Rr-RL-bridge}
 For all restricted regular expressions $r$ and $s$, the value
@@ -1130,11 +1130,8 @@ $r^{\alpha,\lambda}=\begin{cases} a^{\lambda'\otimes \lambda} & \mbox{ if } \alp
 \end{cases}$\\
 
 One can prove that the following holds, using the notation in \cite{SC12}.
-\begin{proposition} Let $\alpha \in \mathcal R \mathcal L$, then for all $\mu$, we have $||\alpha ||(a_1\ldots a_n)\geq \mu$  then:
-\begin{enumerate} 
-\item there exists $\lambda_1,\ldots \lambda_n$ such that  $\lambda_1\otimes  \ldots \otimes \lambda_n\geq \lambda$ and $a_1^{\lambda_1}\ldots a_n^{\lambda_N}\in \mathcal L(r^{\alpha,1})$;
+\begin{proposition} Let $\alpha \in \mathcal R \mathcal L$, then for all $\mu$, we have that if  $||\alpha ||(a_1\ldots a_n)\geq \mu$  then there exists $\lambda_1,\ldots \lambda_n$ such that  $\lambda_1\otimes  \ldots \otimes \lambda_n\geq \lambda$ and $a_1^{\lambda_1}\ldots a_n^{\lambda_N}\in \mathcal L(r^{\alpha,1})$;
 %\item given $\alpha\in \mathcal{LR}$ denote by $\overline{\alpha}$ the regular expression where all scalars are erased, \ie taken to be 1, then $\mathcal R^E(\overline{\alpha}, r^{\alpha,\lambda})$
-\end{enumerate}
 \end{proposition}
 
 
