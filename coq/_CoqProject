@@ -7,7 +7,7 @@ src/Canonicalization.v
 src/ExamplesCanonicize.v
 src/Derivatives.v
 src/DerivativeExamples.v
-src/Similarity.v
+src/SimilarityRelations.v
 src/CanonicalizationCorrectness.v
 src/Automata.v
 src/AutomataConstruction.v

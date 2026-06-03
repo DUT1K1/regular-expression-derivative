@@ -95,24 +95,24 @@ The following table maps the main definitions, lemmas, propositions, and theorem
 | Executable DFA construction pseudocode | `tex/sections/automata_construction.tex` | `coq/src/AutomataConstruction.v`, `goto`, `construct_dfa` |
 | Correctness of executable DFA construction | `tex/sections/automata_construction.tex` | todo |
 | DFA minimality theorem | `tex/sections/automata_construction.tex` | todo — proved only in paper and yet to be formalized |
-| Fuzzy relation `S × S -> [0,1]` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `simval`, `fuzzy_rel` |
-| Minimum T-norm | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `smin` |
-| Cut value | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `cut_value` |
-| μ-cut relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `mu_cut` |
-| Proximity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `is_proximity` |
-| Similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `is_similarity` |
-| Similarity on words `R^w` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rw` |
-| `R^w` is reflexive | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rw_refl` |
-| `R^w` is symmetric | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rw_sym` |
-| `R^w` is transitive under minimum T-norm | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rw_trans` |
-| `R^w` is a similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rw_is_similarity` |
-| Similarity on languages `R^L` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `RL`, `SupL`, `InfL` |
-| `R^L` is a similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `RL_is_similarity` |
-| Restricted regular expressions | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `classical_regex` |
-| Syntactic similarity on regex `R^e` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rr` |
-| `R^e` is a similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rr_is_similarity` |
-| Syntax-to-semantics inequality `R^e(r,s) ≤ R^L(L(r),L(s))` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `syntax_semantics_inequality` |
-| Bridge theorem between `R^e` and `R^L` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/Similarity.v`, `Rr_RL_bridge` |fuzzy_proximity_similarity_relation.tex` | todo — proved only in paper and yet to be formalized |
+| Fuzzy relation `S × S -> [0,1]` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `simval`, `fuzzy_rel` |
+| Minimum T-norm | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `smin` |
+| Cut value | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `cut_value` |
+| μ-cut relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `mu_cut` |
+| Proximity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `is_proximity` |
+| Similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `is_similarity` |
+| Similarity on words `R^w` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rw` |
+| `R^w` is reflexive | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rw_refl` |
+| `R^w` is symmetric | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rw_sym` |
+| `R^w` is transitive under minimum T-norm | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rw_trans` |
+| `R^w` is a similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rw_is_similarity` |
+| Similarity on languages `R^L` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `RL`, `SupL`, `InfL` |
+| `R^L` is a similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `RL_is_similarity` |
+| Restricted regular expressions | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `classical_regex` |
+| Syntactic similarity on regex `R^e` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rr` |
+| `R^e` is a similarity relation | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rr_is_similarity` |
+| Syntax-to-semantics inequality `R^e(r,s) ≤ R^L(L(r),L(s))` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `syntax_semantics_inequality` |
+| Bridge theorem between `R^e` and `R^L` | `tex/sections/fuzzy_proximity_similarity_relation.tex` | `coq/src/SimilarityRelations.v`, `Rr_RL_bridge` |fuzzy_proximity_similarity_relation.tex` | todo — proved only in paper and yet to be formalized |
 | Fuzzy language derivative `∂^μ_a(L)` | `tex/sections/fuzzy_similarity_derivative.tex` | todo |
 | μ-cut equivalence on symbols | `tex/sections/fuzzy_similarity_derivative.tex` | todo — proved only in paper and yet to be formalized |
 | μ-cut equivalence on words | `tex/sections/fuzzy_similarity_derivative.tex` | todo — proved only in paper and yet to be formalized |

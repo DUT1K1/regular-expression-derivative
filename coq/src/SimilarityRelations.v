@@ -1,5 +1,5 @@
 From mathcomp Require Import ssreflect ssrfun ssrbool eqtype ssrnat seq.
-Require Import Reals Lra ClassicalEpsilon.
+Require Import Reals Lra ClassicalEpsilon FunctionalExtensionality.
 
 From regexderiv Require Import Languages.
 From regexderiv Require Import Alphabet.
@@ -11,7 +11,7 @@ Unset Printing Implicit Defensive.
 Local Open Scope R_scope.
 
 
-Module Similarity (X : OSYM).
+Module SimilarityRelations (X : SYM).
   Import X.
 
   Module RS := RegexSemantics X.
@@ -57,6 +57,27 @@ Module Similarity (X : OSYM).
     - exfalso.
       apply Hnxx.
       apply Rle_refl.
+  Qed.
+
+  Lemma smin0l (x : simval) : 0 <= x -> smin 0 x = 0.
+  Proof.
+    unfold smin.
+    destruct (Rle_dec 0 x) as [H|H].
+    - reflexivity.
+    - contradiction.
+  Qed.
+
+  Lemma smin0r (x : simval) : 0 <= x -> smin x 0 = 0.
+  Proof.
+    move=> Hx.
+    unfold smin.
+    destruct (Rle_dec x 0) as [H|H].
+    - assert (x = 0) by lra.
+      subst x.
+      destruct (Rle_dec 0 0) as [_|Hn].
+      + reflexivity.
+      + exfalso. apply Hn. lra.
+    - reflexivity.
   Qed.
 
   Lemma smin_shuffle (a b c d : simval) :
@@ -1263,28 +1284,356 @@ Module Similarity (X : OSYM).
         exact (Rr_trans r1 r2 r).
     Qed.
 
-    Lemma syntax_semantics_inequality :
-      forall r s, Rr r s <= RL (RS.den r) (RS.den s).
-    Proof.
-      (* TODO *)
-    Admitted.
+    Inductive classical_regex : regex -> Prop :=
+    | ClassicalEmpty : classical_regex RS.Empty
+    | ClassicalEps : classical_regex RS.Eps
+    | ClassicalChar : forall a, classical_regex (RS.Char a)
+    | ClassicalAlt : forall r s,
+        classical_regex r -> classical_regex s -> classical_regex (RS.Alt r s)
+    | ClassicalSeq : forall r s,
+        classical_regex r -> classical_regex s -> classical_regex (RS.Seq r s)
+    | ClassicalStar : forall r,
+        classical_regex r -> classical_regex (RS.Star r).
 
-    Definition Rr_candidate_values (r s : regex) : simval -> Prop :=
+    Lemma Rw_cat :
+      forall u1 u2 v1 v2,
+        smin (Rw u1 u2) (Rw v1 v2) <= Rw (u1 ++ v1) (u2 ++ v2).
+    Proof.
+      elim=> [|a1 t1 IH] [|a2 t2] v1 v2 //=.
+      - apply smin_ler.
+      - eapply Rle_trans.
+        + apply smin_lel.
+        + exact (proj1 (Rw_range v1 (a2 :: t2 ++ v2))).
+      - eapply Rle_trans.
+        + apply smin_lel.
+        + exact (proj1 (Rw_range (a1 :: t1 ++ v1) v2)).
+      - eapply Rle_trans.
+        + apply le_smin.
+          * eapply Rle_trans.
+            -- apply smin_lel.
+            -- apply smin_lel.
+          * eapply Rle_trans.
+            -- apply le_smin.
+               ++ eapply Rle_trans.
+                  ** apply smin_lel.
+                  ** apply smin_ler.
+               ++ apply smin_ler.
+            -- exact (IH t2 v1 v2).
+        + apply Rle_refl.
+    Qed.
+
+    Lemma star_prepend_word (L : language) (u v : word) :
+      L u = true ->
+      Languages.star L v ->
+      Languages.star L (u ++ v).
+    Proof.
+      case: u => [|a u] Hu Hv /=.
+      - exact Hv.
+      - apply: (Languages.star_cons_split_inv (A:=A) (L:=L) (a:=a) (w:=u ++ v)).
+        exists u, v.
+        by repeat split.
+    Qed.
+
+    Lemma classical_match_word :
+      forall r s w,
+        classical_regex r ->
+        classical_regex s ->
+        RS.den r w = true ->
+        Rr r s = 0 \/
+        exists u, RS.den s u = true /\ Rr r s <= Rw w u.
+    Proof.
+      move=> r s w Hr.
+      move: s w.
+      induction Hr as
+        [| | a
+        | r1 r2 Hr1 IH1 Hr2 IH2
+        | r1 r2 Hr1 IH1 Hr2 IH2
+        | r Hr IH];
+        intros t x Ht Hx.
+      - by rewrite /= in Hx.
+      - inversion Ht; subst; simpl in *.
+        + left; reflexivity.
+        + move/eqP: Hx => ->.
+          right. exists [::]. split; first by [].
+          simpl.
+          apply Rle_refl.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+      - case: Ht => [| |b|r1 r2 ? ?|r1 r2 ? ?|r1 ?] /=.
+        + left; reflexivity.
+        + left; reflexivity.
+        + move/eqP: Hx => ->.
+          right. exists [:: b]. split.
+          * by rewrite /RS.atom /Languages.atom eqxx.
+          rewrite /=.
+          apply le_smin.
+          * apply Rle_refl.
+          * exact (proj2 (R_range a b)).
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+      - case: Ht => [| |b|s1 s2 Hs1 Hs2|s1 s2 Hs1 Hs2|s1 Hs1] /=.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + move/orP: Hx => [Hx1|Hx2].
+          * have [H0|[u [Hu Hle]]] := IH1 _ _ Hs1 Hx1.
+            -- left.
+               rewrite H0.
+               apply smin0l.
+               exact (proj1 (Rr_range r2 s2)).
+            -- right. exists u. split.
+               ++ apply/orP. left. exact Hu.
+                eapply Rle_trans.
+                ++ apply smin_lel.
+                ++ exact Hle.
+          * have [H0|[u [Hu Hle]]] := IH2 _ _ Hs2 Hx2.
+            -- left.
+               rewrite H0.
+               apply smin0r.
+               exact (proj1 (Rr_range r1 s1)).
+            -- right. exists u. split.
+               ++ apply/orP. right. exact Hu.
+                eapply Rle_trans.
+                ++ apply smin_ler.
+                ++ exact Hle.
+        + left; reflexivity.
+        + left; reflexivity.
+      - case: Ht => [| |b|s1 s2 Hs1 Hs2|s1 s2 Hs1 Hs2|s1 Hs1] /=.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + have [u1 [u2 [-> [Hu1 Hu2]]]] := Languages.concP (A:=A) Hx.
+          have [H01|[v1 [Hv1 Hle1]]] := IH1 _ _ Hs1 Hu1.
+          * left.
+            rewrite H01.
+            apply smin0l.
+            exact (proj1 (Rr_range r2 s2)).
+          * have [H02|[v2 [Hv2 Hle2]]] := IH2 _ _ Hs2 Hu2.
+            -- left.
+               rewrite H02.
+               apply smin0r.
+               exact (proj1 (Rr_range r1 s1)).
+            -- right. exists (v1 ++ v2). split.
+               ++ apply: (Languages.concP_inv (A:=A)).
+                  exists v1, v2. by repeat split.
+               ++ eapply Rle_trans.
+                  ** apply le_smin.
+                     --- eapply Rle_trans.
+                         +++ apply smin_lel.
+                         +++ exact Hle1.
+                     --- eapply Rle_trans.
+                         +++ apply smin_ler.
+                         +++ exact Hle2.
+                  ** apply Rw_cat.
+        + left; reflexivity.
+      - case: Ht => [| |b|s1 s2 Hs1 Hs2|s1 s2 Hs1 Hs2|s1 Hs1] /=.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + left; reflexivity.
+        + have [xs [Hxs Hall]] := Languages.starP (A:=A) Hx.
+          have Hflatx : Languages.flatten_words xs = x
+            by exact: (Languages.splits_flatten (A:=A) Hxs).
+          have Hblocks :
+            forall zs,
+              Languages.all_in (RS.den r) zs ->
+              Rr r s1 = 0 \/
+              exists v, RS.star (RS.den s1) v = true /\
+                        Rr r s1 <= Rw (Languages.flatten_words zs) v.
+          {
+            elim=> [|z zs IHz] /=.
+            - move=> _.
+              right. exists [::].
+              split.
+              + exact: (Languages.star_nil (A:=A) (RS.den s1)).
+              + destruct (Rr_range r s1) as [_ H1].
+                eapply Rle_trans.
+                * exact H1.
+                * simpl. apply Rle_refl.
+            - move=> /andP [Hz Hzs].
+              have [H0|[y [Hy Hzy]]] := IH _ _ Hs1 Hz.
+              + left. exact H0.
+              + have [H0'|[v [Hv Htailv]]] := IHz Hzs.
+                * left. exact H0'.
+                * right. exists (y ++ v). split.
+                  -- apply star_prepend_word; assumption.
+                  -- eapply Rle_trans.
+                     ++ apply le_smin; [exact Hzy | exact Htailv].
+                     ++ apply Rw_cat.
+          }
+          have [H0|[v [Hv Hle]]] := Hblocks xs Hall.
+          * left. exact H0.
+          * right. exists v. split; first exact Hv.
+            rewrite -Hflatx.
+            exact Hle.
+    Qed.
+
+    Lemma le_SupL_witness :
+      forall (L : language) (f : word -> simval)
+             (Hub : upper_bounded_on L f) c w,
+        L w = true ->
+        c <= f w ->
+        c <= @SupL L f Hub.
+    Proof.
+      move=> L f Hub c w Hw Hle.
+      eapply Rle_trans.
+      - exact Hle.
+      - apply (@SupL_upper L f Hub w Hw).
+    Qed.
+
+    Lemma syntax_semantics_sup_right :
+      forall r s w,
+        classical_regex r ->
+        classical_regex s ->
+        RS.den r w = true ->
+        Rr r s <= @SupL (RS.den s) (fun w2 => Rw w w2)
+                   (Rw_upper_bounded_right w (RS.den s)).
+    Proof.
+      move=> r s w Hr Hs Hw.
+      have [H0|[u [Hu Hle]]] := classical_match_word Hr Hs Hw.
+      - rewrite H0.
+        apply SupL_nonneg.
+        move=> w2 Hw2.
+        exact (proj1 (Rw_range w w2)).
+      - exact: (le_SupL_witness (Rw_upper_bounded_right w (RS.den s)) Hu Hle).
+    Qed.
+
+    Lemma syntax_semantics_directed :
+      forall r s,
+        classical_regex r ->
+        classical_regex s ->
+        Rr r s <=
+        @InfL (RS.den r)
+          (fun w1 => @SupL (RS.den s) (fun w2 => Rw w1 w2)
+                      (Rw_upper_bounded_right w1 (RS.den s)))
+          (outer_lower_bounded_left (RS.den r) (RS.den s)).
+    Proof.
+      move=> r s Hr Hs.
+      destruct (excluded_middle_informative (lang_nonempty (RS.den r))) as [Hne|Hempty].
+      - apply (@InfL_greatest_nonempty
+                 (RS.den r)
+                 (fun w1 => @SupL (RS.den s) (fun w2 => Rw w1 w2)
+                             (Rw_upper_bounded_right w1 (RS.den s)))
+                 (outer_lower_bounded_left (RS.den r) (RS.den s))
+                 (Rr r s) Hne).
+        move=> w Hw.
+        exact: (syntax_semantics_sup_right Hr Hs Hw).
+      - rewrite (@InfL_empty
+                   (RS.den r)
+                   (fun w1 => @SupL (RS.den s) (fun w2 => Rw w1 w2)
+                               (Rw_upper_bounded_right w1 (RS.den s)))
+                   (outer_lower_bounded_left (RS.den r) (RS.den s)) Hempty).
+        destruct (Rr_range r s) as [_ H1].
+        exact H1.
+    Qed.
+
+    Lemma syntax_semantics_inequality :
+      forall r s,
+        classical_regex r ->
+        classical_regex s ->
+        Rr r s <= RL (RS.den r) (RS.den s).
+    Proof.
+      move=> r s Hr Hs.
+      unfold RL.
+      apply le_smin.
+      - exact: (syntax_semantics_directed Hr Hs).
+      - assert (Heq :
+          @InfL (RS.den s)
+            (fun w2 => @SupL (RS.den r) (fun w1 => Rw w1 w2)
+                        (Rw_upper_bounded_left w2 (RS.den r)))
+            (outer_lower_bounded_right (RS.den r) (RS.den s))
+          =
+          @InfL (RS.den s)
+            (fun w1 => @SupL (RS.den r) (fun w2 => Rw w1 w2)
+                        (Rw_upper_bounded_right w1 (RS.den r)))
+            (outer_lower_bounded_left (RS.den s) (RS.den r))).
+        {
+          apply InfL_eq_ext.
+          intros w Hw.
+          apply SupL_eq_ext.
+          intros u Hu.
+          apply Rw_sym.
+        }
+        rewrite Heq (Rr_sym r s).
+        exact: (syntax_semantics_directed Hs Hr).
+    Qed.
+
+    Lemma re_equiv_den_eq :
+      forall r s, RS.re_equiv r s -> RS.den r = RS.den s.
+    Proof.
+      move=> r s H.
+      apply functional_extensionality=> w.
+      exact: (H w).
+    Qed.
+
+    Definition classical_Rr_candidate_values (r s : regex) : simval -> Prop :=
       fun x =>
         exists r' s' t u,
+          classical_regex r' /\
+          classical_regex s' /\
+          classical_regex t /\
+          classical_regex u /\
           RS.re_equiv r' r /\
           RS.re_equiv s' s /\
           RS.re_equiv t u /\
           x = smin (Rr r' t) (Rr s' u).
 
+    Lemma classical_Rr_candidate_values_upper :
+      forall r s x,
+        classical_regex r ->
+        classical_regex s ->
+        classical_Rr_candidate_values r s x ->
+        x <= RL (RS.den r) (RS.den s).
+    Proof.
+      move=> r s x Hr Hs [r' [s' [t [u [Hr' [Hs' [Ht [Hu [Hrr [Hss [Htu ->]]]]]]]]]]].
+      have Hrt : Rr r' t <= RL (RS.den r') (RS.den t).
+      { exact: (syntax_semantics_inequality Hr' Ht). }
+      have Hsu : Rr s' u <= RL (RS.den s') (RS.den u).
+      { exact: (syntax_semantics_inequality Hs' Hu). }
+      have Hrr_eq : RS.den r' = RS.den r := re_equiv_den_eq Hrr.
+      have Hss_eq : RS.den s' = RS.den s := re_equiv_den_eq Hss.
+      have Htu_eq : RS.den t = RS.den u := re_equiv_den_eq Htu.
+      have Hsu_t : Rr s' u <= RL (RS.den s') (RS.den t).
+      { rewrite -Htu_eq in Hsu. exact Hsu. }
+      have Hstep :
+        smin (RL (RS.den r') (RS.den t)) (RL (RS.den s') (RS.den t))
+        <= RL (RS.den r') (RS.den s').
+      {
+        have HtransRL :
+          forall L1 L2 L3, smin (RL L1 L2) (RL L2 L3) <= RL L1 L3 :=
+          proj2 (proj2 RL_is_similarity).
+        rewrite (RL_sym (RS.den s') (RS.den t)).
+        exact: (HtransRL (RS.den r') (RS.den t) (RS.den s')).
+      }
+      eapply Rle_trans.
+      - apply smin_mono; [exact Hrt | exact Hsu_t].
+      - eapply Rle_trans.
+        + exact Hstep.
+        + rewrite Hrr_eq Hss_eq.
+          apply Rle_refl.
+    Qed.
+
     Theorem Rr_RL_bridge :
       forall r s,
-        is_lub (Rr_candidate_values r s) (RL (RS.den r) (RS.den s)).
+        classical_regex r ->
+        classical_regex s ->
+        is_lub (classical_Rr_candidate_values r s) (RL (RS.den r) (RS.den s)).
     Proof.
-      (* TODO *)
+      (* TODO:
+         The upper-bound direction now follows from
+         [classical_Rr_candidate_values_upper].
+         The missing lower-bound direction is a completeness result:
+         one must show that every semantic similarity value between two
+         classical regex languages can be realized by suitable classical
+         equivalent rewrites. *)
     Admitted.
 
 
   End BaseSymbolSimilarity.
 
-End Similarity.
+End SimilarityRelations.
