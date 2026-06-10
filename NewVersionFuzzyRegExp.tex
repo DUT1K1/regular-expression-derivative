@@ -377,8 +377,8 @@ The definition of similarity for $(\ )^\ast$ is indeed rather strict for a gener
 
 
 \begin{lemma}\label{thm:syntax-semantics}For all restricted regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in L(r_1)$ and $w_2\in L(r_2)$ of the same length:\begin{enumerate}
-\item $\mathcal{R}^{E}(r_1,r_2)\; \leq \;\mathcal R^w(u,v);$
-\item $\mathcal{R}^{E}(r_1,r_2)\; \leq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).$
+\item $\mathcal{R}^{E}(r_1,r_2)\; \geq \; \mathcal R^w(w_1,w_2);$
+\item $\mathcal{R}^{E}(r_1,r_2)\; \geq \;\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr).$
 
 \end{enumerate}
 \end{lemma}
@@ -1133,6 +1133,7 @@ One can prove that the following holds, using the notation in \cite{SC12}.
 \begin{proposition} Let $\alpha \in \mathcal R \mathcal L$, then for all $\mu$, we have that if  $||\alpha ||(a_1\ldots a_n)\geq \mu$  then there exists $\lambda_1,\ldots \lambda_n$ such that  $\lambda_1\otimes  \ldots \otimes \lambda_n\geq \lambda$ and $a_1^{\lambda_1}\ldots a_n^{\lambda_N}\in \mathcal L(r^{\alpha,1})$;
 %\item given $\alpha\in \mathcal{LR}$ denote by $\overline{\alpha}$ the regular expression where all scalars are erased, \ie taken to be 1, then $\mathcal R^E(\overline{\alpha}, r^{\alpha,\lambda})$
 \end{proposition}
+
 
 
 
