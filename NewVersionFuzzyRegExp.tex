@@ -375,8 +375,13 @@ The definition of similarity for $(\ )^\ast$ is indeed rather strict for a gener
 %\[\emptyset,\ \varepsilon,\ a \in \Sigma\]using only the constructors $+$, $\cdot$, and ${}^\ast$.Equivalently, restricted regular expressions are those that do not use $\wedge$ or $\neg$.\end{definition}
 
 
-%\begin{theorem}\label{thm:Rr-RL-bridge}For all restricted regular expressions $r$ and $s$, the value $\mathcal{R}^L\bigl(L(r),L(s)\bigr)$ is given by:
-%\[\sup\Bigl\{\min\bigl(\mathcal{R}^E(r',p),\mathcal{R}^E(s',q)\bigr)\;\Bigm|\; r',s',p,q \in R^\Sigma,\; L(r')=L(r),\;L(s')=L(s),\; L(p)=L(q)\Bigr\}.\]\end{theorem}
+{\color{red}\begin{theorem}\label{thm:Rr-RL-bridge}For all restricted regular expressions $r_1$ and $r_2$,
+\begin{enumerate} 
+\item $\mathcal R^E(r_1,r_2)\leq \mathcal R^L(L(r_1),L(r_2));$
+\item the value $\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is given by:
+\[\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in E^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2),\Bigr\}.\]
+\end{enumerate}
+\end{theorem}}
 
 
 
@@ -393,7 +398,8 @@ For example, depending on the base relation on symbols, one may have
 even though $L(a+b)=L(b+a)$. 
 \item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in L(r_1)$ and $w_2\in L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
 \item We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example we can put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. we shall not pursue this.
-%\item Lemma~\ref{thm:syntax-semantics}  and Theorem~\ref{thm:Rr-RL-bridge} are not true for  regular expressions when $\wedge$ and $\neg$ are allowed.
+\item %Lemma~\ref{thm:syntax-semantics}  and 
+{\color{red}Theorem~\ref{thm:Rr-RL-bridge} is not true for  regular expressions when $\wedge$ and $\neg$ are allowed. For instance, if $\mathcal R(a,b)\gneq 0$ but $a\neq b$ we have that $L(a\cap b)=\emptyset$ and hence $\mathcal R^L(L(a\cap a),L(a\cap b))=0$ but $\mathcal R^E(L(a\cap a),L(a\cap b))=\mathcal R(a,b)$. }
 %The reason is that $\mathcal{R}^E$ only compares the shape of the expressions. So $\mathcal{R}^E$ can be positive as long as the corresponding subexpressions look similar, even if the crisp languages are empty or different.
 \end{enumerate}
 \end{remark}
