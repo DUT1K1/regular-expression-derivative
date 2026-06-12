@@ -378,8 +378,9 @@ The definition of similarity for $(\ )^\ast$ is indeed rather strict for a gener
 {\color{red}\begin{theorem}\label{thm:Rr-RL-bridge}For all restricted regular expressions $r_1$ and $r_2$,
 \begin{enumerate} 
 \item $\mathcal R^E(r_1,r_2)\leq \mathcal R^L(L(r_1),L(r_2));$
-\item the value $\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is given by:
-\[\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in E^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2),\Bigr\}.\]
+\item $\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is bounded below by:
+\[\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)\geq
+\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in R^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2)\Bigr\}.\]
 \end{enumerate}
 \end{theorem}}
 
