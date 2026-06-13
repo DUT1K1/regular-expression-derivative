@@ -351,7 +351,7 @@ Thus, Definition~\ref{def:Rexp} needs to be conservatively extended as follows.
 Let $r,s$ be restricted regular expressions over $\Sigma$, and $\mathcal{R}$ a similarity on $\Sigma$, define inductively the following proximity relation
 $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                        \mathcal{R}(a,b)  & \mbox{ if } r=a \mbox{ and } s=b; \\
-                                                      \min\big (\mathcal{R}^E(r_1,s_1),  \mathcal{R}^E(r_2,s_2) \big )& \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
+                                                      {\color{blue}\min\!{\big\{\mathcal{R}^E(r_1,s_1),  \mathcal{R}^E(r_2,s_2) \big\}}}& \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
                                                       \mathcal{R}^E(r_1,s_1) \otimes \mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1\cdot r_2 \mbox{ and } s=s_1\cdot s_2; \\
                                                        \inf_n( \otimes^n \mathcal{R}^E(r_1,s_1) ) & \mbox{ if } r=r_1^\ast \mbox{ and } s=s_1^\ast; \\
                                                         0 & \mbox{ otherwise.}
@@ -373,16 +373,19 @@ The definition of similarity for $(\ )^\ast$ is indeed rather strict for a gener
 %\begin{definition}[Restricted regular expressions]
 %A regular expression is called \emph{restricted} if it is generated from
 %\[\emptyset,\ \varepsilon,\ a \in \Sigma\]using only the constructors $+$, $\cdot$, and ${}^\ast$.Equivalently, restricted regular expressions are those that do not use $\wedge$ or $\neg$.\end{definition}
+ 
 
-
-{\color{red}\begin{theorem}\label{thm:Rr-RL-bridge}For all restricted regular expressions $r_1$ and $r_2$,
+\begin{theorem}\label{thm:Rr-RL-bridge}For all restricted regular expressions $r_1$ and $r_2$,
 \begin{enumerate} 
-\item $\mathcal R^E(r_1,r_2)\leq \mathcal R^L(L(r_1),L(r_2));$
-\item $\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is bounded below by:
+\item$\mathcal R^E(r_1,r_2)\leq \mathcal R^L(L(r_1),L(r_2));$
+
+\item{\color{blue}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)=\sup\limits_{\substack{L(r_1)=L(r'_1)\\L(r_2)=L(r'_2)}}\mathcal{R}^E(r_1',r_2')$}
+
+\item {\color{red}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is bounded below by:
 \[\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)\geq
-\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in R^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2)\Bigr\}.\]
+\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in R^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2)\Bigr\}.\]}
 \end{enumerate}
-\end{theorem}}
+\end{theorem}
 
 
 
