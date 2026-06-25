@@ -41,7 +41,7 @@ Fix a cut value $0<\mu\le1$. A similarity relation satisfies reflexivity, symmet
 Similarity is extended from symbols to regular expressions, words, and languages.
 \begin{definition}\hfill\\
 $\bullet$ \textbf{Similarity on regular expressions and on words.}
-For $r_1,r_2\in E^\Sigma$ define
+For regular expressions $r_1,r_2\in E^\Sigma$ define
 $
 \mathcal R^e:E^\Sigma\times E^\Sigma\to[0,1]$
  by \[\mathcal R^{e}(r_1,r_2)=\begin{cases}\min_{1\le i\le n}\mathcal R(a_i,b_i) &\text{ if } r_1=r[a_1,\ldots,a_n]\text{ and }r_2=r[b_1,\ldots,b_n];
@@ -137,7 +137,7 @@ $\partial_a^\mu(L)$ is regular, and if $r$ is a regular expression, then $\mathc
 \end{theorem}
 
 \begin{theorem}[Finiteness]\label{finiteness}
-If $\Sigma$ is finite, $0<\mu\le1$, and $L\subseteq\Sigma^\ast$ is regular, then\\
+If the alphabet $\Sigma$ is finite  and $L\subseteq\Sigma^\ast$ is regular, then for all  $0<\mu\le1$ the set 
 $
 \{\partial_u^\mu(L)\mid u\in\Sigma^\ast\}
 $
@@ -169,8 +169,7 @@ Finally, Theorem~\ref{main} allows us to show that ordinary derivative
 automata, over the quotient alphabet $\Sigma^\mu$, capture fuzzy derivatives.
 
 
-\begin{theorem}\label{main} For every symbol $a\in\Sigma$, if $0<\mu\le1$ and $L\subseteq\Sigma^\ast$ is regular, then\\
-\mbox{$
+\begin{theorem}\label{main} If $a\in\Sigma$ and $L\subseteq\Sigma^\ast$ is regular,  then for all cut value  $0<\mu\le1$, we have  \mbox{$
 \partial_a^\mu(L)
 =
 \{w\in\Sigma^\ast\mid
