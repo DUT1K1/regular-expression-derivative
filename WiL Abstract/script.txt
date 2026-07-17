@@ -1,0 +1,347 @@
+
+--- TITLE ------------------------------------------------------------
+Hello everyone, thank you for having me. I'm Mariam Katamashvili, and this
+is my joint work with David Maisuradze Fuzzifying Derivatives of regular 
+expressions and formalizing it in rocq. ...
+
+
+--- OUTLINE ----------------------------------------------------------
+...
+
+
+=====================================================================
+ SECTION 1 -- DERIVATIVES
+=====================================================================
+
+--- Running a regular expression -------------------------------------
+Here's the basic question: we've got a pattern, we've got a word,
+does the word match? There are two classic ways to answer that.
+
+The textbook way is to compile the pattern into an automaton and run
+the word through the machine, using something like Thompson, or
+Glushkov, or the subset construction.
+
+The other way, which is the one we take, is to never build a machine at
+all. You just *differentiate* the pattern. And the key point is
+that differentiating gives you the automaton anyway, without you ever
+setting out to build one.
+
+
+--- The derivative of a regular expression ---------------------------
+So what's a derivative? The derivative of r with respect to a symbol a
+is "what's left to match after we've read an a."
+
+On languages it's straightforward: take every word in the language that
+starts with a, and chop off that a. On expressions we compute it by
+recursion on the syntax, and these are the rules..
+
+Most of the rules are what we'd expect. Differentiating a symbol by
+itself gives the empty word, since the symbol is fully consumed; and
+differentiating it by any other symbol gives the empty set, since
+nothing matches.
+
+
+Little example at the bottom: differentiate "ab plus ac" by a, and we
+get "b plus c", which is exactly the two ways to continue after an a.
+
+
+--- Derivatives with respect to a word -------------------------------
+We extend this from single symbols to whole words the obvious way:
+differentiate by the first letter, then by the rest. Same recipe on
+languages and on expressions.
+
+And in the example, if we differentiate "ab plus ac" by the whole
+word "ab", we land on epsilon, which is exactly the statement that
+"ab" is in the language. So matching a word is just: differentiate by
+it, and check whether the result contains epsilon (is nullable).
+
+The theorem at the bottom makes the two worlds line up: differentiating
+the expression and then reading off its language gives us the same
+language as differentiating the language directly. So syntax and semantics
+agree.
+
+
+--- Regularity and finiteness ----------------------------------------
+Two facts we lean on. First, derivatives keep us inside the regular
+languages, so if we differentiate a regular language, it's still
+regular.
+
+Second: over a finite
+alphabet a regular language has only *finitely many* distinct
+derivatives. [i should probably talk more about finiteness here]
+
+
+--- Canonicalization -------------------------------------------------
+There's a catch, though. "Finitely many derivatives" is up to language
+equality, but syntactically the expressions keep growing. We get
+things like "a-star, times epsilon, plus empty-set" that *mean* a-star
+but don't *look* like it.
+
+So we normalize. Every expression gets rewritten to one canonical form,
+using the standard laws for each operator: flatten sums, drop the
+empty set, sort and dedupe; simplify products; collapse the degenerate
+star cases. Two expressions are equivalent under these laws exactly when
+their canonical forms are literally the same syntax tree.
+
+Take the example: the expression on the left collapses to just
+"a plus b plus a-star."
+
+One caveat here. These laws are a finite set, but they do not
+capture *full* semantic equivalence. In fact Salomaa, and later Kozen,
+showed there is no finite purely equational axiomatization of
+regular-expression equivalence at all, and the culprit is the star,
+which can only ever be approximated by finitely many equations.
+
+
+=====================================================================
+ SECTION 2 -- AUTOMATA
+=====================================================================
+
+--- From derivatives to automata -------------------------------------
+Reading a symbol is taking a derivative, and there
+are only finitely many canonical derivatives, so let the canonical
+derivatives *be* the states.
+
+Start state is the expression itself, transitions are "derive and
+canonicalize," and a state is accepting when it can match the empty
+word. That's the whole DFA, and it accepts exactly the language of the
+expression.
+
+One remark worth making: if we could quotient by *full*
+semantic equivalence we'd get the minimal automaton. Canonical forms
+get us a finite one, usually minimal, though not always.
+
+
+--- Constructing the automaton ---------------------------------------
+Operationally it's just a graph search. Start at the canonical start
+state, and for each symbol: derive, canonicalize, and look at what we
+get. If it's a state we've already seen, just record the transition
+and stop. If it's new, add it and recurse. When nothing new shows up,
+we're done. That's the pseudocode on the right.
+
+
+--- Example: the automaton of s-star --------------------------------
+Let's run the pseudocode on an example. Our pattern is s-star, where s
+is "a, or m, or r-then-i."
+
+[1] We start at the start state, q0, the canonical form of s-star. The
+algorithm now says: go through the alphabet one symbol at a time and
+differentiate q0 by each. So we take the symbols in order, a, m, r, i.
+
+[2] First symbol, a. Differentiating q0 by a, naively, gives this
+unwieldy expression, namely "epsilon plus empty plus empty-times-i, all
+times s-star." Left as-is, that would be a brand new state, in red.
+
+[3] But we canonicalize, and it *folds right back into q0*, so a just
+loops back to where we are. We move on to the next symbol, m, and it
+behaves in exactly the same way, another self-loop on q0. This is the
+crucial point: without canonicalization every step would spawn a fresh
+state and the construction would never stop. 
+
+[4] On to the next symbol, r. Differentiating q0 by r gives something
+genuinely new, "i times s-star." Since this is a state we have not seen
+before, the algorithm adds it as q1, records the edge from q0 to q1,
+and then, importantly, starts over from q1. This is the recursion:
+whenever we discover a new state, we pause where we are, go and explore
+that new state fully, differentiating it by every symbol, before coming
+back - so basically we are doing a dfs.
+
+[5] So now we are working from q1, going through its symbols in turn.
+Reading a, m, or r from q1 all fail, so we get the empty set, which is
+another new state, the dead state q2. We add it and recurse once more,
+into q2; but q2 differentiates to itself on every symbol, so it only
+loops, and that branch closes right away.
+
+[6] The last symbol left for q1 is i, which completes the r-i block and
+lands back on q0, a state we already have, so we simply record the edge.
+That was the final symbol for q1, so q1 is now fully explored, and we
+climb back up to where we paused at q0.
+
+[7] Back at q0, the one symbol we had not reached yet is i.
+Differentiating q0 by i sends us straight to the dead state q2, which we
+already have, since reading an i with no r before it fails. We record
+that edge.
+
+[8] Now every state has been differentiated by every symbol and nothing
+new has appeared, so the construction halts. We mark the accepting
+states, which here is just q0. 
+
+
+=====================================================================
+ SECTION 3 -- ROCQ
+=====================================================================
+
+
+--- Why formalize, and what is Rocq? ---------------------------------
+This theory is easy to state and surprisingly easy to get subtly wrong,
+whether it's the concatenation case, the star case, or the finiteness
+argument. "It's obvious" and "I checked it on paper" are precisely
+where mistakes hide. So we formalize it.
+
+Rocq, which you may know as Coq, is an interactive proof assistant.
+We state a theorem, we build a proof, and a tiny trusted kernel
+verifies every step. Nothing is left on trust. It's the same tool that
+checked the CompCert C compiler and the Four Colour Theorem.
+
+
+--- Type theory and constructive logic -------------------------------
+Rocq's foundation is a dependent type theory. By the
+Curry-Howard correspondence, a proposition *is* a type and a proof *is*
+a term of that type, so proving something means literally constructing
+a term.
+
+And because the logic is constructive, proofs carry computational
+content: a proof that something exists actually provides the witness.
+That will matter shortly, when I mention finiteness.
+
+
+--- What a proof really is -------------------------------------------
+Concretely, here's the semantic-syntactic correspondence, which says
+"w is in the derivative of r by u exactly when u-followed-by-w is in
+r." And here's the entire proof: three tactic lines. Induction on the
+word, a rewrite, and some bookkeeping about concatenation.
+
+--- The term the kernel checks ---------------------------------------
+And just so you believe those three lines are real, this is what they
+elaborate to: the actual proof term the kernel checks, with every
+tactic unfolded. This is the object that's verified. I won't read it;
+the point is only that the three lines are backed by *that*.
+
+
+=====================================================================
+ SECTION 4 -- FUZZY LAYER
+=====================================================================
+
+--- When exact matching is too strict --------------------------------
+Everything so far hangs on one yes-or-no question: are these two
+symbols the *exact same* symbol? And often that's too strict. Real text
+is noisy: typos, lookalike characters, an "l" that is really a "1".
+OCR and speech recognition don't hand us a clean symbol at all; they
+hand us each symbol with a confidence, a best guess that could easily
+have been a close neighbour, so insisting on exact equality throws that
+information away. And in DNA, the letters are not really interchangeable
+tokens: chemically some bases are much closer than others, so a near
+match there is genuinely meaningful, not just a typo to tolerate.
+
+So we'd like the pattern to keep matching when the input is merely
+*close*. And the question we ask is minimal: keep the
+crisp derivative theory *exactly* as it is, and change one single
+thing, which is that matching two symbols now means matching up to
+mu-similarity.
+
+
+--- Two ways to fuzzify ----------------------------------------------
+Fuzzy regular languages aren't new, and there are two routes. One puts
+the fuzziness on *membership*, so a word belongs to a language to a
+degree in the interval. The other one, puts it on
+*similarity*, so membership stays yes-or-no, but the equality
+underneath it goes graded.
+
+We take the similarity route on purpose: closeness is a property of the
+data itself, the letters, the bases, the sounds, rather than a number
+attached to the language afterwards. We are simply softening the
+equality of symbols.
+
+
+--- Similarity relations on symbols ----------------------------------
+So we grade how close two symbols are with a fuzzy relation R into the
+unit interval. We ask for two levels of structure. Proximity:
+reflexive and symmetric, meaning every symbol is fully like itself, and
+closeness is mutual. Similarity: additionally a reverse triangle
+inequality with respect to a T-norm.
+
+A T-norm is just conjunction generalized to the interval; throughout,
+we take Godel's minimum. And a *cut* value mu turns degrees back into
+yes-or-no, so two symbols count as matching when their similarity is at
+least mu.
+
+
+--- From symbols to words and languages ------------------------------
+Now we define similarity on words. Two words of the same length are
+compared letter by letter: we take the similarity of each pair of
+symbols in matching positions and combine them with the T-norm. Two
+words of different lengths get similarity zero. And for languages we use
+this two-sided inf-sup: every word on each side has to have a close
+partner on the other. Both of these are again similarity relations.
+
+
+--- Similarity on expressions ----------------------------------------
+We also define similarity on expressions. Two expressions of the *same
+shape* are compared by the similarity of the symbols in matching
+positions. But notice this is syntax-sensitive: "a plus b" and "b plus
+a" denote the same language, yet their expression-similarity can be
+zero. So shape matters here, and we'll have to be careful about that.
+
+
+--- Similarity on expressions: general T-norm ------------------------
+For a general T-norm the same-shape formula is too generous, so we give
+a proper inductive definition on the structure of restricted
+expressions. Under Godel's minimum it agrees with the simple version,
+so for the rest of the talk we can keep the simpler picture in mind.
+
+
+--- Shape bounds meaning ---------------------------------------------
+Here's how syntax and semantics relate in the fuzzy world. Syntactic
+similarity is always a *lower bound* on the semantic one, and we
+recover the true semantic value by ranging over all expressions with
+the right languages, taking the most similar representatives.
+
+One important caveat: intersection and complement break this bridge. So
+all our fuzzy theorems live on the *restricted* fragment, so union,
+concatenation, and star.
+
+
+--- Fuzzy derivatives ------------------------------------------------
+Now the derivative itself. A symbol counts as read when it's
+mu-*similar* to the input, not only when it's equal. On languages,
+that's the fuzzy language derivative. On expressions, the fuzzy
+derivative is a *sum* of ordinary Brzozowski derivatives, taken over
+all symbols and sub-expressions close enough to the ones we have.
+
+And crucially, that sum is *finite*, because over a finite alphabet
+only finitely many expressions are similar to a given one at all. So we
+have not left the finite, regular setting, and fuzzy derivatives of
+regular expressions remain regular.
+
+
+--- Godel's min: fuzzy = crisp over a quotient -----------------------
+And here's the result that ties the whole talk together. Under Godel's
+minimum, the cut relation isn't just reflexive and symmetric, it's
+also *transitive*. It's an equivalence relation. So we can bundle
+mu-similar symbols into equivalence classes and form a *quotient
+alphabet*.
+
+And then a fuzzy derivative over the original alphabet is *exactly* an
+ordinary, crisp derivative over the quotient alphabet. So the fuzziness
+doesn't require any new theory, it just says "work up to the classes."
+
+
+--- Everything carries over ------------------------------------------
+And this is the essential consequence: because the fuzzy theory is just
+the crisp theory read over the quotient alphabet, every earlier result
+transfers without extra work. The syntax-semantics correspondence,
+finiteness of derivatives, and DFA correctness all carry over, and the
+quotient transition reads back as a fuzzy transition, holding to
+degree mu. 
+
+
+=====================================================================
+ CONCLUSION
+=====================================================================
+
+--- Conclusion -------------------------------------------------------
+So, to conclude. The classical derivative theory, all the way to DFA
+correctness, is formalized in Rocq. We fuzzify through *similarity on
+symbols* rather than membership degrees. And the quotient alphabet
+reduces the fuzzy theory to the crisp one, so everything carries over.
+
+What's next: formalizing the fuzzy layer in Rocq too; a properly
+*constructive* finiteness result via normalized representatives, so
+that Kuratowski-finiteness point, which matters because not all notions
+of finiteness coincide constructively; and moving beyond Godel's
+minimum to a general T-norm.
+
+
+--- Thank you --------------------------------------------------------
+Thank you, and I'm happy to take questions.
+
