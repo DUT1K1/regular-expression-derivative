@@ -74,13 +74,15 @@ David Maisuradze\textsuperscript{1}\\[0.75em]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbol matching is fuzzy~\cite{DHMM}. Namely, following similarity-based reasoning~\cite{Sessa2002},
+There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbol matching is fuzzy~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
 we assume that the alphabet is enriched with a {\em similarity relation}
-and that matching is performed up to {\em cut} values. In this extended abstract, we generalize the theory of
+and that matching is performed up to {\em cut} values. In this paper, we generalize the theory of
 Brzozowski~\cite{B64} derivatives, further developed and revisited
 in~\cite{OwensReppyTuron}, which gives a direct construction of automata
 from regular expressions: after reading a word, the current state is represented by the
 corresponding derivative of the expression. Most of our results are formalized in Rocq~\cite{Rocq}.
+
+A preliminary version of this work, by a subset of the authors, appeared as an extended abstract at Women in Logic (WiL 2026)~\cite{KM26}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -725,7 +727,7 @@ such word has at least one representative in $\Sigma^*$.
 
 Taking G\"odel's T-norm,  Definition~\ref{def:regex-fuzzy-derivative} of $\mu$-fuzzy language derivatives simplifies in the following way.
 
-\begin{definition}\label{def:regex-fuzzy-derivative}
+\begin{definition}\label{def:regex-fuzzy-derivative-godel}
 Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
 $0<\cut\le 1$. The \emph{fuzzy derivative} of $r$ with respect to $a$ and
 $\cut$ is
@@ -806,7 +808,7 @@ $0 < \cut \le 1$. Then
 \end{theorem}
 
 \begin{proof}[Proof sketch]{\color{red} Needs to be checked}
-For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative} gives
+For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative-godel} gives
 \[
   \mathcal L(\mathcal D_a^\cut(r))
   =
@@ -1116,7 +1118,7 @@ Hence $\mathcal{L}(M^\cut) = \mathcal{L}^\cut_\Sigma(r)$, as required.
 \section{Comparison with Related Work (tentative)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Since the introduction of fuzzy automata by Santos [31–33] and Wee [39,40] in the late 1960s, many authors have addressed the topic of fuzzyfying the theory of regular languages. Most of these approaches have taken the standard view of fuzzy sets as functions in some lattice ordered monoid. In an important line of research, see \cite{LP06,SC12,GJT17}, fuzzification of regular expressions is achieved by introducing a scalar $\lambda\in \mathcal L$ to the algebra of regular expressions with the intendend meaning that membership to the induced language is multiplied by $\lambda$. Our approach is somewhat different, since we have taken a more quantitative and metric view, using the notion of proximity and hence similarity in the forefront. 
+Since the introduction of fuzzy automata by Santos~\cite{Santos68} and Wee~\cite{Wee67,WeeFu69} in the late 1960s, many authors have addressed the topic of fuzzyfying the theory of regular languages. Most of these approaches have taken the standard view of fuzzy sets as functions in some lattice ordered monoid. In an important line of research, see \cite{LP06,SC12,GJT17}, fuzzification of regular expressions is achieved by introducing a scalar $\lambda\in \mathcal L$ to the algebra of regular expressions with the intendend meaning that membership to the induced language is multiplied by $\lambda$. Our approach is somewhat different, since we have taken a more quantitative and metric view, using the notion of proximity and hence similarity in the forefront. 
 
 Nevertheless the two approaches can be related as follows, taking  $\mathcal L$ to be just [0,1]. Given a crisp alphabet $\Sigma$, where similarity between characters is 0, we may introduce for each $a\in \Sigma$  new alphabet symbols $a^\lambda$ for $\lambda\in [0,1]$, with the intended meaning that $a^1$ stands for $a$, and define a similarity relation as follows\\
 $\mathcal R^\lambda(a_1,a_2)=\begin{cases} \lambda_1 \otimes \lambda_2& \mbox{ if } a_1=a^{\lambda_1} \mbox{ and } a_2=a^{\lambda_2} \\
