@@ -182,7 +182,7 @@ For regular expressions $r,s$ over $\Sigma$, we write
 \end{definition}
 
  \begin{remark}{\bf On the Algebra of Regular Events}
-There are various equational systems that ensure semantic equivalence between regular expressions. In this paper we consider Brzozowski's system~\cite{B62} and its extension by Coquand--Siles~\cite{CoquandRegexEquality}; see Definition~\ref{def:similarity}. It is well known that there is no finite purely equational characterization of semantic equivalence; see~\cite{Salomaa,Kozen}. This is due to the $\ast$ operator, which can only be finitely approximated equationally. Examples of semantically equivalent regular expressions that are not similar, in the sense of Coquand and Siles, are $a^\ast$ and $(\varepsilon+a)^\ast$. Brzozowski's results are significant because, even though there is no finite equational axiomatization of semantic equivalence, a finite approximation of equality is enough to achieve finiteness in derivatives and hence in states.
+There are various equational systems that ensure semantic equivalence between regular expressions. In this paper we consider Brzozowski's system~\cite{B62} and its extension by Coquand--Siles~\cite{CoquandRegexEquality}; see Definition~\ref{def:similarity}. It is well known that there is no finite purely equational characterization of semantic equivalence; see~\cite{Salomaa,Kozen}. This is due to the $\ast$ operator, which can only be finitely approximated equationally. Examples of semantically equivalent regular expressions that are not similar, in the sense of Coquand and Siles, are $a^*$ and $(\varepsilon+a)^*$. Brzozowski's results are significant because, even though there is no finite equational axiomatization of semantic equivalence, a finite approximation of equality is enough to achieve finiteness in derivatives and hence in states.
 \end{remark}
 
 \begin{definition}[Similarity ($\sim$)~\cite{CoquandRegexEquality}]
@@ -257,7 +257,7 @@ Proved in \path{coq/src/CanonicalizationCorrectness.v}, theorem
 \end{proof}
 
 {\bf An aside on substitution} \label{extension}
-Given a regular expression $r[a]$, substitution allows us to generalize the iteration described by $(\ )^\ast$. For instance, we can define
+Given a regular expression $r[a]$, substitution allows us to generalize the iteration described by $(\ )^*$. For instance, we can define
 \[
 \mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n),
 \]
@@ -327,7 +327,7 @@ We define similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \ri
 \end{cases}$$
 \end{definition}
 \begin{definition}[Similarity on languages]\label{def:RL}
-For languages $L_1,L_2\subseteq \Sigma^*$ define a proxmity relation $\mathcal{R}^L:\mathcal P(\Sigma^\ast)\times \mathcal P(\Sigma^\ast)\to [0,1]$ as follows
+For languages $L_1,L_2\subseteq \Sigma^*$ define a proxmity relation $\mathcal{R}^L:\mathcal P(\Sigma^*)\times \mathcal P(\Sigma^*)\to [0,1]$ as follows
 \[
 \mathcal{R}^L(L_1,L_2)\;=\;
 \min\!\Bigl\{
@@ -351,7 +351,7 @@ $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i
 %& \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'. \end{cases}\]
 %\end{definition}
 
-If we consider arbitrary T-norms, Definition~\ref{def:Rexp} is too generous over regular expressions. If $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^\ast),\mathcal L(b^\ast))= \mathcal R(a,b)$ only if  $R(a,b)$ is idempotent. But a norm where all values are idempotent is necessarily G\"odel's minimum T-norm. 
+If we consider arbitrary T-norms, Definition~\ref{def:Rexp} is too generous over regular expressions. If $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  $\mathcal R(a,b)$ is idempotent. But a norm where all values are idempotent is necessarily G\"odel's minimum T-norm. 
 \\ Nevertheless there are many non-idempotent T-norms which we do want to consider, \eg\ 
 $$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p;\\ \min(x,y) & \mbox{ otherwise,}
 \end{cases}$$ where $p\in [0,1]$. 
@@ -364,16 +364,16 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                        \mathcal{R}(a,b)  & \mbox{ if } r=a \mbox{ and } s=b; \\
                                                       \min\!{\big\{\mathcal{R}^E(r_1,s_1),  \mathcal{R}^E(r_2,s_2) \big\}}& \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
                                                       \mathcal{R}^E(r_1,s_1) \otimes \mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1\cdot r_2 \mbox{ and } s=s_1\cdot s_2; \\
-                                                       \inf_n( \otimes^n \mathcal{R}^E(r_1,s_1) ) & \mbox{ if } r=r_1^\ast \mbox{ and } s=s_1^\ast; \\
+                                                       \inf_n( \otimes^n \mathcal{R}^E(r_1,s_1) ) & \mbox{ if } r=r_1^* \mbox{ and } s=s_1^*; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
 \end{definition}
 
 We need to use the $\min$ operator in the $+$ clause in Definition~\ref{def:Rexpg} because otherwise Theorem~\ref{thm:Rr-RL-bridge} fails because of the following coounterexample: 
 \(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), and take \(r_1=a+b\) and \(r_2=c+d\). 
-Then \(\mathcal R^L(L(r_1),L(r_2))=0.5\) while \(\mathcal R^E(r_1,r_2)=0.5\cdot0.5=0.25\)
+Then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(r_1,r_2)=0.5\cdot0.5=0.25\)
 
-The definition of similarity for $(\ )^\ast$ is indeed rather strict for a general T-norm, but no definition for a general T-norm seems reasonable unless we replace it with a finite union. 
+The definition of similarity for $(\ )^*$ is indeed rather strict for a general T-norm, but no definition for a general T-norm seems reasonable unless we replace it with a finite union. 
 
 
 \begin{lemma} \hfill \begin{enumerate}
@@ -387,12 +387,12 @@ The definition of similarity for $(\ )^\ast$ is indeed rather strict for a gener
 
 %\begin{definition}[Restricted regular expressions]
 %A regular expression is called \emph{restricted} if it is generated from
-%\[\emptyset,\ \varepsilon,\ a \in \Sigma\]using only the constructors $+$, $\cdot$, and ${}^\ast$.Equivalently, restricted regular expressions are those that do not use $\wedge$ or $\neg$.\end{definition}
+%\[\emptyset,\ \varepsilon,\ a \in \Sigma\]using only the constructors $+$, $\cdot$, and ${}^*$.Equivalently, restricted regular expressions are those that do not use $\wedge$ or $\neg$.\end{definition}
  
 
 \begin{theorem}\label{thm:Rr-RL-bridge}For all restricted regular expressions $r_1$ and $r_2$,
 \begin{enumerate} 
-\item$\mathcal R^E(r_1,r_2)\leq \mathcal R^L(L(r_1),L(r_2));$
+\item$\mathcal R^E(r_1,r_2)\leq \mathcal R^L(\mathcal L(r_1),\mathcal L(r_2));$
 
 %\item{\color{blue}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)=\sup\limits_{\substack{L(r_1)=L(r'_1)\\L(r_2)=L(r'_2)}}\mathcal{R}^E(r_1',r_2')$}
 
@@ -413,11 +413,27 @@ For example, depending on the base relation on symbols, one may have
 \[
 \mathcal{R}^E(a+b,b+a)=0
 \]
-even though $L(a+b)=L(b+a)$. 
-\item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in L(r_1)$ and $w_2\in L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
+even though $\mathcal L(a+b)=\mathcal L(b+a)$.
+\item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in \mathcal L(r_1)$ and $w_2\in \mathcal L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $\mathcal R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $\mathcal R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
 \item We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example we can put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. we shall not pursue this.
 \item %Lemma~\ref{thm:syntax-semantics}  and 
-Theorem~\ref{thm:Rr-RL-bridge} is not true for  regular expressions when $\wedge$ and $\neg$ are allowed. For instance, if $\mathcal R(a,b)\gneq 0$ but $a\neq b$ we have that $L(a\cap b)=\emptyset$ and hence $\mathcal R^L(L(a\cap a),L(a\cap b))=0$ but $\mathcal R^E((a\cap a),(a\cap b))=\mathcal R(a,b)$. We have also that $\mathcal R^L(L(\neg a),L(\neg b))$ is unrelated to $R(a,b)\gneq 0$ , but depends on the existence of other characters in the alphabet. And hence it does not seem exèresisble. {\color{red} Do you have a better argument?} 
+Theorem~\ref{thm:Rr-RL-bridge} is not true for  regular expressions when $\wedge$ and $\neg$ are allowed. For instance, if $\mathcal R(a,b)\gneq 0$ but $a\neq b$ we have that $L(a\cap b)=\emptyset$ and hence $\mathcal R^L(L(a\cap a),L(a\cap b))=0$ but $\mathcal R^E((a\cap a),(a\cap b))=\mathcal R(a,b)$. We have also that $\mathcal R^L(L(\neg a),L(\neg b))$ is unrelated to $R(a,b)\gneq 0$ , but depends on the existence of other characters in the alphabet. And hence it does not seem exèresisble. {\color{red} Do you have a better argument?}
+
+{\color{blue}
+Theorem~\ref{thm:Rr-RL-bridge} is not true for regular expressions when $\&$ and $\neg$ are
+allowed. For instance, if $\mathcal R(a,b)\gneq 0$ but $a\neq b$, we have that
+$\mathcal L(a\,\&\,b)=\emptyset$ and hence
+$\mathcal R^L(\mathcal L(a\,\&\,a),\mathcal L(a\,\&\,b))=0$, but
+$\mathcal R^E(a\,\&\,a,\,a\,\&\,b)=\mathcal R(a,b)$. Similarly, over $\Sigma=\{a,b\}$ we have
+$\mathcal R^E(a+a,a+b)=\mathcal R(a,b)\gneq 0$, but
+$\mathcal R^L(\mathcal L(\neg(a+a)),\mathcal L(\neg(a+b)))=0$, since $b\in\Sigma^*\setminus\{a\}$
+while no word of $\Sigma^*\setminus\{a,b\}$ has length $1$. Nor can any inductive clause
+for $\neg$ repair this, since
+$\mathcal R^L(\mathcal L(\neg a),\mathcal L(\neg b))=
+\min\{\sup_{c\neq a}\mathcal R(a,c),\ \sup_{c\neq b}\mathcal R(b,c)\}$
+depends on which other symbols occur in the alphabet, not on $\mathcal R(a,b)$.
+}
+
 %The reason is that $\mathcal{R}^E$ only compares the shape of the expressions. So $\mathcal{R}^E$ can be positive as long as the corresponding subexpressions look similar, even if the crisp languages are empty or different.
 \end{enumerate}
 \end{remark}
@@ -597,7 +613,7 @@ The following hold.
   \mathcal R^E(r,s)\ge\cut
 \]
  is an equivalence relation on restricted regular expressions.
-\item The relation on $\Sigma^\ast$
+\item The relation on $\Sigma^*$
 
 \[
   w_1\sim_\cut^{\Sigma^*}w_2
@@ -605,7 +621,7 @@ The following hold.
   \mathcal R^w(w_1,w_2)\ge\cut
 \]
  is an equivalence relation on words.
-\item The relation on $\mathcal P(\Sigma^\ast)$
+\item The relation on $\mathcal P(\Sigma^*)$
 
 \[
   L_1\sim_\cut^{\mathcal P(\Sigma^*)}L_2
@@ -794,7 +810,7 @@ Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
 
 \begin{definition}[Fuzzy semantic interpretation] For a restricted regular expression r over $\Sigma$, and and let
 $0 < \cut \le 1$,  its {\em fuzzy semantic interpretation} is the language $\mathcal L^\mu(r)\subseteq \Sigma^{\ast}$ defined as follows 
-\[\mathcal L^\mu (r)=\{w\mid  w\sim_\mu^{\Sigma^\ast}v\mbox{ for } v\in \mathcal L(r)\}.\]
+\[\mathcal L^\mu (r)=\{w\mid  w\sim_\mu^{\Sigma^*}v\mbox{ for } v\in \mathcal L(r)\}.\]
 \end{definition}
 
 \begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
@@ -956,8 +972,8 @@ Hence $\mathcal{L}(M) = \mathcal{L}(r)$.
 
 
 
- If we would take derivatives up to semantic equivalence then we would get minimal automata. If we take derivatives only up to canonical form than this is not the case. For example consider the restricted regualr expressions $a^\ast$ and $(\varepsilon+a)^\ast$. These are semantically equivalent but are not canonically equal.
-The Brzozowski automaton that we get has two derivatives, namely itself and $\mathcal D_a((\varepsilon+a)^\ast) =\mathcal D_a(\varepsilon+a)\cdot(\varepsilon+a)^\ast=\ldots =a^\ast$, but $a^\ast$ is its own derivative. 
+ If we would take derivatives up to semantic equivalence then we would get minimal automata. If we take derivatives only up to canonical form than this is not the case. For example consider the restricted regualr expressions $a^*$ and $(\varepsilon+a)^*$. These are semantically equivalent but are not canonically equal.
+The Brzozowski automaton that we get has two derivatives, namely itself and $\mathcal D_a((\varepsilon+a)^*) =\mathcal D_a(\varepsilon+a)\cdot(\varepsilon+a)^*=\ldots =a^*$, but $a^*$ is its own derivative. 
 
 
 
@@ -1130,8 +1146,7 @@ $r^{\alpha,\lambda}=\begin{cases} a^{\lambda'\otimes \lambda} & \mbox{ if } \alp
  a_1^{\alpha_1,\lambda\otimes \lambda'} & \mbox{ if } \alpha=\lambda \alpha_1;\\
  a_1^{\alpha_1,\lambda}\cdot  a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 \cdot \alpha_2;\\
  a_1^{\alpha_1,\lambda}+  a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 + \alpha_2;\\
- (a_1^{\alpha_1,\lambda})^\ast & \mbox{ if } \alpha= ( \alpha_1)^\ast.
-
+ (a_1^{\alpha_1,\lambda})^* & \mbox{ if } \alpha= ( \alpha_1)^*.
 \end{cases}$\\
 
 One can prove that the following holds, using the notation in \cite{SC12}.
