@@ -33,10 +33,7 @@ David Maisuradze\textsuperscript{1}\\[0.75em]
 \begin{document}
 
 \maketitle
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
-There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbol matching is fuzzy~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
+\begin{abstract}(TO BE COMPLETED)There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbol matching is fuzzy~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
 we assume that the alphabet is enriched with a {\em similarity relation}
 and that matching is performed up to {\em cut} values. In this paper, we generalize the theory of
 Brzozowski~\cite{B64} derivatives, further developed and revisited
@@ -44,7 +41,19 @@ in~\cite{OwensReppyTuron}, which gives a direct construction of automata
 from regular expressions: after reading a word, the current state is represented by the
 corresponding derivative of the expression. Most of our results are formalized in Rocq~\cite{Rocq}.
 
-A preliminary version of this work, by a subset of the authors, appeared as an extended abstract at Women in Logic (WiL 2026)~\cite{KM26}.
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to {\em fuzzyfy} the standard theory of {\em regular languages}. Traditionally this has been done  fuzzfying the theory of finite automata~\cite{C71}, by turning membership functions into lattice-ordered monoids, see \eg\cite{LP06}. Our approach is different in that we relax the crisp setting based on exact equality of symbols, to a setting where symbol matching is fuzzy, as was originally considered in~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
+we assume that the alphabet is enriched with a {\em similarity relation}
+and that matching is performed up to {\em cut} values. 
+For this reason, rather than considering fuzzy transition functions in automata, in this paper we fuzzify the theory of
+Brzozowski derivatives~\cite{B64,OwensReppyTuron}, whereby checking that a word belongs to a regular language is reduced to computing that an iterated derivative is the empty word. Derivatives yield a direct construction of automata
+from regular expressions: after reading a word, the current state is represented by the
+corresponding derivative of the expression. Most of our results are formalized in Rocq~\cite{Rocq} following the approach of Coquand and Siles~\cite{CoquandRegexEquality}.
+
+The special case of the present work for the minimum T-norm appeared as an extended abstract, by a subset of the authors, at Women in Logic (WiL 2026)~\cite{KM26}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -83,31 +92,8 @@ $\mathcal{L}(r)^{n+1} = \mathcal{L}(r)^n \cdot \mathcal{L}(r)$.
 not occur.
 \end{definition}
 
-\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$, possibly with indices or superscripts. We write $r[a_1,\ldots,a_n]$ to highlight the occurrences of the alphabet symbols $a_1,\ldots,a_n$ in $r$. By $r[s_1,\ldots,s_n]$ we denote the regular expression obtained by replacing $a_1,\ldots,a_n$ with $s_1,\ldots,s_n$ in $r[a_1,\ldots,a_n]$. We write $r\equiv s$, and say that $r$ and $s$ are \emph{semantically equivalent}, when $\mathcal L(r)=\mathcal L(s)$.
+\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$, possibly with indices or superscripts. We write $r[a_1,\ldots,a_n]$ to highlight the occurrences of the alphabet symbols $a_1,\ldots,a_n$ in $r$. By $r[s_1,\ldots,s_n]$ we denote the regular expression obtained by replacing $a_1,\ldots,a_n$ with $s_1,\ldots,s_n$ in $r[a_1,\ldots,a_n]$. We write $r\equiv s$, and say that $r$ and $s$ are \emph{semantically equivalent}, when $\mathcal L(r)=\mathcal L(s)$.\smallskip
 
-It is useful to know whether the language described by a given expression contains the empty word $\varepsilon$.
-
-\begin{definition}[Nullable regular expressions]\label{def:nullable}
-A regular expression $r$ is \emph{nullable} if $\varepsilon \in \mathcal{L}(r)$. The
-\emph{nullable} function $\nu$ returns $\varepsilon$ if $r$ is nullable and $\emptyset$
-otherwise; equivalently, it is characterized by
-\[
-\begin{array}{ll}
-     \nu(\emptyset)=\emptyset &
-     \nu(\varepsilon)=\varepsilon  \\[1ex]
-     \nu(a)=\emptyset \quad (a \in \Sigma)&
-     \nu(r+s) = \nu(r) + \nu(s) \\[1ex]
-     \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) &
-     \nu(r^*) = \varepsilon \\[1ex]
-     \nu(r\:\&\:s) = \nu(r) \: \& \: \nu(s) &
-     \nu(\neg r)=
-     \begin{cases}
-         \varepsilon & \text{if } \nu(r) = \emptyset, \\
-         \emptyset   & \text{if } \nu(r) = \varepsilon.
-     \end{cases}
-\end{array}
-\]
-\end{definition}
 
  \begin{remark}{\bf On the Algebra of Regular Events}
 There are various equational systems that ensure semantic equivalence between regular expressions. In this paper we consider Brzozowski's system~\cite{B62} and its extension by Coquand--Siles~\cite{CoquandRegexEquality}; see Definition~\ref{def:similarity}. It is well known that there is no finite purely equational characterization of semantic equivalence; see~\cite{Salomaa,Kozen}. This is due to the $\ast$ operator, which can only be finitely approximated equationally. Examples of semantically equivalent regular expressions that are not similar, in the sense of Coquand and Siles, are $a^*$ and $(\varepsilon+a)^*$. Brzozowski's results are significant because, even though there is no finite equational axiomatization of semantic equivalence, a finite approximation of equality is enough to achieve finiteness in derivatives and hence in states.
@@ -184,22 +170,10 @@ Proved in \path{coq/src/CanonicalizationCorrectness.v}, theorem
 \end{sloppypar}
 \end{proof}
 
-{\bf An aside on substitution} \label{extension}
-Given a regular expression $r[a]$, substitution allows us to generalize the iteration described by $(\ )^*$. For instance, we can define
-\[
-\mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n),
-\]
-where $\mathcal L(r[a]^\#_{n+1})=\mathcal L(r[r[a]^\#_n])$ and
-$\mathcal{L}(r[a]^\#_0)=\mathcal L(r[a])$. This operation can take us outside the regular languages if we go beyond tail-recursive substitution. For instance, if we take $r=a[a]b$, then
-\[
-\mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \{ a^{n+1}b^n\mid n\in \mathbb{N}\},
-\]
-which is not a regular language.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Fuzzy Proximity and Similarity Relations}
+\section{Fuzzy Proximity and T-Similarity Relations}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -207,7 +181,7 @@ Throughout, $\otimes$ denotes a left-continuous T-norm on $[0,1]$, written in in
 notation. We use the standard notions of fuzzy logic --- fuzzy sets, T-norms and their
 residua, fuzzy relations, and proximity and T-similarity relations --- following
 \cite{met05,Sessa2002}; these, together with the three standard examples of T-norms, are
-recalled in Appendix~\ref{appendix}. In particular, recall from
+recalled in Appendix~\ref{appendix}.  {\color{red} well if you recall it then there is no point in putting it in the appendix}. In particular, recall from
 Definitions~\ref{T-norm} and~\ref{def:fuzzy-relation} that a \emph{fuzzy relation} on a
 set $S$ is a map $\cR:S\times S\to[0,1]$; that its \emph{$\cut$-cut} at a \emph{cut value}
 $0<\cut\le 1$ is the crisp relation
@@ -218,9 +192,17 @@ that $\cR$ is a \emph{proximity relation} when it is reflexive and symmetric; an
 proximity relation is a \emph{T-similarity relation} when it also satisfies the reverse
 triangle inequality $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$. When the T-norm is
 G\"odel's \emph{minimum} T-norm, we often write $\min$ instead of $\otimes$.
+The following Lemma is immediate.
+\begin{lemma}\label{T-equivalence} The $\mu$-cut of a T-similarity relation is an equivalence if and only if $\mu$ id idempotent for $T$
+\end{lemma}
+Hence if all $\mu$-cuts of a T-norm are equivalences the norm is globally idempotent and hence necessarily G\"odel's minimum T-norm. Nevertheless, there are many non-idempotent T-norms which are locally idempotent, \eg\ 
+$$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p;\\ \min(x,y) & \mbox{ otherwise,}
+\end{cases}$$ where $p\in [0,1]$. 
 
 
-\subsection{Similarity on Words and Languages}
+
+
+\subsection{T-similarities on Words, Regular Expresions, and Languages}
 We define similarity between symbols to be $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ and based on that we  define similarities between words and languages as follows.
 \begin{definition}[Similarity on Words]\label{def:Rw}Given a similarity relation $\mathcal R$ on $\Sigma$, define a proximity relation on  words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:$$\mathcal R^{w}(w_1,w_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } w_1=a_1\ldots a_n\mbox{ and }w_2 =b_1 \ldots b_n;
 \\ 
@@ -238,8 +220,8 @@ For languages $L_1,L_2\subseteq \Sigma^*$ define a proximity relation $\mathcal{
 \]
 \end{definition}
 
-Viewing words as regular expressions,  Definition~\ref{def:Rw} naturally extends to regular expressions, when we take G\"odel's T-norm.
-\begin{definition}[Similarity on Regular Expressions - G\"odel's T-norm] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a proximity on regular expressions,  $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$, as follows
+Viewing words as regular expressions,  Definition~\ref{def:Rw} naturally extends to regular expressions, when the T-norm is locally idempotent on $\mu$ \eg\ if we take G\"odel's T-norm.
+\begin{definition}[T-similarity on Regular Expressions (locally idempotent case)] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a proximity on regular expressions,  $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$, as follows
 $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } r_1=r[a_1,\ldots,a_n]\mbox{ and }r_2 =r[b_1,\ldots,b_n];
 \\ 
 0& \mbox{  otherwise. }
@@ -252,12 +234,11 @@ $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i
 %& \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'. \end{cases}\]
 %\end{definition}
 
-If we consider arbitrary T-norms, Definition~\ref{def:Rexp} is too generous over regular expressions. If $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  $\mathcal R(a,b)$ is idempotent. But a norm where all values are idempotent is necessarily G\"odel's minimum T-norm. 
-\\ Nevertheless, there are many non-idempotent T-norms which we do want to consider, \eg\ 
-$$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p;\\ \min(x,y) & \mbox{ otherwise,}
-\end{cases}$$ where $p\in [0,1]$. 
-
-Thus, Definition~\ref{def:Rexp} needs to be conservatively extended as follows.
+If we consider arbitrary T-norms whose values are not globally idempotent, then, Definition~\ref{def:Rexp} is both too generous over regular expressions in the case of  the $(\ )^\star$-operator and too strict in the case of the $\ +\ $constructor and the correspondence with language similarity as in Theorem~\ref{thm:Rr-RL-bridge} fails.  
+We have the following counterexamples. Assume $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  the T-norm is locally idempotent on $\mathcal R(a,b)$. Assume
+\(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(a+b,c+d)=0.5\cdot0.5=0.25\).
+We need to use the $\min$ operator in the $+$ clause in Definition~\ref{def:Rexpg}. 
+Thus, Definition~\ref{def:Rexp} is conservatively extended as follows.
 
 \begin{definition}[Similarity on Regular Expressions - General T-norm] \label{def:Rexpg}
 Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a similarity on $\Sigma$. Define inductively the following proximity relation
@@ -270,11 +251,6 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
 \end{cases}$$
 \end{definition}
 
-We need to use the $\min$ operator in the $+$ clause in Definition~\ref{def:Rexpg} since otherwise Theorem~\ref{thm:Rr-RL-bridge} fails because of the following counterexample:
-\(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), and take \(r_1=a+b\) and \(r_2=c+d\). 
-Then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(r_1,r_2)=0.5\cdot0.5=0.25\).
-
-The definition of similarity for $(\ )^*$ is indeed rather strict for a general T-norm, but no definition for a general T-norm seems reasonable unless we replace it with a finite union. 
 
 
 \begin{lemma} \hfill \begin{enumerate}
@@ -295,7 +271,7 @@ The definition of similarity for $(\ )^*$ is indeed rather strict for a general 
 \begin{enumerate} 
 \item$\mathcal R^E(r_1,r_2)\leq \mathcal R^L(\mathcal L(r_1),\mathcal L(r_2));$
 
-%\item{\color{blue}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)=\sup\limits_{\substack{L(r_1)=L(r'_1)\\L(r_2)=L(r'_2)}}\mathcal{R}^E(r_1',r_2')$}
+\item$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)=\sup\limits_{\substack{L(r_1)=L(r'_1)\\L(r_2)=L(r'_2)}}\mathcal{R}^E(r_1',r_2')$.
 
 %\item {\color{red}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is bounded below by:
 %\[\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)\geq\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in R^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2)\Bigr\}.\]}
@@ -308,7 +284,7 @@ The definition of similarity for $(\ )^*$ is indeed rather strict for a general 
 
 \begin{remark}\label{rem:syntax-semantics-exceptions}
 \hfill \begin{enumerate}
-\item Definition~\ref{def:Rexp} is syntax-sensitive, see Lemma~\ref{lemma:syntactic-similarity}.
+\item Definition~\ref{def:Rexp} is syntax-sensitive.%, see Lemma~\ref{lemma:syntactic-similarity}.
 Therefore two regular expressions may denote the same language while having low, or even zero, $\mathcal{R}^E$-similarity.
 For example, depending on the base relation on symbols, one may have
 \[
@@ -316,12 +292,8 @@ For example, depending on the base relation on symbols, one may have
 \]
 even though $\mathcal L(a+b)=\mathcal L(b+a)$.
 \item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in \mathcal L(r_1)$ and $w_2\in \mathcal L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $\mathcal R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $\mathcal R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
-\item We can incorporate in the above definition finite equational properties among regular expressions, but no exhaustive finitary definition can be given. For example, we can put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. We shall not pursue this.
-\item %Lemma~\ref{thm:syntax-semantics}  and 
-Theorem~\ref{thm:Rr-RL-bridge} is not true for  regular expressions when $\wedge$ and $\neg$ are allowed. For instance, if $\mathcal R(a,b)\gneq 0$ but $a\neq b$ we have that $L(a\cap b)=\emptyset$ and hence $\mathcal R^L(L(a\cap a),L(a\cap b))=0$ but $\mathcal R^E((a\cap a),(a\cap b))=\mathcal R(a,b)$. We have also that $\mathcal R^L(L(\neg a),L(\neg b))$ is unrelated to $R(a,b)\gneq 0$, but depends on the existence of other characters in the alphabet. And hence it does not seem exèresisble. {\color{red} Do you have a better argument?}
-
-{\color{blue}
-Theorem~\ref{thm:Rr-RL-bridge} is not true for regular expressions when $\&$ and $\neg$ are
+\item We can incorporate in the above definition finite equational properties among regular expressions, see \eg\ \ref{lem:similarity-sound} and we can put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. But since no exhaustive finitary definition can be given, we shall not pursue this.
+\item Theorem~\ref{thm:Rr-RL-bridge} is not true for regular expressions when $\&$ and $\neg$ are
 allowed. For instance, if $\mathcal R(a,b)\gneq 0$ but $a\neq b$, we have that
 $\mathcal L(a\,\&\,b)=\emptyset$ and hence
 $\mathcal R^L(\mathcal L(a\,\&\,a),\mathcal L(a\,\&\,b))=0$, but
@@ -333,9 +305,6 @@ for $\neg$ repair this, since
 $\mathcal R^L(\mathcal L(\neg a),\mathcal L(\neg b))=
 \min\{\sup_{c\neq a}\mathcal R(a,c),\ \sup_{c\neq b}\mathcal R(b,c)\}$
 depends on which other symbols occur in the alphabet, not on $\mathcal R(a,b)$.
-}
-
-%The reason is that $\mathcal{R}^E$ only compares the shape of the expressions. So $\mathcal{R}^E$ can be positive as long as the corresponding subexpressions look similar, even if the crisp languages are empty or different.
 \end{enumerate}
 \end{remark}
 
@@ -353,6 +322,30 @@ By induction.
 \subsection{Crisp definitions}\label{crisp-derivative}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{definition}[Nullable regular expressions]\label{def:nullable}
+A regular expression $r$ is \emph{nullable} if $\varepsilon \in \mathcal{L}(r)$. The
+\emph{nullable} function $\nu$ returns $\varepsilon$ if $r$ is nullable and $\emptyset$
+otherwise; equivalently, it is characterized by
+\[
+\begin{array}{ll}
+     \nu(\emptyset)=\emptyset &
+     \nu(\varepsilon)=\varepsilon  \\[1ex]
+     \nu(a)=\emptyset \quad (a \in \Sigma)&
+     \nu(r+s) = \nu(r) + \nu(s) \\[1ex]
+     \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) &
+     \nu(r^*) = \varepsilon \\[1ex]
+     \nu(r\:\&\:s) = \nu(r) \: \& \: \nu(s) &
+     \nu(\neg r)=
+     \begin{cases}
+         \varepsilon & \text{if } \nu(r) = \emptyset, \\
+         \emptyset   & \text{if } \nu(r) = \varepsilon.
+     \end{cases}
+\end{array}
+\]
+\end{definition}
+
 \begin{definition}[Semantic derivative]\label{def:derivative}\label{def:derivative-string}
 The derivative of a language $L \subseteq \Sigma^*$ with respect to a symbol
 $a\in\Sigma$, and with respect to a word $u\in\Sigma^*$, are
@@ -470,10 +463,10 @@ Notice that both Definition~\ref{def:regex-fuzzy-derivative} and Definition~\ref
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Fuzzy Derivatives when using G\"odel's T-norm}
+\subsection{Fuzzy Derivatives - T-norm locally idempotent on $\mu$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Throughout this section we take as T-norm G\"odel's minimum T-norm.
+Throughout this section we assume that  the T-norm is locally dempotent on $\mu$, as \eg\ in  G\"odel's minimum T-norm.
 
 \begin{proposition}\label{prop:cut-equivalence}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
@@ -509,7 +502,7 @@ is an equivalence relation on languages.
 \end{enumerate}
 \end{proposition}
 
-Capitalising on G\"odel's T-norm, language fuzzy derivatives can be rephrased as follows.
+Capitalizing on the the idempotency of $\mu$, fuzzy derivatives can be rephrased as follows,  see \cite{KM26} .
 
 \begin{definition}\label{fuzzyderivativeGodel}
 Let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. The \emph{$\cut$-fuzzy
@@ -618,7 +611,7 @@ such word has at least one representative in $\Sigma^*$.
     $$
 \end{definition}
 
-Taking G\"odel's T-norm,  Definition~\ref{def:regex-fuzzy-derivative} of $\mu$-fuzzy expression derivatives simplifies in the following way.
+Recalling that the T-norm is idempotent on $\mu$, as in the case of G\"odel's T-norm,  Definition~\ref{def:regex-fuzzy-derivative} of $\mu$-fuzzy expression derivatives simplifies in the following way.
 
 \begin{definition}\label{def:regex-fuzzy-derivative-godel}
 Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
@@ -1049,6 +1042,20 @@ triangle inequality with respect to $\otimes$:
 \end{description}
 \end{enumerate}
 \end{definition}
+\section{Miscellanea}
+{\bf An aside on substitution} \label{extension}
+Given a regular expression $r[a]$, substitution allows us to generalize the iteration described by $(\ )^*$. For instance, we can define
+\[
+\mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n),
+\]
+where $\mathcal L(r[a]^\#_{n+1})=\mathcal L(r[r[a]^\#_n])$ and
+$\mathcal{L}(r[a]^\#_0)=\mathcal L(r[a])$. This operation can take us outside t regular languages if we go beyond tail-recursive substitution. For instance, if we take $r=a[a]b$, then
+\[
+\mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \{ a^{n+1}b^n\mid n\in \mathbb{N}\},
+\]
+which is not a regular language.
+
+
 
 
 
