@@ -220,7 +220,7 @@ For languages $L_1,L_2\subseteq \Sigma^*$ define a proximity relation $\mathcal{
 \]
 \end{definition}
 
-Viewing words as regular expressions,  Definition~\ref{def:Rw} naturally extends to regular expressions, when the T-norm is locally idempotent on $\mu$ \eg\ if we take G\"odel's T-norm.
+Viewing words as regular expressions,  Definition~\ref{def:Rw} naturally extends to regular expressions, when the T-norm is globally idempotent on $\mu$ \ie\ if we take G\"odel's T-norm.
 \begin{definition}[T-similarity on Regular Expressions (locally idempotent case)] \label{def:Rexp}Given a similarity relation $\mathcal R$ on the alphabet, define a proximity on regular expressions,  $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$, as follows
 $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } r_1=r[a_1,\ldots,a_n]\mbox{ and }r_2 =r[b_1,\ldots,b_n];
 \\ 
@@ -250,6 +250,14 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
 \end{definition}
+
+\begin{definition}[Fuzzy semantic interpretation] For a restricted regular expression $r$ over $\Sigma$ and
+$0 < \cut \le 1$, its {\em fuzzy semantic interpretation} is the language $\mathcal L^\mu(r)\subseteq \Sigma^{\ast}$ defined as follows 
+\[\mathcal L^\mu (r)=\{w\mid  w\sim_\mu^{\Sigma^*}v\mbox{ for } v\in \mathcal L(r)\}.\]
+\end{definition}
+
+{\color{red} This notion has to be discussed here}
+
 
 
 
@@ -404,6 +412,7 @@ $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
 \subsection{Fuzzy Derivatives}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{definition}[Fuzzy Language Derivative]\label{fuzzyderivative}
 Let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. The \emph{$\cut$-fuzzy
 language derivative} of $\mathcal{L}$ with respect to $a$ is
@@ -678,10 +687,6 @@ restricted regular expressions, and the finite sums in
 Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
 \end{proof}
 
-\begin{definition}[Fuzzy semantic interpretation] For a restricted regular expression $r$ over $\Sigma$ and
-$0 < \cut \le 1$, its {\em fuzzy semantic interpretation} is the language $\mathcal L^\mu(r)\subseteq \Sigma^{\ast}$ defined as follows 
-\[\mathcal L^\mu (r)=\{w\mid  w\sim_\mu^{\Sigma^*}v\mbox{ for } v\in \mathcal L(r)\}.\]
-\end{definition}
 
 \begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
 Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
