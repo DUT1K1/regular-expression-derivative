@@ -509,7 +509,7 @@ is finite.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This section is a minor generalization of the results in~\cite{KM26} which were origianlly given for G\"odel's minimum T-norm, see Definition~\ref{norms}. 
-Throughout this section we rephrase their results for the case of a general T-norm which is locally dempotent on $\mu$, \ie $\mu\otimes\mu=\mu$. Capitalizing on this local idempotency all definitions and theorems of Section~\ref{sec:fuzzyderivatives} greatly simplify.
+Throughout this section we rephrase their results for the case of a general T-norm which is locally dempotent on $\mu$, \ie $\mu\otimes\mu=\mu$. Capitalizing on this local idempotency all definitions and theorems of Section~\ref{sec:fuzzyderivatives} greatly simplify due to Lemma~\ref{T-equivalence}, and all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
 
 \begin{proposition}\label{prop:cut-equivalence}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
@@ -538,12 +538,14 @@ is an equivalence relation on languages.
 \end{enumerate}
 \end{proposition}
 
+{\color{red} Rock?? Proofs??}
+
 
 \begin{proposition}\label{fuzzyderivativeGodel}
 Let $\mu\otimes\mu=\mu$, $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
 \begin{enumerate}
 \item \label{def:regex-fuzzy-derivative-godel}
-Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ and
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ anfd
 $\cut$ is equal to
 \[
   \mathcal D_a^\cut(r)
@@ -564,6 +566,13 @@ $$
 $$
 \end{enumerate}
 \end{proposition}
+{\color{red} Rock?? Proofs??}
+
+{\bf REVISION STOPS HERE}
+The next theorem explains how the fuzzy derivative becomes an ordinary derivative
+after passing to the quotient alphabet, {\em i.e.}, once letters are identified up to
+$\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
+differentiating with respect to the class $[a]_\cut$.
 
 
 \begin{definition}\label{def:quotient-language-fuzzy}
@@ -585,10 +594,7 @@ For a language $\mathcal L \subseteq \Sigma^*$, define its quotient image by
 The map $q_\cut$ maps each symbol to its $\cut$-equivalence class. The map
 $q_\cut^*$ does exactly the same thing for a whole word, letter by letter.
 
-The next theorem explains how the fuzzy derivative becomes an ordinary derivative
-after passing to the quotient alphabet, {\em i.e.}, once letters are identified up to
-$\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
-differentiating with respect to the class $[a]_\cut$.
+
 
 \begin{theorem}\label{the:quotient-fuzzy-derivative}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
@@ -641,12 +647,6 @@ such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
 
-\begin{definition}\label{def:cut-neighborhood}
-    For $a\in\Sigma$ and $0<\cut\le 1$, define the cut neighborhood of $a$ by
-    $$
-        \mathcal{S}^\cut_a = \{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}
-    $$
-\end{definition}
 
 
 
