@@ -404,8 +404,8 @@ coincide under the semantics map.
 Let $\Sigma$ be a finite alphabet, $r$ a regular expression over $\Sigma$,
 $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
 \begin{enumerate}
-\item (regularity) $u\in \mathcal L(r)$ if and only if $\epsilon \in \mathcal{D}_{u}(r)$.
-  \item $\partial_u(L)$ is regular;
+\item $u\in \mathcal L(r)$ if and only if $\epsilon \in \mathcal{D}_{u}(r)$.
+  \item (regularity) $\partial_u(L)$ is regular;
   \item (semantic--syntactic correspondence)
         $\mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)=\partial_{u}\bigl(\mathcal{L}(r)\bigr)$;
 \item (syntactic finiteness) the set of derivatives $\bigl\{\, \mathcal D_{u}(L) \mid u \in \mathcal L(r) \bigr\}$ is
@@ -568,23 +568,21 @@ $$
 \end{proposition}
 {\color{red} Rock?? Proofs??}
 
-{\bf REVISION STOPS HERE}
-The next theorem explains how the fuzzy derivative becomes an ordinary derivative
-after passing to the quotient alphabet, {\em i.e.}, once letters are identified up to
+Proposition~\ref{the:quotient-fuzzy-derivative} explains all the above simplifications, by showing that in the case of $\mu\otimes\mu=\mu$ the fuzzy derivatives becomean ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
 $\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
-differentiating with respect to the class $[a]_\cut$.
+differentiating with respect to the class $[a]_\cut$. First we need to define quotients.
 
 
 \begin{definition}\label{def:quotient-language-fuzzy}
-Let $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$ and let
+Let $\mu\otimes\mu=\mu$, $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$, and let
 $q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.
 Extend $q_\cut$ to words by
 \[
   q_\cut^*(a_1\cdots a_n) = [a_1]_\cut \cdots [a_n]_\cut.
 \]
-For a language $\mathcal L \subseteq \Sigma^*$, define its quotient image by
+For a language $ L \subseteq \Sigma^*$, define its quotient image by
 \[
-  \mathcal L^\cut := q_\cut^*(\mathcal L)
+  L^\cut %:= q_\cut^*(L)
   = \{q_\cut^*(w)\mid w\in\mathcal L\}
   \subseteq (\Sigma^\cut)^*.
 \]
@@ -592,29 +590,38 @@ For a language $\mathcal L \subseteq \Sigma^*$, define its quotient image by
 
 \noindent
 The map $q_\cut$ maps each symbol to its $\cut$-equivalence class. The map
-$q_\cut^*$ does exactly the same thing for a whole word, letter by letter.
+$q_\cut^*$ does exactly the same thing for a whole word, letter by letter. We can now prove the follwing proposition.
 
 
 
-\begin{theorem}\label{the:quotient-fuzzy-derivative}
+\begin{proposition}\label{the:quotient-fuzzy-derivative}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$. For every language $\mathcal L \subseteq \Sigma^*$ and every
+with $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$. For every language $L \subseteq \Sigma^*$ and every
 $a\in\Sigma$,
 \[
-  \partial_a^\cut(\mathcal L)
+  \partial_a^\cut( L)
   \;=\;
   \{w\in\Sigma^* \mid q_\cut^*(w)\in
-       \partial_{[a]_\cut}\bigl(\mathcal L^\cut\bigr)\}.
+       \partial_{[a]_\cut}\bigl(L^\cut\bigr)\}.
 \]
 Hence,
 \[
-  q_\cut^*\bigl(\partial_a^\cut(\mathcal L)\bigr)
+  \bigl(\partial_a^\cut( L)\bigr)^\mu
   =
-  \partial_{[a]_\cut}\bigl(\mathcal L^\cut\bigr).
+  \partial_{[a]_\cut}\bigl( L^\cut\bigr).
 \]
-\end{theorem}
 
-\begin{proof}[Proof sketch]
+{\color{red} OR SHCOULD WE PHRASE IT AS IN THE WIL ABSTRACT? \\\begin{theorem}\label{main} If $a\in\Sigma$ and $L\subseteq\Sigma^\ast$ is regular, then for every cut value $0<\mu\le1$, we have \mbox{$
+\partial_a^\mu(L)
+=
+\{w\in\Sigma^\ast\mid
+q_\mu^\ast(w)\in
+\partial_{[a]_\mu}(L^\mu)\}.
+$}
+\end{theorem}}
+\end{proposition}
+
+\begin{proof}[Proof sketch]{\color{red} not checked}
 We prove the two inclusions.
 
 Let $w\in\partial_a^\cut(\mathcal L)$. By Definition~\ref{fuzzyderivative},
@@ -647,7 +654,7 @@ such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
 
-
+{\color{red}  FOLLOWING RESULTS UP TO END OF SECTION  ARE COSEQUENCE OF THE MAIN THEOREM: do we need it?}
 
 
 
@@ -706,7 +713,7 @@ Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
 Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
 $0 < \cut \le 1$. Then
 \[
-  \mathcal{L}^\mu\bigl(\mathcal{D}^\cut_u(r)\bigr)
+  \mathcal{L}bigl(\mathcal{D}^\cut_u(r)\bigr)
   =
   \partial^\cut_u\bigl(\mathcal{L}(r)\bigr).
 \] 
@@ -748,96 +755,6 @@ Definitions~\ref{def:fuzzy-word-derivative} and
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Automata}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Crisp Automata}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We construct a deterministic finite automaton (DFA) from a regular expression $r$, using the derivative operator $\mathcal{D}_a(\cdot)$
-and the nullable function $\nu(\cdot)$. Each DFA state denotes the remaining
-language of $r$ after consuming the prefix. Transitions are computed by taking one-step
-derivatives with respect to input symbols.
-
-We construct the derivative DFA using canonical representatives to reduce the number of states.
-\begin{definition}
-Let $\mathsf{nf}(\cdot)$ be the normalization from Lemma~\ref{def:canonize},
-and write $[r] := \mathsf{nf}(r)$.
-
-We define the DFA $M=\langle Q, \Sigma, \delta, q_0, F\rangle$ as follows.
-
-\begin{itemize}
-  \item $Q \;=\; \{\, [\,\mathcal{D}_u(r)\,] \mid u \in \Sigma^* \,\}$ is the set of states,
-        where $[t]=\mathsf{nf}(t)$ is the canonical form.
-
-  \item $\Sigma$ is a finite alphabet.
-
-  \item $\delta: Q \times \Sigma \to Q$ is defined by canonicalizing derivatives:
-        \[
-          \delta(q,a) \;=\; \bigl[\,\mathcal{D}_a(q)\,\bigr].
-        \]
-
-  \item $q_0 = [\,r\,] \in Q$ is the initial state.
-
-  \item $F \subseteq Q$ is the set of accepting states:
-        \[
-          F \;=\; \{\, q \in Q \mid \nu(q)=\varepsilon \,\}.
-        \]
-\end{itemize}
-\end{definition}
-
-
-
-By Theorem~\ref{the:two-derivative-mapping}(2),
-$\mathcal{L}(\mathcal{D}_u(r))=\partial_u(\mathcal{L}(r))$, so running the DFA corresponds exactly to repeatedly taking derivatives.
-
-\begin{theorem}\label{the:dfa-correctness}
-Let $r$ be a regular expression over $\Sigma$, and let
-$M = \langle Q, \Sigma, \delta, q_0, F \rangle$
-be the DFA constructed from $r$.
-Then $M$ and $r$ define the same language:
-\[
-  \mathcal{L}(M) \;=\; \mathcal{L}(r).
-\]
-Equivalently, for every word $u \in \Sigma^*$,
-\[
-  M \text{ accepts } u
-  \;\;\Longleftrightarrow\;\;
-  u \in \mathcal{L}(r).
-\]
-\end{theorem}
-
-\begin{proof}
-Let $\delta^*$ be the usual extension of $\delta$ to words, so
-$\delta^*(q,\varepsilon)=q$ and $\delta^*(q,wa)=\delta(\delta^*(q,w),a)$.
-A straightforward induction on $w$ gives
-$\delta^*(q_0,w)=[\mathcal{D}_w(r)]$: the base case is
-$q_0=[r]=[\mathcal{D}_\varepsilon(r)]$, and the inductive step follows from the
-definition of $\delta$ together with
-$\mathcal{D}_{ua}(r)=\mathcal{D}_a(\mathcal{D}_u(r))$.
-Hence, for $u\in\Sigma^*$, $M$ accepts $u$ iff $[\mathcal{D}_u(r)]\in F$, \ie iff
-$\nu(\mathcal D_u(r))=\varepsilon$, \ie iff
-$\varepsilon\in\mathcal L(\mathcal D_u(r))=\partial_u(\mathcal L(r))$
-by Theorem~\ref{the:two-derivative-mapping}(2), which holds exactly when
-$u\in\mathcal L(r)$.
-\end{proof}
-
-
-
- If we were to take derivatives up to semantic equivalence, then we would get minimal automata. If we take derivatives only up to canonical form, then this is not the case. For example, consider the restricted regular expressions $a^*$ and $(\varepsilon+a)^*$. These are semantically equivalent but are not canonically equal.
-The Brzozowski automaton that we get has two derivatives, namely itself and $\mathcal D_a((\varepsilon+a)^*) =\mathcal D_a(\varepsilon+a)\cdot(\varepsilon+a)^*=\ldots =a^*$, but $a^*$ is its own derivative. 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fuzzy Automata} {\color{red}Currently uses G\"odel's T-norm, but it does not seem necessary}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{theorem}\label{the:fuzzy-derivative-set-finite}
 Let $\Sigma$ be a finite alphabet and let $\mathcal{L} \subseteq \Sigma^*$ be a
 regular language. For every cut value $0 < \cut \le 1$, the set of fuzzy
@@ -903,46 +820,6 @@ Theorem~\ref{the:fuzzy-derivative-set-finite}. This proves the claim.
 \end{proof}
 
 
-
-\begin{theorem}\label{the:fuzzy-dfa-correctness}
-Let $r$ be a restricted regular expression over $\Sigma$, let $0 < \cut \le 1$, and let
-$M^\cut = \langle Q^\cut, \Sigma, \delta^\cut, q_0^\cut, F^\cut \rangle$
-be the DFA constructed from $r$ using fuzzy derivatives (for the fixed cut
-value $\cut$).
-Write
-\[
-  \mathcal L^\cut_\Sigma(r)
-  =
-  (q_\cut^*)^{-1}\bigl(q_\cut^*(\mathcal L(r))\bigr)
-\]
-for the concrete language of words that are $\cut$-similar to some word denoted
-by $r$. Then $M^\cut$ and $r$ define the same concrete $\cut$-language:
-\[
-  \mathcal{L}(M^\cut) \;=\; \mathcal{L}^\cut_\Sigma(r).
-\]
-Equivalently, for every word $w \in \Sigma^*$,
-\[
-  M^\cut \text{ accepts } w
-  \;\;\Longleftrightarrow\;\;
-  w \in \mathcal{L}^\cut_\Sigma(r).
-\]
-\end{theorem}
-
-\begin{proof}
-The argument is that of Theorem~\ref{the:dfa-correctness}, with $\mathcal D$ replaced
-throughout by $\mathcal D^\cut$. Writing $\delta^{\cut *}$ for the extension of
-$\delta^\cut$ to words, induction on $w$ gives
-$\delta^{\cut *}(q_0^\cut,w)=[\mathcal{D}^\cut_w(r)]$, using
-$\mathcal{D}^\cut_{ua}(r) = \mathcal{D}^\cut_a(\mathcal{D}^\cut_u(r))$ in the inductive
-step. Hence $M^\cut$ accepts $w$ iff $\nu(\mathcal{D}^\cut_w(r))=\varepsilon$, \ie iff
-$\varepsilon\in\mathcal{L}(\mathcal{D}^\cut_w(r))=\partial^\cut_w(\mathcal{L}(r))$
-by Theorem~\ref{the:two-fuzzy-derivative-mapping}, which by definition of
-$\mathcal{L}^\cut_\Sigma(r)$ holds exactly when $w\in\mathcal{L}^\cut_\Sigma(r)$.
-\end{proof}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{\color{red}\begin{remark} The transition function on the quotient automaton can be viewed as a fuzzy  transition. Namely if $[\ ]$ is defined by $\mu$-similarity,  we can write $\delta(q_1,[a])=q_2$ as $((q_1,a),q_2)\in_\mu \delta$, where $\varepsilon$ is fuzzy set membership with value $\mu$. 
-\end{remark}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Formalization in Rocq}
@@ -1104,3 +981,125 @@ which is not a regular language.
 
 
 \end{document}
+\section{Automata}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Crisp Automata}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We construct a deterministic finite automaton (DFA) from a regular expression $r$, using the derivative operator $\mathcal{D}_a(\cdot)$
+and the nullable function $\nu(\cdot)$. Each DFA state denotes the remaining
+language of $r$ after consuming the prefix. Transitions are computed by taking one-step
+derivatives with respect to input symbols.
+
+We construct the derivative DFA using canonical representatives to reduce the number of states.
+\begin{definition}
+Let $\mathsf{nf}(\cdot)$ be the normalization from Lemma~\ref{def:canonize},
+and write $[r] := \mathsf{nf}(r)$.
+
+We define the DFA $M=\langle Q, \Sigma, \delta, q_0, F\rangle$ as follows.
+
+\begin{itemize}
+  \item $Q \;=\; \{\, [\,\mathcal{D}_u(r)\,] \mid u \in \Sigma^* \,\}$ is the set of states,
+        where $[t]=\mathsf{nf}(t)$ is the canonical form.
+
+  \item $\Sigma$ is a finite alphabet.
+
+  \item $\delta: Q \times \Sigma \to Q$ is defined by canonicalizing derivatives:
+        \[
+          \delta(q,a) \;=\; \bigl[\,\mathcal{D}_a(q)\,\bigr].
+        \]
+
+  \item $q_0 = [\,r\,] \in Q$ is the initial state.
+
+  \item $F \subseteq Q$ is the set of accepting states:
+        \[
+          F \;=\; \{\, q \in Q \mid \nu(q)=\varepsilon \,\}.
+        \]
+\end{itemize}
+\end{definition}
+
+
+
+By Theorem~\ref{the:two-derivative-mapping}(2),
+$\mathcal{L}(\mathcal{D}_u(r))=\partial_u(\mathcal{L}(r))$, so running the DFA corresponds exactly to repeatedly taking derivatives.
+
+\begin{theorem}\label{the:dfa-correctness}
+Let $r$ be a regular expression over $\Sigma$, and let
+$M = \langle Q, \Sigma, \delta, q_0, F \rangle$
+be the DFA constructed from $r$.
+Then $M$ and $r$ define the same language:
+\[
+  \mathcal{L}(M) \;=\; \mathcal{L}(r).
+\]
+Equivalently, for every word $u \in \Sigma^*$,
+\[
+  M \text{ accepts } u
+  \;\;\Longleftrightarrow\;\;
+  u \in \mathcal{L}(r).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\delta^*$ be the usual extension of $\delta$ to words, so
+$\delta^*(q,\varepsilon)=q$ and $\delta^*(q,wa)=\delta(\delta^*(q,w),a)$.
+A straightforward induction on $w$ gives
+$\delta^*(q_0,w)=[\mathcal{D}_w(r)]$: the base case is
+$q_0=[r]=[\mathcal{D}_\varepsilon(r)]$, and the inductive step follows from the
+definition of $\delta$ together with
+$\mathcal{D}_{ua}(r)=\mathcal{D}_a(\mathcal{D}_u(r))$.
+Hence, for $u\in\Sigma^*$, $M$ accepts $u$ iff $[\mathcal{D}_u(r)]\in F$, \ie iff
+$\nu(\mathcal D_u(r))=\varepsilon$, \ie iff
+$\varepsilon\in\mathcal L(\mathcal D_u(r))=\partial_u(\mathcal L(r))$
+by Theorem~\ref{the:two-derivative-mapping}(2), which holds exactly when
+$u\in\mathcal L(r)$.
+\end{proof}
+
+
+
+ If we were to take derivatives up to semantic equivalence, then we would get minimal automata. If we take derivatives only up to canonical form, then this is not the case. For example, consider the restricted regular expressions $a^*$ and $(\varepsilon+a)^*$. These are semantically equivalent but are not canonically equal.
+The Brzozowski automaton that we get has two derivatives, namely itself and $\mathcal D_a((\varepsilon+a)^*) =\mathcal D_a(\varepsilon+a)\cdot(\varepsilon+a)^*=\ldots =a^*$, but $a^*$ is its own derivative. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{theorem}\label{the:fuzzy-dfa-correctness}
+Let $r$ be a restricted regular expression over $\Sigma$, let $0 < \cut \le 1$, and let
+$M^\cut = \langle Q^\cut, \Sigma, \delta^\cut, q_0^\cut, F^\cut \rangle$
+be the DFA constructed from $r$ using fuzzy derivatives (for the fixed cut
+value $\cut$).
+Write
+\[
+  \mathcal L^\cut_\Sigma(r)
+  =
+  (q_\cut^*)^{-1}\bigl(q_\cut^*(\mathcal L(r))\bigr)
+\]
+for the concrete language of words that are $\cut$-similar to some word denoted
+by $r$. Then $M^\cut$ and $r$ define the same concrete $\cut$-language:
+\[
+  \mathcal{L}(M^\cut) \;=\; \mathcal{L}^\cut_\Sigma(r).
+\]
+Equivalently, for every word $w \in \Sigma^*$,
+\[
+  M^\cut \text{ accepts } w
+  \;\;\Longleftrightarrow\;\;
+  w \in \mathcal{L}^\cut_\Sigma(r).
+\]
+\end{theorem}
+
+\begin{proof}
+The argument is that of Theorem~\ref{the:dfa-correctness}, with $\mathcal D$ replaced
+throughout by $\mathcal D^\cut$. Writing $\delta^{\cut *}$ for the extension of
+$\delta^\cut$ to words, induction on $w$ gives
+$\delta^{\cut *}(q_0^\cut,w)=[\mathcal{D}^\cut_w(r)]$, using
+$\mathcal{D}^\cut_{ua}(r) = \mathcal{D}^\cut_a(\mathcal{D}^\cut_u(r))$ in the inductive
+step. Hence $M^\cut$ accepts $w$ iff $\nu(\mathcal{D}^\cut_w(r))=\varepsilon$, \ie iff
+$\varepsilon\in\mathcal{L}(\mathcal{D}^\cut_w(r))=\partial^\cut_w(\mathcal{L}(r))$
+by Theorem~\ref{the:two-fuzzy-derivative-mapping}, which by definition of
+$\mathcal{L}^\cut_\Sigma(r)$ holds exactly when $w\in\mathcal{L}^\cut_\Sigma(r)$.
+\end{proof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\color{red}\begin{remark} The transition function on the quotient automaton can be viewed as a fuzzy  transition. Namely if $[\ ]$ is defined by $\mu$-similarity,  we can write $\delta(q_1,[a])=q_2$ as $((q_1,a),q_2)\in_\mu \delta$, where $\varepsilon$ is fuzzy set membership with value $\mu$. 
+\end{remark}}
+
