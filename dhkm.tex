@@ -196,7 +196,7 @@ triangle inequality with respect to the T-norm, $\otimes$, $\cR(s_1,s_2)\ge \cR(
 %When the T-norm is
 %G\"odel's \emph{minimum} T-norm,.
 The following Lemma is immediate.
-\begin{lemma}\label{T-equivalence} The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if and only if $\otimes$ is locally idempotent on $\mu$, \ie $\mu\otimes\mu$.
+\begin{lemma}\label{T-equivalence} The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if and only if $\otimes$ is locally idempotent on $\mu$, \ie $\mu\otimes\mu=\mu$.
 \end{lemma}
 {\color{red} Rocq proof??}\vspace{0.5cm}
 
@@ -408,9 +408,9 @@ $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
   \item (regularity) $\partial_u(L)$ is regular;
   \item (semantic--syntactic correspondence)
         $\mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)=\partial_{u}\bigl(\mathcal{L}(r)\bigr)$;
-\item (syntactic finiteness) the set of derivatives $\bigl\{\, \mathcal D_{u}(L) \mid u \in \mathcal L(r) \bigr\}$ is
+\item (syntactic finiteness) the set of derivatives $\bigl\{\, \mathcal D_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is
         finite up to canonicalization.
-  \item (semantic finiteness) the set of derivatives $\bigl\{\, \partial_{u}(L) \mid u \in L \bigr\}$ is
+  \item (semantic finiteness) the set of derivatives $\bigl\{\, \partial_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is
         finite.
 \end{enumerate}
 \end{theorem}
@@ -477,9 +477,9 @@ Notice that both Definition~\ref{def:regex-fuzzy-derivative} and Definition~\ref
 
 
 \begin{theorem}[Main]\label{the:fuzzyderivative}\hfill \begin{enumerate}
-\item If $\Sigma$ is finite for every regular expression $r$, word $u\in \Sigma^\ast$, and cut value
-$0<\mu\le1$, $ u\in \mathcal L^\mu(r)$ if and only if $\epsilon \in
-\mathcal D_u^\mu(r).
+\item (Experimentum crucis) If $\Sigma$ is finite for every regular expression $r$, word $u\in \Sigma^\ast$, and cut value
+$0<\mu\le1$, $ u\in \mathcal L^\mu(r)$ if and only if $\epsilon \in \mathcal L(
+\mathcal D_u^\mu(r)).
 $
 \item (Regularity) For every symbol $a\in\Sigma$ and $0<\mu\le1$, if $L\subseteq\Sigma^\ast$ is regular, then
 $\partial_a^\mu(L)$ is regular, and if $r$ is a regular expression, then $\mathcal D_a^\mu(r)$ is a regular expression.
@@ -491,25 +491,25 @@ L(\mathcal D_a^\mu(r))
 $
 \item (Syntactic finiteness) If $\Sigma$ is finite and $r$ is a restricted regular expression, then for every word $u\in \Sigma^\ast$ and $0<\mu\le1$, the set
 $
-\{\mathcal D_u^\mu(L)\mid u\in\mathcal L(r)\}$ is finite up to canonicalization.
+\{\mathcal D_u^\mu(L)\mid u\in\Sigma^\star\}$ is finite up to canonicalization.
 \item (Semantic Finiteness) If $\Sigma$ is finite and $L\subseteq\Sigma^\ast$ is regular, then for every word $u\in \Sigma^\ast$ and $0<\mu\le1$, the set
 $
-\{\partial_u^\mu(L)\mid u\in L\}
+\{\partial_u^\mu(L)\mid u\in \Sigma^\star\}
 $
 is finite. 
 \end{enumerate}
 \end{theorem}
 
-{\color{red}\bf THIS IS THE MAIN THEOREM AND THE FIRST ITEM IS THE REASON WHY WE DO IT}
+\noindent {\color{red}\bf THIS IS THE MAIN THEOREM AND THE FIRST ITEM IS THE REASON WHY WE DO IT}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{The special case $\mu\otimes\mu$}
+\subsection{The special case $\mu\otimes\mu=\mu$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This section is a minor generalization of the results in~\cite{KM26} which were origianlly given for G\"odel's minimum T-norm, see Definition~\ref{norms}. 
-Throughout this section we rephrase their results for the case of a general T-norm which is locally dempotent on $\mu$, \ie $\mu\otimes\mu=\mu$. Capitalizing on this local idempotency all definitions and theorems of Section~\ref{sec:fuzzyderivatives} greatly simplify due to Lemma~\ref{T-equivalence}, and all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
+Throughout this section we rephrase their results for the case of a general T-norm which is locally idempotent on $\mu$, \ie $\mu\otimes\mu=\mu$. Capitalizing on this local idempotency all definitions and theorems of Section~\ref{sec:fuzzyderivatives} greatly simplify due to Lemma~\ref{T-equivalence}, and all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
 
 \begin{proposition}\label{prop:cut-equivalence}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
@@ -610,15 +610,6 @@ Hence,
   =
   \partial_{[a]_\cut}\bigl( L^\cut\bigr).
 \]
-
-{\color{red} OR SHCOULD WE PHRASE IT AS IN THE WIL ABSTRACT? \\\begin{theorem}\label{main} If $a\in\Sigma$ and $L\subseteq\Sigma^\ast$ is regular, then for every cut value $0<\mu\le1$, we have \mbox{$
-\partial_a^\mu(L)
-=
-\{w\in\Sigma^\ast\mid
-q_\mu^\ast(w)\in
-\partial_{[a]_\mu}(L^\mu)\}.
-$}
-\end{theorem}}
 \end{proposition}
 
 \begin{proof}[Proof sketch]{\color{red} not checked}
@@ -654,7 +645,7 @@ such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
 
-{\color{red}  FOLLOWING RESULTS UP TO END OF SECTION  ARE COSEQUENCE OF THE MAIN THEOREM: do we need it?}
+\noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  ARE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case?}
 
 
 
