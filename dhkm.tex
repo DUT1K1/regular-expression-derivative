@@ -253,7 +253,7 @@ We have the following counterexamples.\\ 1) Assume $\mathcal R(a,b)\lneq 1$ then
 Thus, Definition~\ref{def:Rexp} needs to conservatively extended as follows.
 
 \begin{definition}[T-similarity on Regular Expressions - General T-norm] \label{def:Rexpg}
-Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a similarity on $\Sigma$. Define inductively the following proximity relation
+Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$. Define inductively the following proximity relation
 $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                        \mathcal{R}(a,b)  & \mbox{ if } r=a \mbox{ and } s=b; \\
                                                       \min\!{\big\{\mathcal{R}^E(r_1,s_1),  \mathcal{R}^E(r_2,s_2) \big\}}& \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
@@ -262,6 +262,9 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
 \end{definition}
+
+{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$  $\mathcal{R}^E(r,s)\gneq 0$ if and only if $r_1=r[a_1,\ldots,b_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
+\end{conjecture}}
 
 We can straightforwardly prove that all the above fuzzy relations are indeed T-similarities.
 \begin{lemma} \label{T-similarity}Given a T-similarity relation $\mathcal R$ on $\Sigma$ \begin{enumerate}
@@ -514,10 +517,11 @@ $
 is finite. 
 \end{enumerate}
 \end{theorem}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \noindent {\color{red}\bf THIS IS THE MAIN THEOREM AND THE FIRST ITEM IS THE REASON WHY WE DO IT}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-{\color{red}\begin{remark}\label{mismatch} Equality does not hold in Theorem~\ref{the:fuzzyderivative}. A counterexample is as follows $\Sigma=\{a,b\}$, $\cR(a,b)=\mu \lneq  1$, then $\mathcal D^\mu_a(a^\star)=(a^\star+b^\star)$. Now  but $ab\notin (a^\star+b^\star)$ but $ab \in \partial_a^\mu(L(r))$. 
+{\color{red}\begin{remark}\label{mismatch} Equality does not hold in Theorem~\ref{the:fuzzyderivative}. A counterexample is as follows $\Sigma=\{a,b\}$, $\cR(a,b)=\mu \lneq  1$, then $\mathcal D^\mu_a(a^\star)=(a^\star+b^\star)$. Now, $ab\notin (a^\star+b^\star)$ but $ab \in \partial_a^\mu(L(r))$. 
 \end{remark}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -530,9 +534,10 @@ This section is a generalization of the results in~\cite{KM26} which were origia
 Throughout this section we rephrase their results for the case of a general T-similarity relation, $\cR$, for which its $\mu$-cut, $\cR^\mu$ is an equivalence, see Lemma~\ref{T-equivalence}. Capitalizing on this all definitions and theorems of Section~\ref{sec:fuzzyderivatives} because all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
 
 \begin{proposition}\label{prop:cut-equivalence}
-Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\cR^\mu$ is an equivalence.
-The following hold. 
+Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then 
+%$\cR^\mu$ is an equivalence.
+the following hold. 
 \begin{enumerate}
 \item  The relation $
   a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.
@@ -556,15 +561,37 @@ is an equivalence relation on languages.
 \end{enumerate}
 \end{proposition}
 
-{\color{red} Rock?? Proofs??}
+{\color{red} Rock?? Proofs??}\vspace{1 cm}
+
+{\color{red}Notice that if we have also the following: 
+\begin{proposition}\label{prop:cut-equivalence}
+Let $\cR^\mu$ be an equivalence.
+\begin{enumerate}
+\item  The relation $
+  a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.
+$ is an equivalence relation on $\Sigma$. 
+\item The relation $
+  r\sim_\cut^E s
+  \quad\Longleftrightarrow\quad
+  \mathcal R^E(r,s)\ge\cut
+$
+ is an equivalence relation on restricted regular expressions.
+\item The relation $
+  w_1\sim_\cut^{\Sigma^*}w_2
+  \quad\Longleftrightarrow\quad
+  \mathcal R^w(w_1,w_2)\ge(\cut)^{|w_1|} $
+ is an equivalence relation on words, which naturally induces an equivalence relation on languages, $
+  L_1\sim_\cut^{\mathcal P(\Sigma^*)}L_2$.
+\end{enumerate}
+\end{proposition}}  
 
 
 \begin{proposition}\label{fuzzyderivativeGodel}
-Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\cR^\mu$ is an equivalence, moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
+Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$ such that such that $\mu\otimes\mu = \mu$, moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
 \begin{enumerate}
 \item \label{def:regex-fuzzy-derivative-godel}
-Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ anfd
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ and
 $\cut$ is equal to
 \[
   \mathcal D_a^\cut(r)
@@ -614,8 +641,8 @@ $q_\cut^*$ does exactly the same thing for a whole word, letter by letter. We ca
 
 
 \begin{proposition}\label{the:quotient-fuzzy-derivative}
-Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\cR^\mu$ is an equivalence.  For every language $L \subseteq \Sigma^*$ and every
+Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$ such that $\mu\otimes\mu = \mu$.  For every language $L \subseteq \Sigma^*$ and every
 $a\in\Sigma$,
 \[
   \partial_a^\cut( L)
@@ -663,7 +690,21 @@ $\partial_{[a]_\cut}(\mathcal L^\cut)$ consists only of quotient words, and each
 such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
+{\color{red}\begin{remark} 
+Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$ such that such that $\mu\otimes\mu = \mu$, moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$, then:
+\[
+  \mathcal L\bigl(\mathcal D_a^\cut( r)\bigr)
+  \subseteq
+  \mathcal D_{[a]_\cut}\bigl( [r]_\mu).
+\]
+\end{remark}}\vspace{1cm}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  INFRA SUNT LEONES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  ARE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case?}
 
 
