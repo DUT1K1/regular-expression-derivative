@@ -492,12 +492,18 @@ $0<\mu\le1$, $ u\in \mathcal L^\mu(r)$ if and only if $\varepsilon \in \mathcal 
 $
 \item (Regularity) For every symbol $a\in\Sigma$ and $0<\mu\le1$, if $L\subseteq\Sigma^\ast$ is regular, then
 $\partial_a^\mu(L)$ is regular, and if $r$ is a regular expression, then $\mathcal D_a^\mu(r)$ is a regular expression.
-\item (Semantic-syntactic Correspondence) For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value
+\item ({\color{red}Weak} Semantic-syntactic Correspondence) For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value
 $0<\mu\le1$, $
 L(\mathcal D_a^\mu(r))
 \subseteq
 \partial_a^\mu(L(r)).
 $
+\item{\color{red} (Strong Semantic-syntactic Correspondence)  For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value
+$0<\mu\le1$, $
+L^\mu(\mathcal D_a(r)) =L^\mu(\mathcal D^\mu_a(r))
+=
+\partial_a^\mu(L(r)).
+$}
 \item (Syntactic finiteness) If $\Sigma$ is finite and $r$ is a restricted regular expression, then for every word $u\in \Sigma^\ast$ and $0<\mu\le1$, the set
 $
 \{\mathcal D_u^\mu(L)\mid u\in\Sigma^\star\}$ is finite up to canonicalization.
@@ -512,12 +518,6 @@ is finite.
 \noindent {\color{red}\bf THIS IS THE MAIN THEOREM AND THE FIRST ITEM IS THE REASON WHY WE DO IT}
 
 {\color{red}\begin{remark}\label{mismatch} Equality does not hold in Theorem~\ref{the:fuzzyderivative}. A counterexample is as follows $\Sigma=\{a,b\}$, $\cR(a,b)=\mu \lneq  1$, then $\mathcal D^\mu_a(a^\star)=(a^\star+b^\star)$. Now  but $ab\notin (a^\star+b^\star)$ but $ab \in \partial_a^\mu(L(r))$. 
-
-However we have that $
-L^\mu(\mathcal D_a(r)) =L^\mu(\mathcal D^\mu_a(r))
-=
-\partial_a^\mu(L(r)).
-$
 \end{remark}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
