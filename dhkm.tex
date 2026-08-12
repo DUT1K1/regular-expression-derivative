@@ -177,37 +177,42 @@ Proved in \path{coq/src/CanonicalizationCorrectness.v}, theorem
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In this paper we use standard notions in fuzzy logic, see~Appendix~\ref{appendix} or \cite{met05,Sessa2002} for more details. Throughout the paper, $\otimes$ denotes a left-continuous T-norm, see Definition~\ref{T-norm}, on the real interval $[0,1]$, written in infix
+In this paper we use standard notions in fuzzy logic, see~Appendix~\ref{appendix} or \cite{met05,Sessa2002} for more details. Throughout the paper, $\otimes$ denotes a left-continuous T-norm, see Definition~\ref{T-norm}, on the real interval $[0,1]$. We write it written in infix
 notation. 
 
 \begin{definition}\hfill \begin{enumerate}
 \item A {\em fuzzy relation} on a
 set $S$ is a map $\cR:S\times S\to[0,1]$;
-\item {\color{red}a fuzzy relation is {\em crisp} if the value of $\cR$ is always 1;}
+\item a fuzzy relation is {\em crisp} if the value of $\cR$ is always 1;
 \item the \emph{$\cut$-cut} of a fuzzy relation $\cR$ at a \emph{cut value}
-$0<\cut\le 1$ is the crisp relation:\\
+$0<\cut\le 1$ is the crisp relation:
 $\cR_\cut := \{(s_1,s_2) \mid \cR(s_1,s_2) \ge \cut \}$;
-\item {\color{red} a fuzzy relation $\cR$ is a {\em proximity relation} if it is reflexive and symmetric};
-\item a proximity relation, $\cR$, is a \emph{T-similarity relation}, with respect to a T-norm $\otimes$ if it satisfies the reverse
-triangle inequality with respect to $\otimes$, namely $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$;
-\item {\color{red} A T-similarity relation $\cR$ is said to be {\em g\"odelian} if the T-norm, $\otimes$, is idempotent on all the values of the pairs in $\cR$.
-}
+\item a fuzzy relation $\cR$ is a {\em proximity relation} if it is reflexive and symmetric, namely for all $s,s_1, s_2$, the following hold: $\cR(s,s)$  and $\cR(s_1,s_2)$ if and only if $\cR(s_2,s_1)$;
+\item a proximity relation, $\cR$, is a \emph{T-similarity relation}, with respect to a T-norm, $\otimes$, if it satisfies the reverse
+triangle inequality with respect to $\otimes$, namely for all $s,s_1,s_2$, the following holds $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$;
+\item a T-similarity relation, $\cR$, is {\em extensional} if for all $s_1,s_2$, if $\cR(s_1,s_2)=1$ then $s_1=s_2$;
+\item A T-similarity relation $\cR$ is said to be {\em g\"odelian} if the T-norm, $\otimes$, is idempotent on all the values of the pairs in $\cR$, namely for all $s_1,s_2$ we have that $\cR(s_1,s_2)= \cR(s_1,s_2) \otimes \cR(s_1,s_2)$;
 \end{enumerate}
 \end{definition} 
 
-{\color{red} Notice that a proximity relation can be a T-similarity relation w.r.t. different norms. An important role in the sequel will be played  by proximity relations which are equivalences.}
+Seome comments are in order.
+\begin{enumerate}
+\item A proximity relation can be a T-similarity relation w.r.t. different norms; trivial examples  are crisp relations.  
+\item Throughout the paper we  assume that T-similarity relations are extensional, otherwise, without loss of generality, we can quotient the domain, $S$, of the fuzzy relation, $\cR$ up to the 1-cut  $\cR^1$ which is an equivalence, and work on $S/\cR^1$.  Hence throughout the paper we will assume that T-similarity relations are always extensional.
+\item G\"odel's {\em minimum T-norm}, see Definition~\ref{norms}.1, is obviously g\"odelian.
+\item The p-ordinal sums of G\"odel's and Goguen's T-norms, see Definition~\ref{norms}.4, give examples of T-norms which are idempotent for all values on $(0,p]$.
+\end{enumerate}
+An important role in the sequel will be played  by T-similarity relations which induce equivalences.
 The following Lemma is immediate.
-\begin{lemma}\label{T-equivalence} The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if $\otimes$ is locally idempotent on $\mu$, \ie $\mu\otimes\mu=\mu$.
+\begin{lemma}\label{T-equivalence}\hfill \begin{enumerate} 
+\item The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if $\otimes$ is locally idempotent on $\mu$, \ie 
+$\mu\otimes\mu=\mu$;
+\item $\mu$-cuts of g\"odelian T-similarity relations are equivalences. 
+\end{enumerate}
 \end{lemma}
 {\color{red} Rocq proof??}\vspace{0.5cm}
 
-{\color{red} Clearly $\mu$-cuts of g\"odelian T-similarity relations are equivalences. However, all crisp equivalence relations are T-similarity relations for any norm, and hence Lemma~\ref{T-equivalence} cannot be reversed.}
-
-
-If  a norm is globally idempotent, and hence necessarily G\"odel's {\em minimum T-norm}, see Definition~\ref{norms}.1, is obvioiusly g\"odelian.  Nevertheless, there are many non-idempotent T-norms which are locally idempotent on intervals in $[0,1]$, \eg\ the ordinal sum of the product and the minimum T-norm:
-$$T(x,y)=\begin{cases}p+ \dfrac{(x-p)(y-p)}{1-p} & x,y\geq p;\\ \min(x,y) & \mbox{ otherwise,}
-\end{cases}$$ where $p\in [0,1]$. Such T-norms therefore induce $\mu$-cuts which are equivalences only for certain values of $\mu$.
-
+Since all crisp equivalence relations are T-similarity relations for any norm,  Lemma~\ref{T-equivalence} cannot be reversed. 
 
 \subsection{T-similarities on Words, Regular Expresions, and Languages}
 Given a T-similarity between symbols $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ we  define fuzzy relations between words, regular expressions, and languages as follows. All such fuzzy relations are in fact T-similarities, see Lemma~\ref{T-similarity}.
@@ -217,7 +222,7 @@ Given a T-similarity between symbols $\mathcal{R}:\Sigma \times \Sigma \rightarr
 \end{cases}$$
 \end{definition}
 \begin{definition}[T-similarity on languages]\label{def:RL}
-{\color{red} Given a T-similarity relation $\mathcal R^w$ on $\Sigma^*$,} for languages $L_1,L_2\subseteq \Sigma^*$ define a fuzzy relation $\mathcal{R}^L:\mathcal P(\Sigma^*)\times \mathcal P(\Sigma^*)\to [0,1]$ as follows
+Given a T-similarity relation $\mathcal R^w$ on $\Sigma^*$, for languages $L_1,L_2\subseteq \Sigma^*$ define a fuzzy relation $\mathcal{R}^L:\mathcal P(\Sigma^*)\times \mathcal P(\Sigma^*)\to [0,1]$ as follows
 \[
 \mathcal{R}^L(L_1,L_2)\;=\;
 \min\!\Bigl\{
@@ -242,8 +247,8 @@ $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\min_{1\leq i\leq n}\mathcal R(a_i,b_i) 
 %\end{definition}
 
 If we consider arbitrary T-norms whose values are not globally idempotent, then, Definition~\ref{def:Rexp} is both too generous for the $(\ )^\star$-operator and too strict for the $\ +\ $constructor and the correspondence with language T-similarity, see~Theorem~\ref{thm:Rr-RL-bridge}, fails.  
-We have the following counterexamples.\\ 1) Assume $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  the T-norm is locally idempotent on $\mathcal R(a,b)$. \\ 2) Assume
-\(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), {\color{red} and that the norm is Goguen's product norm~\ref{norms}.2} then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(a+b,c+d)=0.5\cdot0.5=0.25\).\\
+We have the following counterexamples.\\ 1) Assume $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  the T-norm is idempotent on $\mathcal R(a,b)$. \\ 2) Assume
+\(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), and that the norm is Goguen's product norm~\ref{norms}.2 then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(a+b,c+d)=0.5\cdot0.5=0.25\).\\
 %We need to use the $\min$ operator in the $+$ clause in Definition~\ref{def:Rexpg}. \\
 Thus, Definition~\ref{def:Rexp} needs to conservatively extended as follows.
 
@@ -259,7 +264,7 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
 \end{definition}
 
 We can straightforwardly prove that all the above fuzzy relations are indeed T-similarities.
-\begin{lemma} \label{T-similarity}{\color{red}Given a T-similarity relation $\mathcal R$ on $\Sigma$} \begin{enumerate}
+\begin{lemma} \label{T-similarity}Given a T-similarity relation $\mathcal R$ on $\Sigma$ \begin{enumerate}
 \item $\mathcal{R}^{E}$ is a T-similarity  relation on $E$ and hence on restricted regular expressions;
 \item $\mathcal{R}^w$ is a T-similarity  relation on $\Sigma^*$;
 \item$\mathcal R^L$ is a T-similarity relation on languages.
@@ -408,7 +413,7 @@ coincide under the semantics map.
 Let $\Sigma$ be a finite alphabet, $r$ a regular expression over $\Sigma$,
 $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
 \begin{enumerate}
-\item $u\in \mathcal L(r)$ if and only if $\epsilon \in \mathcal{D}_{u}(r)$.
+\item $u\in \mathcal L(r)$ if and only if $\varepsilon \in \mathcal{D}_{u}(r)$.
   \item (regularity) $\partial_u(L)$ is regular;
   \item (semantic--syntactic correspondence)
         $\mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)=\partial_{u}\bigl(\mathcal{L}(r)\bigr)$;
@@ -482,7 +487,7 @@ Notice that both Definition~\ref{def:regex-fuzzy-derivative} and Definition~\ref
 
 \begin{theorem}[Main]\label{the:fuzzyderivative}\hfill \begin{enumerate}
 \item (Experimentum crucis) If $\Sigma$ is finite for every regular expression $r$, word $u\in \Sigma^\ast$, and cut value
-$0<\mu\le1$, $ u\in \mathcal L^\mu(r)$ if and only if $\epsilon \in \mathcal L(
+$0<\mu\le1$, $ u\in \mathcal L^\mu(r)$ if and only if $\varepsilon \in \mathcal L(
 \mathcal D_u^\mu(r)).
 $
 \item (Regularity) For every symbol $a\in\Sigma$ and $0<\mu\le1$, if $L\subseteq\Sigma^\ast$ is regular, then
@@ -490,9 +495,14 @@ $\partial_a^\mu(L)$ is regular, and if $r$ is a regular expression, then $\mathc
 \item (Semantic-syntactic Correspondence) For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value
 $0<\mu\le1$, $
 L(\mathcal D_a^\mu(r))
-=
+\subseteq
 \partial_a^\mu(L(r)).
 $
+{\color{red} WHY NOT $
+L^\mu(\mathcal D_a(r))
+=
+\partial_a^\mu(L(r)).
+$}
 \item (Syntactic finiteness) If $\Sigma$ is finite and $r$ is a restricted regular expression, then for every word $u\in \Sigma^\ast$ and $0<\mu\le1$, the set
 $
 \{\mathcal D_u^\mu(L)\mid u\in\Sigma^\star\}$ is finite up to canonicalization.
@@ -506,18 +516,27 @@ is finite.
 
 \noindent {\color{red}\bf THIS IS THE MAIN THEOREM AND THE FIRST ITEM IS THE REASON WHY WE DO IT}
 
+{\color{red}\begin{remark}\label{mismatch} Equality does not hold in Theorem~\ref{the:fuzzyderivative}. A counterexample is as follows $\Sigma=\{a,b\}$, $\cR(a,b)=\mu \lneq  1$, then $\mathcal D^\mu_a(a^\star)=(a^\star+b^\star)$. Now  but $ab\notin (a^\star+b^\star)$ but $ab \in \partial_a^\mu(L(r))$. 
+
+However we have that $
+L^\mu(\mathcal D_a(r)) =L^\mu(\mathcal D^\mu_a(r))
+=
+\partial_a^\mu(L(r)).
+$
+\end{remark}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{The special case $\mu\otimes\mu=\mu$}
+\subsection{The special case of equivalences.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section is a minor generalization of the results in~\cite{KM26} which were origianlly given for G\"odel's minimum T-norm, see Definition~\ref{norms}. 
-Throughout this section we rephrase their results for the case of a general T-norm which is locally idempotent on $\mu$, \ie $\mu\otimes\mu=\mu$. Capitalizing on this local idempotency all definitions and theorems of Section~\ref{sec:fuzzyderivatives} greatly simplify due to Lemma~\ref{T-equivalence}, and all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
+This section is a generalization of the results in~\cite{KM26} which were origianlly given for G\"odel's minimum T-norm, see Definition~\ref{norms}. 
+Throughout this section we rephrase their results for the case of a general T-similarity relation, $\cR$, for which its $\mu$-cut, $\cR^\mu$ is an equivalence, see Lemma~\ref{T-equivalence}. Capitalizing on this all definitions and theorems of Section~\ref{sec:fuzzyderivatives} because all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
 
 \begin{proposition}\label{prop:cut-equivalence}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$.
+with $0 < \cut \le 1$ such that $\cR^\mu$ is an equivalence.
 The following hold. 
 \begin{enumerate}
 \item  The relation $
@@ -546,7 +565,8 @@ is an equivalence relation on languages.
 
 
 \begin{proposition}\label{fuzzyderivativeGodel}
-Let $\mu\otimes\mu=\mu$, $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
+Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
+with $0 < \cut \le 1$ such that $\cR^\mu$ is an equivalence, moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
 \begin{enumerate}
 \item \label{def:regex-fuzzy-derivative-godel}
 Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ anfd
@@ -572,13 +592,13 @@ $$
 \end{proposition}
 {\color{red} Rock?? Proofs??}
 
-Proposition~\ref{the:quotient-fuzzy-derivative} explains all the above simplifications, by showing that in the case of $\mu\otimes\mu=\mu$ the fuzzy derivatives becomean ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
+Proposition~\ref{the:quotient-fuzzy-derivative} below provides the explanation for  all the above simplifications, by showing that in the case $\cR^\mu$ is an equivalence then the fuzzy derivatives becomean ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
 $\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
 differentiating with respect to the class $[a]_\cut$. First we need to define quotients.
 
 
 \begin{definition}\label{def:quotient-language-fuzzy}
-Let $\mu\otimes\mu=\mu$, $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$, and let
+Let $\cR^\mu$ be an equivalence, $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$, and let
 $q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.
 Extend $q_\cut$ to words by
 \[
@@ -600,7 +620,7 @@ $q_\cut^*$ does exactly the same thing for a whole word, letter by letter. We ca
 
 \begin{proposition}\label{the:quotient-fuzzy-derivative}
 Let $\cR$ be a fuzzy similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$. For every language $L \subseteq \Sigma^*$ and every
+with $0 < \cut \le 1$ such that $\cR^\mu$ is an equivalence.  For every language $L \subseteq \Sigma^*$ and every
 $a\in\Sigma$,
 \[
   \partial_a^\cut( L)
@@ -708,7 +728,7 @@ Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
 Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
 $0 < \cut \le 1$. Then
 \[
-  \mathcal{L}bigl(\mathcal{D}^\cut_u(r)\bigr)
+  \mathcal{L}\bigl(\mathcal{D}^\cut_u(r)\bigr)
   =
   \partial^\cut_u\bigl(\mathcal{L}(r)\bigr).
 \] 
@@ -874,8 +894,8 @@ that $\otimes$ and $\Rightarrow$ form an adjoint pair, \ie:
 \end{definition}
 
 \begin{definition}\label{norms}Prominent examples of left-continuous $T$-norms are:
-\begin{itemize}
-    \item G\"odel T-norm: $a\otimes b =\min(a,b)$, whose residuum is \\$a\Rightarrow b = \begin{cases}b & \mbox{ if } b\lneq a \\
+\begin{enumerate}
+    \item G\"odel minium T-norm: $a\otimes b =\min(a,b)$, whose residuum is \\$a\Rightarrow b = \begin{cases}b & \mbox{ if } b\lneq a \\
 1 &\mbox{ otherwise; } \end{cases}$
     \item Goguen's product T-norm: $a\otimes b =a*b$, whose residuum is \\
     $a\Rightarrow b = \begin{cases}b/a & \mbox{ if } b\lneq a \\
@@ -885,7 +905,15 @@ that $\otimes$ and $\Rightarrow$ form an adjoint pair, \ie:
  $a\Rightarrow b =\begin{cases}1-a+b & \mbox{ if } b\lneq a \\
 1 &\mbox{ otherwise. }
 \end{cases}$
-    \end{itemize}
+\item for $p\in (0,1]$, the $p$-ordinal sum of Goguen's product and G\"odel's minimum T-norm:
+$$a\otimes b=\begin{cases}p+ \dfrac{(a-p)(b-p)}{1-p} & a,b\geq p;\\ \min(a,b) & \mbox{ otherwise,}
+\end{cases}$$ and 
+$$a\Rightarrow b=\begin{cases}1& a\leq b,\\
+b &  b\lneq a,p,  \\
+p+ \dfrac{(1-p)(b-p)}{a-p} &  \mbox{otherwise.}
+\end{cases}$$
+
+    \end{enumerate}
     \end{definition}
 
 
@@ -937,6 +965,11 @@ called a \emph{T-similarity relation} (on $S$) iff it satisfies the reverse
 triangle inequality with respect to $\otimes$:
 \begin{description}
   \item[Reverse triangle inequality:] $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$ for any $s_1,s_2,s\in S$.
+\end{description}
+\item A proximity relation (on $S$) is
+\emph{extensional} (on $S$) if it satisfies the property: 
+\begin{description}
+  \item [extensionality:] if $\cR(s_1,s_2)=1 $ then $s_1=s_2$ for any $s_1,s_2\in S$.
 \end{description}
 \end{enumerate}
 \end{definition}
