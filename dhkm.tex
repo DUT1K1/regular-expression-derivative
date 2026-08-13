@@ -426,6 +426,8 @@ $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
         finite.
 \end{enumerate}
 \end{theorem}
+{\color{red}\begin{remark} If we were to take derivatives up to semantic equivalence, then we would get that the cardinality of the sets in Theorem~\ref{the:derivative}.3 and .4 would be equal.  But even if  we take derivatives only up to canonical form,  this is not the case. For example, consider the restricted regular expressions $a^\star
++b(a+\varepsilon)^\star$, then we have that $\mathcal D_a=a^\star$ and $\mathcal D_b=(a+\varepsilon)^\star$, which are language equivalent. So we have that the cardinality of   $\bigl\{\, \partial_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is two, while that of $\bigl\{\, \mathcal D_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is three.\end{remark}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -534,8 +536,7 @@ This section is a generalization of the results in~\cite{KM26} which were origia
 Throughout this section we rephrase their results for the case of a general T-similarity relation, $\cR$, for which its $\mu$-cut, $\cR^\mu$ is an equivalence, see Lemma~\ref{T-equivalence}. Capitalizing on this all definitions and theorems of Section~\ref{sec:fuzzyderivatives} because all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
 
 \begin{proposition}\label{prop:cut-equivalence}
-Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then 
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then 
 %$\cR^\mu$ is an equivalence.
 the following hold. 
 \begin{enumerate}
@@ -563,7 +564,7 @@ is an equivalence relation on languages.
 
 {\color{red} Rock?? Proofs??}\vspace{1 cm}
 
-{\color{red}Notice that if we have also the following: 
+{\color{red}Notice that we have also the following: 
 \begin{proposition}\label{prop:cut-equivalence}
 Let $\cR^\mu$ be an equivalence.
 \begin{enumerate}
@@ -587,8 +588,7 @@ $
 
 
 \begin{proposition}\label{fuzzyderivativeGodel}
-Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that such that $\mu\otimes\mu = \mu$, moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then , moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
 \begin{enumerate}
 \item \label{def:regex-fuzzy-derivative-godel}
 Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ and
@@ -614,24 +614,29 @@ $$
 \end{proposition}
 {\color{red} Rock?? Proofs??}
 
-Proposition~\ref{the:quotient-fuzzy-derivative} below provides the explanation for  all the above simplifications, by showing that in the case $\cR^\mu$ is an equivalence then the fuzzy derivatives becomean ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
+Proposition~\ref{the:quotient-fuzzy-derivative} below provides the explanation for  all the above simplifications, by showing that when $\cR^\mu$ is an equivalence because either $\cR$ is a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0<\cut \le 1$ such that $\mu\otimes\mu=\mu$ then  the fuzzy derivatives becomean ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
 $\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
 differentiating with respect to the class $[a]_\cut$. First we need to define quotients.
 
 
 \begin{definition}\label{def:quotient-language-fuzzy}
 Let $\cR^\mu$ be an equivalence, $\Sigma^\cut := \Sigma/{\sim_\cut^\Sigma}$, and let
-$q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.
-Extend $q_\cut$ to words by
+$q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.\begin{enumerate}
+\item Extend $q_\cut$ to words by
 \[
   q_\cut^*(a_1\cdots a_n) = [a_1]_\cut \cdots [a_n]_\cut.
 \]
+\item  Extend $q_\cut$ to regular expressions $r[a_1,\ldots,a_n]$ , where $a_1,\ldots,a_n$ are all the alphabet symbols occurring in $r$, by
+\[
+  q_\cut^*(r[a_1,\ldots,a_n]) = r\bigl[[a_1]_\cut, \cdots, [a_n]_\cut\bigr].
+\]
 For a language $ L \subseteq \Sigma^*$, define its quotient image by
 \[
-  L^\cut %:= q_\cut^*(L)
+  [L]_\cut %:= q_\cut^*(L)
   = \{q_\cut^*(w)\mid w\in\mathcal L\}
   \subseteq (\Sigma^\cut)^*.
 \]
+\end{enumerate}
 \end{definition}
 
 \noindent
@@ -641,24 +646,23 @@ $q_\cut^*$ does exactly the same thing for a whole word, letter by letter. We ca
 
 
 \begin{proposition}\label{the:quotient-fuzzy-derivative}
-Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that $\mu\otimes\mu = \mu$.  For every language $L \subseteq \Sigma^*$ and every
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then.  For every language $L \subseteq \Sigma^*$ and every
 $a\in\Sigma$,
 \[
   \partial_a^\cut( L)
   \;=\;
   \{w\in\Sigma^* \mid q_\cut^*(w)\in
-       \partial_{[a]_\cut}\bigl(L^\cut\bigr)\}.
+       \partial_{[a]_\cut}\bigl(  [L]_\cut \bigr)\}.
 \]
 Hence,
 \[
-  \bigl(\partial_a^\cut( L)\bigr)^\mu
+  \bigl[\partial_a^\cut( L)\bigr]^\mu
   =
-  \partial_{[a]_\cut}\bigl( L^\cut\bigr).
+  \partial_{[a]_\cut}\bigl(  [L]_\cut \bigr).
 \]
 \end{proposition}
 
-\begin{proof}[Proof sketch]{\color{red} not checked}
+\begin{proof}[Proof sketch]{\color{red} not checked, the notation has changed also}
 We prove the two inclusions.
 
 Let $w\in\partial_a^\cut(\mathcal L)$. By Definition~\ref{fuzzyderivative},
@@ -691,13 +695,12 @@ such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
 {\color{red}\begin{remark} 
-Let $\cR$ be a T-similarity relation on $\Sigma$ and let $\cut$ be a cut value
-with $0 < \cut \le 1$ such that such that $\mu\otimes\mu = \mu$, moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$, then:
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then , moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$,  then:
 \[
-  \mathcal L\bigl(\mathcal D_a^\cut( r)\bigr)
+ \mathcal L\bigl(\mathcal D_a^\cut( r)\bigr)\bigr)
   \subseteq
-  \mathcal D_{[a]_\cut}\bigl( [r]_\mu).
-\]
+ \{w\in \Sigma^\star \mid q^\star_\mu(w)\in  \mathcal L\bigl(\mathcal D_{[a]_\cut} [r]_\mu\bigr)\},\]
+the counterexample in Remark~\ref{mismatch} provides an example where the inclusion is strict. 
 \end{remark}}\vspace{1cm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -705,7 +708,7 @@ with $0 < \cut \le 1$ such that such that $\mu\otimes\mu = \mu$, moreover let  $
 %%%%  INFRA SUNT LEONES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  ARE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case?}
+\noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  SHOULD BE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case? NOT CHECKED}
 
 
 
@@ -1121,8 +1124,6 @@ $u\in\mathcal L(r)$.
 
 
 
- If we were to take derivatives up to semantic equivalence, then we would get minimal automata. If we take derivatives only up to canonical form, then this is not the case. For example, consider the restricted regular expressions $a^*$ and $(\varepsilon+a)^*$. These are semantically equivalent but are not canonically equal.
-The Brzozowski automaton that we get has two derivatives, namely itself and $\mathcal D_a((\varepsilon+a)^*) =\mathcal D_a(\varepsilon+a)\cdot(\varepsilon+a)^*=\ldots =a^*$, but $a^*$ is its own derivative. 
 
 
 
