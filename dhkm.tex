@@ -33,7 +33,7 @@ David Maisuradze\textsuperscript{1}\\[0.75em]
 \begin{document}
 
 \maketitle
-\begin{abstract}{\color{red}(To be rewritten)}There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbol matching is fuzzy~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
+\begin{abstract}{\color{red}(TO BE REWRITTEN)}There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to extend the standard theory of finite automata~\cite{C71}, based on exact equality of symbols, to a setting where symbol matching is fuzzy~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
 we assume that the alphabet is enriched with a {\em similarity relation}
 and that matching is performed up to {\em cut} values. In this paper, we generalize the theory of
 Brzozowski~\cite{B64} derivatives, further developed and revisited
@@ -44,7 +44,7 @@ corresponding derivative of the expression. Most of our results are formalized i
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
+\section{Introduction} {\color{red} TO BE COMPLETED}
 There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to {\em fuzzyfy} the standard theory of {\em regular languages}. Traditionally this has been done  fuzzfying the theory of finite automata~\cite{C71}, by turning membership functions into lattice-ordered monoids, see \eg\cite{LP06}. Our approach is different in that we relax the crisp setting based on exact equality of symbols, to a setting where symbol matching is fuzzy, as was originally considered in~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
 we assume that the alphabet is enriched with a {\em T-similarity relation}
 and that matching is performed up to {\em cut} values. 
@@ -53,13 +53,15 @@ Brzozowski derivatives~\cite{B64,OwensReppyTuron}, whereby checking that a word 
 from regular expressions: after reading a word, the current state is represented by the
 corresponding derivative of the expression. Most of our results are formalized in Rocq~\cite{Rocq} following the approach of Coquand and Siles~\cite{CoquandRegexEquality}.
 
-The special case of the present work for the minimum T-norm appeared as an extended abstract, by a subset of the authors, at Women in Logic (WiL 2026)~\cite{KM26}.
+The special case of the present work for the minimum T-norm appeared as an extended abstract, by a subset of the authors, at Women in Logic (WiL 2026)~\cite{KM26}.\vspace{1cm}
+
+\noindent{\bf Synopsis.} In Section~\ref{basic} \ldots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Basic Definitions}
+\section{Basic Definitions}\label{basic}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 We use standard terminology: an \emph{alphabet} $\Sigma$ is a finite nonempty set of
@@ -183,7 +185,7 @@ notation.
 \begin{definition}\hfill \begin{enumerate}
 \item A {\em fuzzy relation} on a
 set $S$ is a map $\cR:S\times S\to[0,1]$;
-\item a fuzzy relation is {\em crisp} if the value of $\cR$ is always 1;
+\item a fuzzy relation is {\em crisp} if the value of $\cR$ is either 0 or 1;
 \item the \emph{$\cut$-cut} of a fuzzy relation $\cR$ at a \emph{cut value}
 $0<\cut\le 1$ is the crisp relation:
 $\cR_\cut := \{(s_1,s_2) \mid \cR(s_1,s_2) \ge \cut \}$;
@@ -191,7 +193,7 @@ $\cR_\cut := \{(s_1,s_2) \mid \cR(s_1,s_2) \ge \cut \}$;
 \item a proximity relation, $\cR$, is a \emph{T-similarity relation}, with respect to a T-norm, $\otimes$, if it satisfies the reverse
 triangle inequality with respect to $\otimes$, namely for all $s,s_1,s_2$, the following holds $\cR(s_1,s_2)\ge \cR(s_1,s) \otimes \cR(s,s_2)$;
 \item a T-similarity relation, $\cR$, is {\em extensional} if for all $s_1,s_2$, if $\cR(s_1,s_2)=1$ then $s_1=s_2$;
-\item A T-similarity relation $\cR$ is said to be {\em g\"odelian} if the T-norm, $\otimes$, is idempotent on all the values of the pairs in $\cR$, namely for all $s_1,s_2$ we have that $\cR(s_1,s_2)= \cR(s_1,s_2) \otimes \cR(s_1,s_2)$;
+\item A T-similarity relation $\cR$ is said to be {\em G\"odelian} if the T-norm, $\otimes$, is idempotent on all the values of the pairs in $\cR$, namely for all $s_1,s_2$ we have that $\cR(s_1,s_2)= \cR(s_1,s_2) \otimes \cR(s_1,s_2)$;
 \end{enumerate}
 \end{definition} 
 
@@ -207,7 +209,7 @@ The following Lemma is immediate.
 \begin{lemma}\label{T-equivalence}\hfill \begin{enumerate} 
 \item The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if $\otimes$ is locally idempotent on $\mu$, \ie 
 $\mu\otimes\mu=\mu$;
-\item $\mu$-cuts of g\"odelian T-similarity relations are equivalences. 
+\item $\mu$-cuts of G\"odelian T-similarity relations are equivalences. 
 \end{enumerate}
 \end{lemma}
 {\color{red} Rocq proof??}\vspace{0.5cm}
@@ -249,7 +251,6 @@ $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\min_{1\leq i\leq n}\mathcal R(a_i,b_i) 
 If we consider arbitrary T-norms whose values are not globally idempotent, then, Definition~\ref{def:Rexp} is both too generous for the $(\ )^\star$-operator and too strict for the $\ +\ $constructor and the correspondence with language T-similarity, see~Theorem~\ref{thm:Rr-RL-bridge}, fails.  
 We have the following counterexamples.\\ 1) Assume $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  the T-norm is idempotent on $\mathcal R(a,b)$. \\ 2) Assume
 \(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), and that the norm is Goguen's product norm~\ref{norms}.2 then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(a+b,c+d)=0.5\cdot0.5=0.25\).\\
-%We need to use the $\min$ operator in the $+$ clause in Definition~\ref{def:Rexpg}. \\
 Thus, Definition~\ref{def:Rexp} needs to conservatively extended as follows.
 
 \begin{definition}[T-similarity on Regular Expressions - General T-norm] \label{def:Rexpg}
@@ -263,7 +264,7 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
 \end{cases}$$
 \end{definition}
 
-{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$  $\mathcal{R}^E(r,s)\gneq 0$ if and only if $r_1=r[a_1,\ldots,b_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
+{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$  if $\mathcal{R}^E(r_1,r_2)\gneq 0$ then $r_1=r[a_1,\ldots,b_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
 \end{conjecture}}
 
 We can straightforwardly prove that all the above fuzzy relations are indeed T-similarities.
@@ -282,9 +283,8 @@ $0 < \cut \le 1$, its {\em fuzzy semantic interpretation} is the language $\math
 \end{definition}
 
 \noindent  The above relations are related by the following relations.
-\begin{theorem}\label{thm:Rr-RL-bridge}Given a g\"odelian T-simlarity relation, $\cR$, on the alphabet $\Sigma$, for all restricted regular expressions $r_1$ and $r_2$,
+\begin{theorem}\label{thm:Rr-RL-bridge} Given a T-similarity relation, $\cR$, on the alphabet $\Sigma$, for all restricted regular expressions $r_1$ and $r_2$,
 \begin{enumerate} 
-\item if $\mathcal R^E(r_1,r_2)\geq \mu$ then $L^\mu(r_1)=L^\mu(r_2)$;
 \item$\mathcal R^E(r_1,r_2)\leq \mathcal R^L(\mathcal L(r_1),\mathcal L(r_2));$
 
 \item$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)=\sup\limits_{\substack{L(r_1)=L(r'_1)\\L(r_2)=L(r'_2)}}\mathcal{R}^E(r_1',r_2')$.
@@ -292,6 +292,7 @@ $0 < \cut \le 1$, its {\em fuzzy semantic interpretation} is the language $\math
 %\item {\color{red}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is bounded below by:
 %\[\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)\geq\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in R^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2)\Bigr\}.\]}
 \end{enumerate}
+Moreover if $\cR$ is a G\"odelian T-simlarity relation, or $\mu\otimes\mu=\mu $, then $\mathcal R^E(r_1,r_2)\geq \mu$ then $L^\mu(r_1)=L^\mu(r_2)$;
 \end{theorem}
 {\color{red} Rocq proof ??}\vspace{0.5cm}
 
@@ -307,7 +308,7 @@ $
 \mathcal{R}^E(a+b,b+a)=0
 $
 even though $\mathcal L(a+b)=\mathcal L(b+a)$.
-\item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in \mathcal L(r_1)$ and $w_2\in \mathcal L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $\mathcal R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $\mathcal R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$.
+\item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in \mathcal L(r_1)$ and $w_2\in \mathcal L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $\mathcal R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $\mathcal R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
 \end{enumerate}
 We could incorporate in Definitions~\ref{def:Rexp} and~\ref{def:Rexpg} finite equational relations among regular expressions, see \eg \ref{lem:similarity-sound} or we could put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. But since no exhaustive finitary definition can be given, see~\cite{ } we shall not pursue this.
 
@@ -504,8 +505,7 @@ L(\mathcal D_a^\mu(r))
 \partial_a^\mu(L(r)).
 $
 \item{\color{red} (Strong Semantic-syntactic Correspondence)  For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value
-$0<\mu\le1$, $
-L^\mu(\mathcal D_a(r)) =L^\mu(\mathcal D^\mu_a(r))
+$0<\mu\le1$, $L^\mu(\mathcal D^\mu_a(r))
 =
 \partial_a^\mu(L(r)).
 $}
@@ -694,185 +694,14 @@ $\partial_{[a]_\cut}(\mathcal L^\cut)$ consists only of quotient words, and each
 such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
-{\color{red}\begin{remark} 
+{\color{red}\begin{proposition} 
 Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then , moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$,  then:
 \[
  \mathcal L\bigl(\mathcal D_a^\cut( r)\bigr)\bigr)
   \subseteq
  \{w\in \Sigma^\star \mid q^\star_\mu(w)\in  \mathcal L\bigl(\mathcal D_{[a]_\cut} [r]_\mu\bigr)\},\]
 the counterexample in Remark~\ref{mismatch} provides an example where the inclusion is strict. 
-\end{remark}}\vspace{1cm}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%  INFRA SUNT LEONES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  SHOULD BE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case? NOT CHECKED}
-
-
-
-
-\begin{theorem}\label{the:language-fuzzy-derivative-regular}
-For every $u\in\Sigma^*$ and every cut value $0 < \cut \le 1$, if
-$\mathcal{L} \subseteq \Sigma^*$ is regular, then
-$\partial^\cut_u(\mathcal{L})$ is regular. Moreover, if $r$ is a
-restricted regular expression, then $\mathcal D_u^\cut(r)$ is a restricted
-regular expression.
-\end{theorem}
-
-\begin{proof}
-The argument is similar to the proof of Theorem~\ref{the:language-derivative-regular}(1).
-Let $\mathcal{L} \subseteq \Sigma^*$ be regular and fix $0 < \cut \le 1$.
-
-For a single symbol $a \in \Sigma$ we have, by the definition of $\partial_a^\cut$,
-\[
-  \partial_a^\cut(\mathcal{L})
-  =
-  \{ w \in \Sigma^* \mid
-    \exists b\in\Sigma,\ \exists v\in\Sigma^*
-    \text{ with } \cR(a,b)\ge\cut,\ \mathcal R^w(w,v)\ge\cut,
-    \text{ and } bv\in\mathcal L \}.
-\]
-Equivalently,
-\[
-  \partial_a^\cut(\mathcal L)
-  =
-  (q_\cut^*)^{-1}
-  \bigl(\partial_{[a]_\cut}(\mathcal L^\cut)\bigr)
-\]
-by Theorem~\ref{the:quotient-fuzzy-derivative}. Since $\mathcal L$ is regular
-and $q_\cut^*$ is a homomorphism, the quotient image $\mathcal L^\cut$ is
-regular. Classical derivatives preserve regularity, so
-$\partial_{[a]_\cut}(\mathcal L^\cut)$ is regular over the finite quotient
-alphabet $\Sigma^\cut$. Finally, inverse homomorphic images of regular languages
-are regular. Hence $\partial_a^\cut(\mathcal L)$ is regular.
-
-For a word $u = a_1 \cdots a_n$ we use the recursive definition
-$\partial_u^\cut(\mathcal{L}) = \partial_{a_n}^\cut(\cdots \partial_{a_1}^\cut(\mathcal{L}) \cdots)$
-and apply the previous argument inductively: at each step we take a fuzzy
-derivative of a regular language and obtain a regular language again. Thus
-$\partial_u^\cut(\mathcal{L})$ is regular for every $u \in \Sigma^*$ and every
-cut $0 < \cut \le 1$.
-
-The expression statement follows directly from
-Definitions~\ref{def:regex-fuzzy-derivative} and
-\ref{def:regex-fuzzy-word-derivative}: ordinary Brzozowski derivatives are
-restricted regular expressions, and the finite sums in
-Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
-\end{proof}
-
-
-\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
-Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
-$0 < \cut \le 1$. Then
-\[
-  \mathcal{L}\bigl(\mathcal{D}^\cut_u(r)\bigr)
-  =
-  \partial^\cut_u\bigl(\mathcal{L}(r)\bigr).
-\] 
-\end{theorem}
-
-\begin{proof}[Proof sketch]{\color{red} Needs to be checked}
-For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative-godel} gives
-\[
-  \mathcal L(\mathcal D_a^\cut(r))
-  =
-  \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
-  \mathcal L(\mathcal D_b(s)).
-\]
-{\color{red} why not 
-\[
-  \mathcal L^\mu(\mathcal D_a(r))
-  =
-  \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
-  \mathcal L(\mathcal D_b(s)).
-\]}
-By the ordinary semantic-syntactic correspondence,
-$\mathcal L(\mathcal D_b(s))=\partial_b(\mathcal L(s))$. The condition
-$s\sim_\cut^E r$ means that $s$ is syntactically similar to $r$ up to
-$\cut$-equivalent alphabet symbols, and therefore its denoted words provide
-exactly the suffixes that are $\cut$-similar to suffixes of words in
-$\mathcal L(r)$. Together with $a\sim_\cut^\Sigma b$, this is precisely
-Definition~\ref{fuzzyderivative}, so
-\[
-  \mathcal L(\mathcal D_a^\cut(r))
-  =
-  \partial_a^\cut(\mathcal L(r)).
-\]
-The statement for words follows by induction on $u$ from
-Definitions~\ref{def:fuzzy-word-derivative} and
-\ref{def:regex-fuzzy-word-derivative}.
-\end{proof}
-
-
-
-
-
-\begin{theorem}\label{the:fuzzy-derivative-set-finite}
-Let $\Sigma$ be a finite alphabet and let $\mathcal{L} \subseteq \Sigma^*$ be a
-regular language. For every cut value $0 < \cut \le 1$, the set of fuzzy
-derivatives
-\[
-  \bigl\{\, \partial_u^\cut(\mathcal{L}) \;\bigm|\; u \in \Sigma^* \bigr\}
-\]
-is finite.
-\end{theorem}
-
-\begin{proof}
-Fix $0 < \cut \le 1$ and let $\mathcal{L}$ be regular. Since $q_\cut^*$ is a
-homomorphism, the quotient image $\mathcal L^\cut$ is a regular language over
-the finite alphabet $\Sigma^\cut$. By Theorem~\ref{the:derivative-set-is-finite}(3),
-the set
-\[
-  D^\cut
-  =
-  \{\,\partial_x(\mathcal L^\cut) \mid x\in(\Sigma^\cut)^*\,\}
-\]
-is finite. By repeated use of Theorem~\ref{the:quotient-fuzzy-derivative},
-every fuzzy derivative has the form
-\[
-  \partial_u^\cut(\mathcal L)
-  =
-  (q_\cut^*)^{-1}
-  \bigl(\partial_{q_\cut^*(u)}(\mathcal L^\cut)\bigr).
-\]
-Thus the possible fuzzy derivatives are inverse images of elements of the finite
-set $D^\cut$. Hence
-$\{\partial_u^\cut(\mathcal{L}) \mid u \in \Sigma^*\}$ is finite.
-\end{proof}
-
-
-
-\begin{theorem}\label{the:regex-fuzzy-derivative-types-finite}
-Let $\Sigma$ be a finite alphabet and let $R$ be a restricted regular expression over
-$\Sigma$. For every cut value $0 < \cut \le 1$, the set of derivative languages
-\[
-  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
-\]
-is finite.
-\end{theorem}
-
-\begin{proof}
-Let $0 < \cut \le 1$ be fixed and $\mathcal{L} = \mathcal{L}(R)$.
-By Theorem~\ref{the:two-fuzzy-derivative-mapping}, for every word $w \in \Sigma^*$,
-\[
-  \mathcal{L}\bigl(\mathcal{D}^\cut_w(R)\bigr)
-  \;=\;
-  \partial^\cut_w\bigl(\mathcal{L}(R)\bigr)
-  \;=\;
-  \partial^\cut_w(\mathcal{L}).
-\]
-Hence
-\[
-  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \mid w \in \Sigma^* \bigr\}
-  \;=\;
-  \bigl\{\, \partial^\cut_w(\mathcal{L}) \mid w \in \Sigma^* \bigr\},
-\]
-and the right-hand set is finite by
-Theorem~\ref{the:fuzzy-derivative-set-finite}. This proves the claim.
-\end{proof}
-
+\end{proposition}}\vspace{1cm}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1048,6 +877,181 @@ which is not a regular language.
 
 
 \end{document}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  INFRA SUNT LEONES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  SHOULD BE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case? NOT CHECKED}
+
+
+
+
+\begin{theorem}\label{the:language-fuzzy-derivative-regular}
+For every $u\in\Sigma^*$ and every cut value $0 < \cut \le 1$, if
+$\mathcal{L} \subseteq \Sigma^*$ is regular, then
+$\partial^\cut_u(\mathcal{L})$ is regular. Moreover, if $r$ is a
+restricted regular expression, then $\mathcal D_u^\cut(r)$ is a restricted
+regular expression.
+\end{theorem}
+
+\begin{proof}
+The argument is similar to the proof of Theorem~\ref{the:language-derivative-regular}(1).
+Let $\mathcal{L} \subseteq \Sigma^*$ be regular and fix $0 < \cut \le 1$.
+
+For a single symbol $a \in \Sigma$ we have, by the definition of $\partial_a^\cut$,
+\[
+  \partial_a^\cut(\mathcal{L})
+  =
+  \{ w \in \Sigma^* \mid
+    \exists b\in\Sigma,\ \exists v\in\Sigma^*
+    \text{ with } \cR(a,b)\ge\cut,\ \mathcal R^w(w,v)\ge\cut,
+    \text{ and } bv\in\mathcal L \}.
+\]
+Equivalently,
+\[
+  \partial_a^\cut(\mathcal L)
+  =
+  (q_\cut^*)^{-1}
+  \bigl(\partial_{[a]_\cut}(\mathcal L^\cut)\bigr)
+\]
+by Theorem~\ref{the:quotient-fuzzy-derivative}. Since $\mathcal L$ is regular
+and $q_\cut^*$ is a homomorphism, the quotient image $\mathcal L^\cut$ is
+regular. Classical derivatives preserve regularity, so
+$\partial_{[a]_\cut}(\mathcal L^\cut)$ is regular over the finite quotient
+alphabet $\Sigma^\cut$. Finally, inverse homomorphic images of regular languages
+are regular. Hence $\partial_a^\cut(\mathcal L)$ is regular.
+
+For a word $u = a_1 \cdots a_n$ we use the recursive definition
+$\partial_u^\cut(\mathcal{L}) = \partial_{a_n}^\cut(\cdots \partial_{a_1}^\cut(\mathcal{L}) \cdots)$
+and apply the previous argument inductively: at each step we take a fuzzy
+derivative of a regular language and obtain a regular language again. Thus
+$\partial_u^\cut(\mathcal{L})$ is regular for every $u \in \Sigma^*$ and every
+cut $0 < \cut \le 1$.
+
+The expression statement follows directly from
+Definitions~\ref{def:regex-fuzzy-derivative} and
+\ref{def:regex-fuzzy-word-derivative}: ordinary Brzozowski derivatives are
+restricted regular expressions, and the finite sums in
+Definition~\ref{def:regex-fuzzy-derivative} are restricted regular expressions.
+\end{proof}
+
+
+\begin{theorem}[Semantic-syntactic correspondence]\label{the:two-fuzzy-derivative-mapping}
+Let $r$ be a restricted regular expression over $\Sigma$, let $u\in\Sigma^*$, and let
+$0 < \cut \le 1$. Then
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_u(r)\bigr)
+  =
+  \partial^\cut_u\bigl(\mathcal{L}(r)\bigr).
+\] 
+\end{theorem}
+
+\begin{proof}[Proof sketch]{\color{red} Needs to be checked}
+For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative-godel} gives
+\[
+  \mathcal L(\mathcal D_a^\cut(r))
+  =
+  \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
+  \mathcal L(\mathcal D_b(s)).
+\]
+{\color{red} why not 
+\[
+  \mathcal L^\mu(\mathcal D_a(r))
+  =
+  \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
+  \mathcal L(\mathcal D_b(s)).
+\]}
+By the ordinary semantic-syntactic correspondence,
+$\mathcal L(\mathcal D_b(s))=\partial_b(\mathcal L(s))$. The condition
+$s\sim_\cut^E r$ means that $s$ is syntactically similar to $r$ up to
+$\cut$-equivalent alphabet symbols, and therefore its denoted words provide
+exactly the suffixes that are $\cut$-similar to suffixes of words in
+$\mathcal L(r)$. Together with $a\sim_\cut^\Sigma b$, this is precisely
+Definition~\ref{fuzzyderivative}, so
+\[
+  \mathcal L(\mathcal D_a^\cut(r))
+  =
+  \partial_a^\cut(\mathcal L(r)).
+\]
+The statement for words follows by induction on $u$ from
+Definitions~\ref{def:fuzzy-word-derivative} and
+\ref{def:regex-fuzzy-word-derivative}.
+\end{proof}
+
+
+
+
+
+\begin{theorem}\label{the:fuzzy-derivative-set-finite}
+Let $\Sigma$ be a finite alphabet and let $\mathcal{L} \subseteq \Sigma^*$ be a
+regular language. For every cut value $0 < \cut \le 1$, the set of fuzzy
+derivatives
+\[
+  \bigl\{\, \partial_u^\cut(\mathcal{L}) \;\bigm|\; u \in \Sigma^* \bigr\}
+\]
+is finite.
+\end{theorem}
+
+\begin{proof}
+Fix $0 < \cut \le 1$ and let $\mathcal{L}$ be regular. Since $q_\cut^*$ is a
+homomorphism, the quotient image $\mathcal L^\cut$ is a regular language over
+the finite alphabet $\Sigma^\cut$. By Theorem~\ref{the:derivative-set-is-finite}(3),
+the set
+\[
+  D^\cut
+  =
+  \{\,\partial_x(\mathcal L^\cut) \mid x\in(\Sigma^\cut)^*\,\}
+\]
+is finite. By repeated use of Theorem~\ref{the:quotient-fuzzy-derivative},
+every fuzzy derivative has the form
+\[
+  \partial_u^\cut(\mathcal L)
+  =
+  (q_\cut^*)^{-1}
+  \bigl(\partial_{q_\cut^*(u)}(\mathcal L^\cut)\bigr).
+\]
+Thus the possible fuzzy derivatives are inverse images of elements of the finite
+set $D^\cut$. Hence
+$\{\partial_u^\cut(\mathcal{L}) \mid u \in \Sigma^*\}$ is finite.
+\end{proof}
+
+
+
+\begin{theorem}\label{the:regex-fuzzy-derivative-types-finite}
+Let $\Sigma$ be a finite alphabet and let $R$ be a restricted regular expression over
+$\Sigma$. For every cut value $0 < \cut \le 1$, the set of derivative languages
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \;\bigm|\; w \in \Sigma^* \bigr\}
+\]
+is finite.
+\end{theorem}
+
+\begin{proof}
+Let $0 < \cut \le 1$ be fixed and $\mathcal{L} = \mathcal{L}(R)$.
+By Theorem~\ref{the:two-fuzzy-derivative-mapping}, for every word $w \in \Sigma^*$,
+\[
+  \mathcal{L}\bigl(\mathcal{D}^\cut_w(R)\bigr)
+  \;=\;
+  \partial^\cut_w\bigl(\mathcal{L}(R)\bigr)
+  \;=\;
+  \partial^\cut_w(\mathcal{L}).
+\]
+Hence
+\[
+  \bigl\{\, \mathcal{L}(\mathcal{D}^\cut_{w}(R)) \mid w \in \Sigma^* \bigr\}
+  \;=\;
+  \bigl\{\, \partial^\cut_w(\mathcal{L}) \mid w \in \Sigma^* \bigr\},
+\]
+and the right-hand set is finite by
+Theorem~\ref{the:fuzzy-derivative-set-finite}. This proves the claim.
+\end{proof}
+
+
+
 \section{Automata}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
