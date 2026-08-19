@@ -350,7 +350,7 @@ depends on which other symbols occur in the alphabet, not on $\mathcal R(a,b)$.
 \subsection{Crisp Derivatives}\label{crisp-derivative}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In this section we recall standard definitions and properties of Brzozowski derivatives, see~\cite{} for more details. First we need to introduce the notion of nullable regular expression. 
+In this section we recall standard definitions and properties of Brzozowski derivatives, see~\cite{B64,Thiemann2016} for more details. First we need to introduce the notion of nullable regular expression. 
 \begin{definition}[Nullable regular expressions]\label{def:nullable}
 A regular expression $r$ is \emph{nullable} if $\varepsilon \in \mathcal{L}(r)$. The
 \emph{nullable} function $\nu$ returns $\varepsilon$ if $r$ is nullable and $\emptyset$
@@ -410,16 +410,19 @@ The semantic derivative $\partial_u(L)$ and the syntactic derivative $\mathcal D
 embody the same intuition---``what remains of a word after removing the prefix
 $u$''---but act on different objects. The following classical results of
 Brzozowski~\cite{B64} record their basic properties and, in particular, that the two
-coincide under the semantics map.
+coincide under the semantics map. Brzozowski does not separate the two operators, using
+the same symbol for an expression and for the set of sequences it
+denotes~\cite{B64}; the correspondence is stated in the explicit form used here
+by Thiemann~\cite{Thiemann2016}.
 
-\begin{theorem}[Classical properties of derivatives~\cite{B64}]\label{the:derivative}
+\begin{theorem}[Classical properties of derivatives~\cite{B64,Thiemann2016}]\label{the:derivative}
 \label{the:language-derivative-regular}\label{the:two-derivative-mapping}\label{the:derivative-set-is-finite}
 Let $\Sigma$ be a finite alphabet, $r$ a regular expression over $\Sigma$,
 $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
 \begin{enumerate}
 \item $u\in \mathcal L(r)$ if and only if $\varepsilon \in \mathcal{D}_{u}(r)$.
   \item (regularity) $\partial_u(L)$ is regular;
-  \item (semantic--syntactic correspondence)
+  \item (semantic--syntactic correspondence~\cite{B64,Thiemann2016})
         $\mathcal{L}\bigl(\mathcal{D}_{u}(r)\bigr)=\partial_{u}\bigl(\mathcal{L}(r)\bigr)$;
 \item (syntactic finiteness) the set of derivatives $\bigl\{\, \mathcal D_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is
         finite up to canonicalization.
@@ -954,7 +957,7 @@ For a single symbol $a$, Definition~\ref{def:regex-fuzzy-derivative-godel} gives
   \bigcup_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
   \mathcal L(\mathcal D_b(s)).
 \]}
-By the ordinary semantic-syntactic correspondence,
+By the ordinary semantic-syntactic correspondence (Theorem~\ref{the:two-derivative-mapping}),
 $\mathcal L(\mathcal D_b(s))=\partial_b(\mathcal L(s))$. The condition
 $s\sim_\cut^E r$ means that $s$ is syntactically similar to $r$ up to
 $\cut$-equivalent alphabet symbols, and therefore its denoted words provide
