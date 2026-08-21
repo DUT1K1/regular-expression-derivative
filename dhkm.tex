@@ -45,7 +45,7 @@ corresponding derivative of the expression. Most of our results are formalized i
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction} {\color{red} TO BE COMPLETED}
-There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to {\em fuzzyfy} the standard theory of {\em regular languages}. Traditionally this has been done  fuzzfying the theory of finite automata~\cite{C71}, by turning membership functions into lattice-ordered monoids, see \eg\cite{LP06}. Our approach is different in that we relax the crisp setting based on exact equality of symbols, to a setting where symbol matching is fuzzy, as was originally considered in~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
+There is growing interest in the computer science and AI communities in moving from {\em exact}, {\em crisp}, {\em qualitative} settings to {\em metric}, {\em probabilistic}, {\em quantitative}~\cite{AlvesKesnerRamos2025,SilvaBonchiBonsangueRutten2011} and hence ultimately {\em fuzzy} settings~\cite{met05}. In this view, we explore how to {\em fuzzify} the standard theory of {\em regular languages}. Traditionally this has been done fuzzifying the theory of finite automata~\cite{C71}, by turning membership functions into lattice-ordered monoids, see \eg\cite{LP06}. Our approach is different in that we relax the crisp setting based on exact equality of symbols, to a setting where symbol matching is fuzzy, as was originally considered in~\cite{Santos68,WeeFu69}. Namely, following similarity-based reasoning~\cite{Sessa2002},
 we assume that the alphabet is enriched with a {\em T-similarity relation}
 and that matching is performed up to {\em cut} values. 
 For this reason, rather than considering fuzzy transition functions in automata, in this paper we fuzzify the theory of
@@ -77,15 +77,15 @@ $\mathcal L(r)\subseteq\Sigma^*$ as follows, where $a\in\Sigma$:
 r ::= \emptyset \mid \varepsilon \mid a \mid r+r \mid r\cdot r \mid r^* \mid r \,\&\, r \mid \neg r
 \]
 \[
-\begin{array}{l@{\qquad}l@{\qquad}l}
-\mathcal{L}(\emptyset)   = \emptyset, &
+\begin{array}{l@{\quad}l@{\quad}l}
+\mathcal{L}(\emptyset) = \emptyset, &
 \mathcal{L}(\varepsilon) = \{\varepsilon\}, &
-\mathcal{L}(a)           = \{a\},\\[0.5ex]
-\mathcal{L}(r + s)       = \mathcal{L}(r) \cup \mathcal{L}(s), &
-\mathcal{L}(r \,\&\, s)      = \mathcal{L}(r) \cap \mathcal{L}(s), &
-\mathcal{L}(\neg r)      = \Sigma^* \setminus \mathcal{L}(r),\\[0.5ex]
-\multicolumn{2}{l}{\mathcal{L}(r \cdot s)   = \{uv \mid u \in \mathcal{L}(r),\ v \in \mathcal{L}(s)\},} &
-\mathcal{L}(r^*)         = \bigcup_{n \geq 0} \mathcal{L}(r)^n,
+\mathcal{L}(a) = \{a\},\\[0.5ex]
+\mathcal{L}(r + s) = \mathcal{L}(r) \cup \mathcal{L}(s), &
+\mathcal{L}(r \,\&\, s) = \mathcal{L}(r) \cap \mathcal{L}(s), &
+\mathcal{L}(\neg r) = \Sigma^* \setminus \mathcal{L}(r),\\[0.5ex]
+\multicolumn{2}{l}{\mathcal{L}(r \cdot s) = \{uv \mid u \in \mathcal{L}(r),\ v \in \mathcal{L}(s)\},} &
+\mathcal{L}(r^*) = \bigcup_{n \geq 0} \mathcal{L}(r)^n,
 \end{array}
 \]
 where $\mathcal{L}(r)^0 = \{\varepsilon\}$ and
@@ -155,7 +155,7 @@ where $=$ is syntactic (structural) equality.
 We write $[r]$ as shorthand for $\mathsf{nf}(r)$.
 \end{lemma}
 \begin{proof}
-\begin{sloppypar}
+\begin{sloppypar}\raggedright
 Proved in \path{coq/src/Canonicalization.v} and
 \path{coq/src/CanonicalizationCorrectness.v}, theorem
 \path{similar_iff_nf_eq}~\cite{OurRocqRepo}.
@@ -166,7 +166,7 @@ Proved in \path{coq/src/Canonicalization.v} and
 If $r \sim s$, then $\mathcal{L}(r)=\mathcal{L}(s)$, hence $r \equiv s$.
 \end{lemma}
 \begin{proof}
-\begin{sloppypar}
+\begin{sloppypar}\raggedright
 Proved in \path{coq/src/CanonicalizationCorrectness.v}, theorem
 \path{similar_sound}~\cite{OurRocqRepo}.
 \end{sloppypar}
@@ -179,7 +179,7 @@ Proved in \path{coq/src/CanonicalizationCorrectness.v}, theorem
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In this paper we use standard notions in fuzzy logic, see~Appendix~\ref{appendix} or \cite{met05,Sessa2002} for more details. Throughout the paper, $\otimes$ denotes a left-continuous T-norm, see Definition~\ref{T-norm}, on the real interval $[0,1]$. We write it written in infix
+In this paper we use standard notions in fuzzy logic, see~Appendix~\ref{appendix} or \cite{met05,Sessa2002} for more details. Throughout the paper, $\otimes$ denotes a left-continuous T-norm, see Definition~\ref{T-norm}, on the real interval $[0,1]$. We write it in infix
 notation. 
 
 \begin{definition}\hfill \begin{enumerate}
@@ -196,14 +196,14 @@ triangle inequality} with respect to $\otimes$, namely $\cR(s_1,s_2)\ge \cR(s_1,
 \end{enumerate}
 \end{definition} 
 
-Seome comments are in order.
+Some comments are in order.
 \begin{enumerate}
-\item The same fuzzy relation can be a T-similarity relation w.r.t. different norms; trivial examples  are crisp equivalence relations.  
-\item Throughout the paper we  assume that T-similarity relations are extensional, otherwise, without loss of generality, we can quotient the domain, $S$, of the fuzzy relation, $\cR$ up to the 1-cut  $\cR^1$ which is an equivalence, and work on $S/\cR^1$.  Hence throughout the paper we will assume that T-similarity relations are always extensional.
+\item The same fuzzy relation can be a T-similarity relation w.r.t. different norms; trivial examples are crisp equivalence relations. 
+\item Throughout the paper we assume that T-similarity relations are extensional, otherwise, without loss of generality, we can quotient the domain, $S$, of the fuzzy relation, $\cR$ up to the 1-cut $\cR^1$ which is an equivalence, and work on $S/\cR^1$. Hence throughout the paper we will assume that T-similarity relations are always extensional.
 \item G\"odel's {\em minimum T-norm}, see Definition~\ref{norms}.1, is obviously g\"odelian.
 \item The p-ordinal sums of G\"odel's and Goguen's T-norms, see Definition~\ref{norms}.4, give examples of T-norms which are idempotent for all values on $(0,p]$.
 \end{enumerate}
-An important role in the sequel will be played  by T-similarity relations which induce equivalences.
+An important role in the sequel will be played by T-similarity relations which induce equivalences.
 The following Lemma is immediate.
 \begin{lemma}\label{T-equivalence}\hfill \begin{enumerate} 
 \item The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if $\otimes$ is locally idempotent on $\mu$, \ie 
@@ -213,13 +213,13 @@ $\mu\otimes\mu=\mu$;
 \end{lemma}
 {\color{red} Rocq proof??}\vspace{0.5cm}
 
-Since all crisp equivalence relations are T-similarity relations for any norm,  Lemma~\ref{T-equivalence} cannot be reversed. 
+Since all crisp equivalence relations are T-similarity relations for any norm, Lemma~\ref{T-equivalence} cannot be reversed. 
 
-\subsection{T-similarities on Words, Regular Expresions, and Languages}
-Given a T-similarity between symbols $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ we  define fuzzy relations between words, regular expressions, and languages as follows. All such fuzzy relations are in fact T-similarities, see Lemma~\ref{T-similarity}.
-\begin{definition}[T-similarity on Words]\label{def:Rw}Given a T-similarity relation $\mathcal R$ on $\Sigma$, define a fuzzy relation on  words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:$$\mathcal R^{w}(w_1,w_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } w_1=a_1\ldots a_n\mbox{ and }w_2 =b_1 \ldots b_n;
+\subsection{T-similarities on Words, Regular Expressions, and Languages}
+Given a T-similarity between symbols $\mathcal{R}:\Sigma \times \Sigma \rightarrow [0,1]$ we define fuzzy relations between words, regular expressions, and languages as follows. All such fuzzy relations are in fact T-similarities, see Lemma~\ref{T-similarity}.
+\begin{definition}[T-similarity on Words]\label{def:Rw}Given a T-similarity relation $\mathcal R$ on $\Sigma$, define a fuzzy relation on words $\mathcal{R}^w:\Sigma^* \times \Sigma^* \rightarrow [0,1]$ as follows:$$\mathcal R^{w}(w_1,w_2) =\begin{cases}\bigotimes_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } w_1=a_1\ldots a_n\mbox{ and }w_2 =b_1 \ldots b_n;
 \\ 
-0& \mbox{  otherwise. }
+0& \mbox{ otherwise. }
 \end{cases}$$
 \end{definition}
 \begin{definition}[T-similarity on languages]\label{def:RL}
@@ -233,11 +233,11 @@ Given a T-similarity relation $\mathcal R^w$ on $\Sigma^*$, for languages $L_1,L
 \]
 \end{definition}
 
-Viewing words as regular expressions,  Definition~\ref{def:Rw} naturally extends to regular expressions, when the T-norm is globally idempotent \ie if we take G\"odel's minimum T-norm.
-\begin{definition}[T-similarity on Regular Expressions for G\"odel's T-norm] \label{def:Rexp}Let T be G\"odel's T-norm. Given a T-similarity relation $\mathcal R$ on $\Sigma$, define a fuzzy relation on regular expressions,  $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$, as follows
+Viewing words as regular expressions, Definition~\ref{def:Rw} naturally extends to regular expressions, when the T-norm is globally idempotent \ie if we take G\"odel's minimum T-norm.
+\begin{definition}[T-similarity on Regular Expressions for G\"odel's T-norm] \label{def:Rexp}Let T be G\"odel's T-norm. Given a T-similarity relation $\mathcal R$ on $\Sigma$, define a fuzzy relation on regular expressions, $\mathcal{G}^{E}:E \times E \rightarrow [0,1]$, as follows
 $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\min_{1\leq i\leq n}\mathcal R(a_i,b_i) &\mbox{ if } r_1=r[a_1,\ldots,a_n]\mbox{ and }r_2 =r[b_1,\ldots,b_n];
 \\ 
-0& \mbox{  otherwise. }
+0& \mbox{ otherwise. }
 \end{cases}$$
 \end{definition}
 
@@ -247,29 +247,29 @@ $$\mathcal G^{E}(r_1,r_2) =\begin{cases}\min_{1\leq i\leq n}\mathcal R(a_i,b_i) 
 %& \text{if } w_1=a_1w_1' \text{ and } w_2=a_2w_2'. \end{cases}\]
 %\end{definition}
 
-If we consider arbitrary T-norms whose values are not globally idempotent, then, Definition~\ref{def:Rexp} is both too generous for the $(\ )^\star$-operator and too strict for the $\ +\ $constructor and the correspondence with language T-similarity, see~Theorem~\ref{thm:Rr-RL-bridge}, fails.  
-We have the following counterexamples.\\ 1) Assume $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if  the T-norm is idempotent on $\mathcal R(a,b)$. \\ 2) Assume
+If we consider arbitrary T-norms whose values are not globally idempotent, then, Definition~\ref{def:Rexp} is both too generous for the $(\ )^\star$-operator and too strict for the $\ +\ $constructor and the correspondence with language T-similarity, see~Theorem~\ref{thm:Rr-RL-bridge}, fails. 
+We have the following counterexamples.\\ 1) Assume $\mathcal R(a,b)\lneq 1$ then $\mathcal R^L(\mathcal L(a^*),\mathcal L(b^*))= \mathcal R(a,b)$ only if the T-norm is idempotent on $\mathcal R(a,b)$. \\ 2) Assume
 \(\mathcal R(a,c)=\mathcal R(b,d)=0.5\), and that the norm is Goguen's product norm~\ref{norms}.2 then \(\mathcal R^L(\mathcal L(r_1),\mathcal L(r_2))=0.5\) while \(\mathcal R^E(a+b,c+d)=0.5\cdot0.5=0.25\).\\
-Thus, Definition~\ref{def:Rexp} needs to conservatively extended as follows.
+Thus, Definition~\ref{def:Rexp} needs to be conservatively extended as follows.
 
 \begin{definition}[T-similarity on Regular Expressions - General T-norm] \label{def:Rexpg}
 Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$. Define inductively the following fuzzy relation
 $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
-                                                       \mathcal{R}(a,b)  & \mbox{ if } r=a \mbox{ and } s=b; \\
-                                                      \min\!{\big\{\mathcal{R}^E(r_1,s_1),  \mathcal{R}^E(r_2,s_2) \big\}}& \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
+                                                       \mathcal{R}(a,b) & \mbox{ if } r=a \mbox{ and } s=b; \\
+                                                      \min\!{\big\{\mathcal{R}^E(r_1,s_1), \mathcal{R}^E(r_2,s_2) \big\}}& \mbox{ if } r=r_1+r_2 \mbox{ and } s=s_1+s_2; \\
                                                       \mathcal{R}^E(r_1,s_1) \otimes \mathcal{R}^E(r_2,s_2) & \mbox{ if } r=r_1\cdot r_2 \mbox{ and } s=s_1\cdot s_2; \\
                                                        \inf_n( \otimes^n \mathcal{R}^E(r_1,s_1) ) & \mbox{ if } r=r_1^* \mbox{ and } s=s_1^*; \\
                                                         0 & \mbox{ otherwise.}
 \end{cases}$$
 \end{definition}
 
-{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$  if $\mathcal{R}^E(r_1,r_2)\gneq 0$ then $r_1=r[a_1,\ldots,b_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
+{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$ if $\mathcal{R}^E(r_1,r_2)\gneq 0$ then $r_1=r[a_1,\ldots,b_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
 \end{conjecture}}
 
 We can straightforwardly prove that all the above fuzzy relations are indeed T-similarities.
 \begin{lemma} \label{T-similarity}Given a T-similarity relation $\mathcal R$ on $\Sigma$ \begin{enumerate}
-\item $\mathcal{R}^{E}$ is a T-similarity  relation on $E$ and hence on restricted regular expressions;
-\item $\mathcal{R}^w$ is a T-similarity  relation on $\Sigma^*$;
+\item $\mathcal{R}^{E}$ is a T-similarity relation on $E$ and hence on restricted regular expressions;
+\item $\mathcal{R}^w$ is a T-similarity relation on $\Sigma^*$;
 \item$\mathcal R^L$ is a T-similarity relation on languages.
 \end{enumerate}
 \end{lemma}
@@ -278,10 +278,10 @@ We can straightforwardly prove that all the above fuzzy relations are indeed T-s
 \noindent The semantic operator $\mathcal L$ is naturally fuzzified as follows.
 \begin{definition}[Fuzzy semantic interpretation] For a restricted regular expression $r$ over $\Sigma$ and
 $0 < \cut \le 1$, its {\em fuzzy semantic interpretation} is the language $\mathcal L^\mu(r)\subseteq \Sigma^{\ast}$ defined as follows 
-\[\mathcal L^\mu (r)=\{w\mid  w\sim_\mu^{\Sigma^*}v\mbox{ for } v\in \mathcal L(r)\}.\]
+\[\mathcal L^\mu (r)=\{w\mid w\sim_\mu^{\Sigma^*}v\mbox{ for } v\in \mathcal L(r)\}.\]
 \end{definition}
 
-\noindent  The above relations are related by the following relations.
+\noindent The above relations are related by the following relations.
 \begin{theorem}\label{thm:Rr-RL-bridge} Given a T-similarity relation, $\cR$, on the alphabet $\Sigma$, for all restricted regular expressions $r_1$ and $r_2$,
 \begin{enumerate} 
 \item$\mathcal R^E(r_1,r_2)\leq \mathcal R^L(\mathcal L(r_1),\mathcal L(r_2));$
@@ -291,7 +291,7 @@ $0 < \cut \le 1$, its {\em fuzzy semantic interpretation} is the language $\math
 %\item {\color{red}$\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)$ is bounded below by:
 %\[\mathcal{R}^L\bigl(L(r_1),L(r_2)\bigr)\geq\sup\Bigl\{\mathcal{R}^E(r_1',r_2')\;\Bigm|\; r_1',r_2' \in R^\Sigma,\; L(r_1')=L(r_1),\;L(r_2')=L(r_2)\Bigr\}.\]}
 \end{enumerate}
-Moreover if $\cR$ is a G\"odelian T-simlarity relation, or $\mu\otimes\mu=\mu $, then $\mathcal R^E(r_1,r_2)\geq \mu$ then $L^\mu(r_1)=L^\mu(r_2)$;
+Moreover if $\cR$ is a G\"odelian T-similarity relation, or $\mu\otimes\mu=\mu $, then $\mathcal R^E(r_1,r_2)\geq \mu$ then $L^\mu(r_1)=L^\mu(r_2)$;
 \end{theorem}
 {\color{red} Rocq proof ??}\vspace{0.5cm}
 
@@ -307,9 +307,9 @@ $
 \mathcal{R}^E(a+b,b+a)=0
 $
 even though $\mathcal L(a+b)=\mathcal L(b+a)$.
-\item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in \mathcal L(r_1)$ and $w_2\in \mathcal L(r_2)$ of the same length, we may have  that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $\mathcal R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $\mathcal R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
+\item Given regular expressions $r_1,r_2\in R^\Sigma$ and words $w_1\in \mathcal L(r_1)$ and $w_2\in \mathcal L(r_2)$ of the same length, we may have that $\mathcal{R}^{E}(r_1,r_2)\; \ngeq \; \mathcal R^w(w_1,w_2)$, as well as $\mathcal{R}^{E}(r_1,r_2)\; \nleq \; \mathcal R^w(w_1,w_2)$, \eg $\mathcal R^w(a,a)=1$ but $\mathcal{R}^{E}(a,a+a)=0$, and $\mathcal R^w(a,b)=0$ but $\mathcal{R}^{E}(a+b,a+b)=1.$
 \end{enumerate}
-We could incorporate in Definitions~\ref{def:Rexp} and~\ref{def:Rexpg} finite equational relations among regular expressions, see \eg \ref{lem:similarity-sound} or we could put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. But since no exhaustive finitary definition can be given, see~\cite{ } we shall not pursue this.
+We could incorporate in Definitions~\ref{def:Rexp} and~\ref{def:Rexpg} finite equational relations among regular expressions, see \eg Lemma~\ref{lem:similarity-sound} or we could put $\mathcal R^E(r_1,s) = \mathcal R^E(r_2,s)$ if ${\sf nf}(r_1)={\sf nf}(r_2)$. But since no finite purely equational characterization can be given, see~\cite{Redko,Salomaa,Kozen}, we shall not pursue this.
 
 We have in fact the following crucial lemma.
 \begin{lemma}[Finite Syntactic Similarity]\label{lemma:syntactic-similarity}
@@ -322,7 +322,7 @@ By induction. {\color{red} Rocq proof ??}\vspace{0.5cm}
 
 Finally notice that Theorem~\ref{thm:Rr-RL-bridge} fails for regular expressions when $\&$ and $\neg$ are
 allowed. These are simple counterexamples.
-\begin{itemize}
+\begin{itemize}\sloppy
 \item[($\&$)] if $\mathcal R(a,b)\gneq 0$ but $a\neq b$, we have that
 $\mathcal L(a\,\&\,b)=\emptyset$ and hence
 $\mathcal R^L(\mathcal L(a\,\&\,a),\mathcal L(a\,\&\,b))=0$, but
@@ -357,7 +357,7 @@ otherwise; equivalently, it is characterized by
 \[
 \begin{array}{ll}
      \nu(\emptyset)=\emptyset &
-     \nu(\varepsilon)=\varepsilon  \\[1ex]
+     \nu(\varepsilon)=\varepsilon \\[1ex]
      \nu(a)=\emptyset \quad (a \in \Sigma)&
      \nu(r+s) = \nu(r) + \nu(s) \\[1ex]
      \nu(r\cdot s)=\nu(r)\: \& \: \nu(s) &
@@ -366,7 +366,7 @@ otherwise; equivalently, it is characterized by
      \nu(\neg r)=
      \begin{cases}
          \varepsilon & \text{if } \nu(r) = \emptyset, \\
-         \emptyset   & \text{if } \nu(r) = \varepsilon.
+         \emptyset & \text{if } \nu(r) = \varepsilon.
      \end{cases}
 \end{array}
 \]
@@ -389,7 +389,7 @@ For a regular expression $r$ over $\Sigma$, $a,b\in\Sigma$ with $a\neq b$, and
 $w\in\Sigma^*$, the Brzozowski derivative $\mathcal D_a(r)$ and its extension to words
 are defined recursively by
 \[
-\begin{array}{l@{\qquad}l@{\qquad}l}
+\begin{array}{l@{\quad}l@{\quad}l}
     \mathcal{D}_a(\emptyset) = \emptyset, &
     \mathcal{D}_a(\varepsilon) = \emptyset, &
     \mathcal{D}_a(a) = \varepsilon,\\[0.5ex]
@@ -429,8 +429,8 @@ $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
         finite.
 \end{enumerate}
 \end{theorem}
-{\color{red}\begin{remark} If we were to take derivatives up to semantic equivalence, then we would get that the cardinality of the sets in Theorem~\ref{the:derivative}.3 and .4 would be equal.  But even if  we take derivatives only up to canonical form,  this is not the case. For example, consider the restricted regular expressions $a^\star
-+b(a+\varepsilon)^\star$, then we have that $\mathcal D_a=a^\star$ and $\mathcal D_b=(a+\varepsilon)^\star$, which are language equivalent. So we have that the cardinality of   $\bigl\{\, \partial_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is two, while that of $\bigl\{\, \mathcal D_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is three.\end{remark}}
+{\color{red}\begin{remark} If we were to take derivatives up to semantic equivalence, then we would get that the cardinality of the sets in Theorem~\ref{the:derivative}.3 and .4 would be equal. But even if we take derivatives only up to canonical form, this is not the case. For example, consider the restricted regular expressions $a^\star
++b(a+\varepsilon)^\star$, then we have that $\mathcal D_a=a^\star$ and $\mathcal D_b=(a+\varepsilon)^\star$, which are language equivalent. So we have that the cardinality of $\bigl\{\, \partial_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is two, while that of $\bigl\{\, \mathcal D_{u}(L) \mid u \in \Sigma^\star \bigr\}$ is three.\end{remark}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -438,7 +438,7 @@ $L\subseteq\Sigma^*$ a regular language, and $u\in\Sigma^*$. Then:
 \subsection{Fuzzy Derivatives}\label{sec:fuzzyderivatives}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In this section we fuzzify, w.r.t. a cut value $0<\mu\leq 1$ the defintions of syntactic and semantic derivatives. Our goal are fuzzy versions of  so as to achieve the fuzzy version of Theorem~\ref{the:derivative}, namely Theorem~\ref{the:fuzzyderivative} and 
+In this section we fuzzify, w.r.t. a cut value $0<\mu\leq 1$ the definitions of syntactic and semantic derivatives. Our goal are fuzzy versions of so as to achieve the fuzzy version of Theorem~\ref{the:derivative}, namely Theorem~\ref{the:fuzzyderivative} and 
 
 \begin{definition}[$\mu$-Fuzzy Semantic Derivative]\label{fuzzyderivative}
 Let ${L}\subseteq\Sigma^*$ and $a\in\Sigma$. The \emph{$\cut$-fuzzy
@@ -448,13 +448,13 @@ $$
 =
 \{w \in \Sigma^* \mid
   \exists b \in \Sigma,\ \exists v\in\Sigma^*
-  \text{ such that }
-  \cR(a,b)\otimes \mathcal{R}^w(w,v)\ge\cut,\ \text{and } bv \in {L}
+  :\;
+  \cR(a,b)\otimes \mathcal{R}^w(w,v)\ge\cut,\ bv \in {L}
 \}.
 $$
 \end{definition}
 
-\begin{definition}[$\mu$-Fuzzy Syntactic  Derivative]\label{def:regex-fuzzy-derivative}
+\begin{definition}[$\mu$-Fuzzy Syntactic Derivative]\label{def:regex-fuzzy-derivative}
 Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$, and let
 $0<\cut\le 1$. The \emph{$\mu$-fuzzy syntactic derivative} of $r$ with respect to $a$ and
 $\cut$ is
@@ -506,7 +506,7 @@ L(\mathcal D_a^\mu(r))
 \subseteq
 \partial_a^\mu(L(r)).
 $
-%\item{\color{red} (Strong Semantic-syntactic Correspondence)  For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value $0<\mu\le1$, $L^\mu(\mathcal D^\mu_a(r)) =\partial_a^\mu(L(r)).$}
+%\item{\color{red} (Strong Semantic-syntactic Correspondence) For every regular expression $r$, symbol \mbox{$a\in\Sigma$}, and cut value $0<\mu\le1$, $L^\mu(\mathcal D^\mu_a(r)) =\partial_a^\mu(L(r)).$}
 \item (Syntactic finiteness) If $\Sigma$ is finite and $r$ is a restricted regular expression, then for every word $u\in \Sigma^\ast$ and $0<\mu\le1$, the set
 $
 \{\mathcal D_u^\mu(L)\mid u\in\Sigma^\star\}$ is finite up to canonicalization.
@@ -521,7 +521,7 @@ is finite.
 \noindent {\color{red}\bf THIS IS THE MAIN THEOREM AND THE FIRST ITEM IS THE REASON WHY WE DO IT}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-{\color{red}\begin{remark}\label{mismatch} Equality does not hold in Theorem~\ref{the:fuzzyderivative}. A counterexample is as follows $\Sigma=\{a,b\}$, $\cR(a,b)=\mu \lneq  1$, then $\mathcal D^\mu_a(a^\star)=(a^\star+b^\star)$. Now, $ab\notin (a^\star+b^\star)$ but $ab \in \partial_a^\mu(L(r))$. 
+{\color{red}\begin{remark}\label{mismatch} Equality does not hold in Theorem~\ref{the:fuzzyderivative}. A counterexample is as follows $\Sigma=\{a,b\}$, $\cR(a,b)=\mu \lneq 1$, then $\mathcal D^\mu_a(a^\star)=(a^\star+b^\star)$. Now, $ab\notin (a^\star+b^\star)$ but $ab \in \partial_a^\mu(L(r))$. 
 \end{remark}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -530,15 +530,15 @@ is finite.
 \subsection{The special case of equivalences.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-This section is a generalization of the results in~\cite{KM26} which were origianlly given for G\"odel's minimum T-norm, see Definition~\ref{norms}. 
-Throughout this section we rephrase their results for the case of a general T-similarity relation, $\cR$, for which its $\mu$-cut, $\cR^\mu$ is an equivalence, see Lemma~\ref{T-equivalence}. Capitalizing on this all definitions and theorems of Section~\ref{sec:fuzzyderivatives} because all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma :  (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
+This section is a generalization of the results in~\cite{KM26} which were originally given for G\"odel's minimum T-norm, see Definition~\ref{norms}. 
+Throughout this section we rephrase their results for the case of a general T-similarity relation, $\cR$, for which its $\mu$-cut, $\cR^\mu$ is an equivalence, see Lemma~\ref{T-equivalence}. Capitalizing on this all definitions and theorems of Section~\ref{sec:fuzzyderivatives} because all $\mu$-neighborhoods of symbols, $a$ over $\Sigma$, \ie $\{b \in\Sigma : (a,b)\in\mathcal{R}_\cut\}$, become equivalence classes. 
 
 \begin{proposition}\label{prop:cut-equivalence}
 Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then 
 %$\cR^\mu$ is an equivalence.
 the following hold. 
 \begin{enumerate}
-\item  The relation $
+\item The relation $
   a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.
 $ is an equivalence relation on $\Sigma$. 
 \item The relation $
@@ -560,14 +560,14 @@ is an equivalence relation on languages.
 \end{enumerate}
 \end{proposition}
 
-{\color{red} Rock?? Proofs??}\vspace{1 cm}
+{\color{red} Rocq?? Proofs??}\vspace{1 cm}
 
 {\color{red}Notice that we have also the following: 
-\begin{proposition}\label{prop:cut-equivalence}
+\begin{proposition}\label{prop:cut-equivalence-notice}
 Let $\cR^\mu$ be an equivalence.
 \begin{enumerate}
-%\item  The relation $ a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.$ is an equivalence relation on $\Sigma$. 
-%\item The relation $ r\sim_\cut^E s\quad\Longleftrightarrow\quad\mathcal R^E(r,s)\ge\cut$  is an equivalence relation on restricted regular expressions.
+%\item The relation $ a \sim_\cut^\Sigma b \quad\Longleftrightarrow\quad \cR(a,b)\ge \cut.$ is an equivalence relation on $\Sigma$. 
+%\item The relation $ r\sim_\cut^E s\quad\Longleftrightarrow\quad\mathcal R^E(r,s)\ge\cut$ is an equivalence relation on restricted regular expressions.
 \item The relation $
   w_1\sim_\cut^{\Sigma^*}w_2
   \quad\Longleftrightarrow\quad
@@ -575,14 +575,14 @@ Let $\cR^\mu$ be an equivalence.
  is an equivalence relation on words, which naturally induces an equivalence relation on languages, $
   L_1\sim_\cut^{\mathcal P(\Sigma^*)}L_2$.
 \end{enumerate}
-\end{proposition}}  
+\end{proposition}} 
 
 
 \begin{proposition}\label{fuzzyderivativeGodel}
-Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then , moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$, moreover let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$. 
 \begin{enumerate}
 \item \label{def:regex-fuzzy-derivative-godel}
-Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$.The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ and
+Let $r$ be a restricted regular expression over $\Sigma$, let $a\in\Sigma$. The $\mu$-fuzzy syntactic derivative of $r$ with respect to $a$ and
 $\cut$ is equal to
 \[
   \mathcal D_a^\cut(r)
@@ -597,15 +597,15 @@ $$
 =
 \{w \in \Sigma^* \mid
   \exists b \in \Sigma,\ \exists v\in\Sigma^*
-  \text{ such that }
-  (a,b)\in\cR_\cut,\ w\sim_\cut^{\Sigma^*}v,\ \text{and } bv\in\mathcal{L}
+  :\;
+  (a,b)\in\cR_\cut,\ w\sim_\cut^{\Sigma^*}v,\ bv\in\mathcal{L}
 \}.
 $$
 \end{enumerate}
 \end{proposition}
-{\color{red} Rock?? Proofs??}
+{\color{red} Rocq?? Proofs??}
 
-Proposition~\ref{the:quotient-fuzzy-derivative} below provides the explanation for  all the above simplifications, by showing that when $\cR^\mu$ is an equivalence because either $\cR$ is a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0<\cut \le 1$ such that $\mu\otimes\mu=\mu$ then  the fuzzy derivatives becomean ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
+Proposition~\ref{the:quotient-fuzzy-derivative} below provides the explanation for all the above simplifications, by showing that when $\cR^\mu$ is an equivalence because either $\cR$ is a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0<\cut \le 1$ such that $\mu\otimes\mu=\mu$ then the fuzzy derivatives become ordinary derivatives if we pass to the quotient alphabet, {\em i.e.}, once letters are identified up to
 $\cut$-similarity. The effect of differentiating with respect to $a$ is the same as
 differentiating with respect to the class $[a]_\cut$. First we need to define quotients.
 
@@ -617,7 +617,7 @@ $q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.\begin{e
 \[
   q_\cut^*(a_1\cdots a_n) = [a_1]_\cut \cdots [a_n]_\cut.
 \]
-\item  Extend $q_\cut$ to regular expressions $r[a_1,\ldots,a_n]$ , where $a_1,\ldots,a_n$ are all the alphabet symbols occurring in $r$, by
+\item Extend $q_\cut$ to regular expressions $r[a_1,\ldots,a_n]$, where $a_1,\ldots,a_n$ are all the alphabet symbols occurring in $r$, by
 \[
   q_\cut^*(r[a_1,\ldots,a_n]) = r\bigl[[a_1]_\cut, \cdots, [a_n]_\cut\bigr].
 \]
@@ -632,24 +632,24 @@ For a language $ L \subseteq \Sigma^*$, define its quotient image by
 
 \noindent
 The map $q_\cut$ maps each symbol to its $\cut$-equivalence class. The map
-$q_\cut^*$ does exactly the same thing for a whole word, letter by letter. We can now prove the follwing proposition.
+$q_\cut^*$ does exactly the same thing for a whole word, letter by letter. We can now prove the following proposition.
 
 
 
 \begin{proposition}\label{the:quotient-fuzzy-derivative}
-Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then.  For every language $L \subseteq \Sigma^*$ and every
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$. For every language $L \subseteq \Sigma^*$ and every
 $a\in\Sigma$,
 \[
   \partial_a^\cut( L)
   \;=\;
   \{w\in\Sigma^* \mid q_\cut^*(w)\in
-       \partial_{[a]_\cut}\bigl(  [L]_\cut \bigr)\}.
+       \partial_{[a]_\cut}\bigl( [L]_\cut \bigr)\}.
 \]
 Hence,
 \[
   \bigl[\partial_a^\cut( L)\bigr]^\mu
   =
-  \partial_{[a]_\cut}\bigl(  [L]_\cut \bigr).
+  \partial_{[a]_\cut}\bigl( [L]_\cut \bigr).
 \]
 \end{proposition}
 
@@ -686,11 +686,11 @@ such word has at least one representative in $\Sigma^*$.
 \end{proof}
 
 {\color{red}\begin{proposition} 
-Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$ then , moreover let  $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$,  then:
+Let $\cR$ be a g\"odelian T-similarity relation on $\Sigma$ or just a T-similarity relation for a cut value $0 < \cut \le 1$ such that $\mu\otimes\mu=\mu$, moreover let $\mathcal{L}\subseteq\Sigma^*$ and $a\in\Sigma$, then:
 \[
- \mathcal L\bigl(\mathcal D_a^\cut( r)\bigr)\bigr)
+ \mathcal L\bigl(\mathcal D_a^\cut( r)\bigr)
   \subseteq
- \{w\in \Sigma^\star \mid q^\star_\mu(w)\in  \mathcal L\bigl(\mathcal D_{[a]_\cut} [r]_\mu\bigr)\},\]
+ \{w\in \Sigma^\star \mid q^\star_\mu(w)\in \mathcal L\bigl(\mathcal D_{[a]_\cut} [r]_\mu\bigr)\},\]
 the counterexample in Remark~\ref{mismatch} provides an example where the inclusion is strict. 
 \end{proposition}}\vspace{1cm}
 
@@ -704,7 +704,7 @@ the counterexample in Remark~\ref{mismatch} provides an example where the inclus
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Since the introduction of fuzzy automata by Santos~\cite{Santos68} and Wee~\cite{Wee67,WeeFu69} in the late 1960s, many authors have addressed the topic of fuzzifying the theory of regular languages. Most of these approaches have taken the standard view of fuzzy sets as functions in some lattice-ordered monoid. In an important line of research, see \cite{LP06,SC12,GJT17}, fuzzification of regular expressions is achieved by introducing a scalar $\lambda\in \mathcal L$ to the algebra of regular expressions with the intended meaning that membership in the induced language is multiplied by $\lambda$. Our approach is somewhat different, since we have taken a more quantitative and metric view, placing the notion of similarity in the forefront.
 
-Nevertheless the two approaches can be related as follows, taking  $\mathcal L$ to be just [0,1]. Given a crisp alphabet $\Sigma$, where similarity between characters is 0, we may introduce for each $a\in \Sigma$  new alphabet symbols $a^\lambda$ for $\lambda\in [0,1]$, with the intended meaning that $a^1$ stands for $a$, and define a similarity relation as follows\\
+Nevertheless the two approaches can be related as follows, taking $\mathcal L$ to be just [0,1]. Given a crisp alphabet $\Sigma$, where similarity between characters is 0, we may introduce for each $a\in \Sigma$ new alphabet symbols $a^\lambda$ for $\lambda\in [0,1]$, with the intended meaning that $a^1$ stands for $a$, and define a similarity relation as follows\\
 $\mathcal R^\lambda(a_1,a_2)=\begin{cases} \lambda_1 \otimes \lambda_2& \mbox{ if } a_1=a^{\lambda_1} \mbox{ and } a_2=a^{\lambda_2} \\
                                                            0 & \mbox{ otherwise.}
 \end{cases}$\\ We denote by $\Sigma^\Lambda$ the extended alphabet.
@@ -712,13 +712,13 @@ $\mathcal R^\lambda(a_1,a_2)=\begin{cases} \lambda_1 \otimes \lambda_2& \mbox{ i
 Given any $\alpha \in \mathcal R \mathcal L$, we can inductively define a regular expression $r^{\alpha,\lambda}\in E$ as follows:\\
 $r^{\alpha,\lambda}=\begin{cases} a^{\lambda'\otimes \lambda} & \mbox{ if } \alpha=\lambda' a;\\
  a_1^{\alpha_1,\lambda\otimes \lambda'} & \mbox{ if } \alpha=\lambda \alpha_1;\\
- a_1^{\alpha_1,\lambda}\cdot  a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 \cdot \alpha_2;\\
- a_1^{\alpha_1,\lambda}+  a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 + \alpha_2;\\
+ a_1^{\alpha_1,\lambda}\cdot a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 \cdot \alpha_2;\\
+ a_1^{\alpha_1,\lambda}+ a_2^{\alpha_2,\lambda} & \mbox{ if } \alpha=\alpha_1 + \alpha_2;\\
  (a_1^{\alpha_1,\lambda})^* & \mbox{ if } \alpha= ( \alpha_1)^*.
-\end{cases}$\\
+\end{cases}$
 
 One can prove that the following holds, using the notation in \cite{SC12}.
-\begin{proposition} Let $\alpha \in \mathcal R \mathcal L$. Then, for all $\mu$, we have that if  $||\alpha ||(a_1\ldots a_n)\geq \mu$  then there exist $\lambda_1,\ldots, \lambda_n$ such that  $\lambda_1\otimes  \ldots \otimes \lambda_n\geq \lambda$ and $a_1^{\lambda_1}\ldots a_n^{\lambda_n}\in \mathcal L(r^{\alpha,1})$;
+\begin{proposition} Let $\alpha \in \mathcal R \mathcal L$. Then, for all $\mu$, we have that if $||\alpha ||(a_1\ldots a_n)\geq \mu$ then there exist $\lambda_1,\ldots, \lambda_n$ such that $\lambda_1\otimes \ldots \otimes \lambda_n\geq \lambda$ and $a_1^{\lambda_1}\ldots a_n^{\lambda_n}\in \mathcal L(r^{\alpha,1})$;
 %\item given $\alpha\in \mathcal{LR}$ denote by $\overline{\alpha}$ the regular expression where all scalars are erased, \ie taken to be 1, then $\mathcal R^E(\overline{\alpha}, r^{\alpha,\lambda})$
 \end{proposition}
 
@@ -749,12 +749,12 @@ left-continuous T-norms.
 \begin{definition}[Residuum] \label{residuum}A binary function $\otimes: [0,1]^2 \rightarrow [0, 1] $ is said to be residuated
 if and only if there exists a binary function $\Rightarrow : [0, 1]^2 \rightarrow [0, 1]$ called the \emph{residuum of $\otimes$}, such
 that $\otimes$ and $\Rightarrow$ form an adjoint pair, \ie:
-\[\forall a,b, c\in [0,1] . a\otimes b \leq c \Leftrightarrow  a \leq b \Rightarrow c .\]
+\[\forall a,b, c\in [0,1] : a\otimes b \leq c \Leftrightarrow a \leq b \Rightarrow c .\]
 \end{definition}
 
 \begin{definition}\label{norms}Prominent examples of left-continuous $T$-norms are:
 \begin{enumerate}
-    \item G\"odel minium T-norm: $a\otimes b =\min(a,b)$, whose residuum is \\$a\Rightarrow b = \begin{cases}b & \mbox{ if } b\lneq a \\
+    \item G\"odel minimum T-norm: $a\otimes b =\min(a,b)$, whose residuum is \\$a\Rightarrow b = \begin{cases}b & \mbox{ if } b\lneq a \\
 1 &\mbox{ otherwise; } \end{cases}$
     \item Goguen's product T-norm: $a\otimes b =a*b$, whose residuum is \\
     $a\Rightarrow b = \begin{cases}b/a & \mbox{ if } b\lneq a \\
@@ -768,8 +768,8 @@ that $\otimes$ and $\Rightarrow$ form an adjoint pair, \ie:
 $$a\otimes b=\begin{cases}p+ \dfrac{(a-p)(b-p)}{1-p} & a,b\geq p;\\ \min(a,b) & \mbox{ otherwise,}
 \end{cases}$$ and 
 $$a\Rightarrow b=\begin{cases}1& a\leq b,\\
-b &  b\lneq a,p,  \\
-p+ \dfrac{(1-p)(b-p)}{a-p} &  \mbox{otherwise.}
+b & b\lneq a,p, \\
+p+ \dfrac{(1-p)(b-p)}{a-p} & \mbox{otherwise.}
 \end{cases}$$
 
     \end{enumerate}
@@ -779,7 +779,7 @@ p+ \dfrac{(1-p)(b-p)}{a-p} &  \mbox{otherwise.}
 \begin{proposition}[Norms with Residuum] \label{first} Given a left-continuous T-norm, $\otimes$, we have the following standard properties, where $a,b,c \ldots \in [0,1]$:
 \begin{enumerate}
 \item\label{first1} $\otimes$ uniquely determines a \emph{residuum} defined as follows 
-\[a \Rightarrow b := \sup\{c \mid a\otimes c \leq b  \}.\] 
+\[a \Rightarrow b := \sup\{c \mid a\otimes c \leq b \}.\] 
 \item\label{first2} $\Rightarrow$ is monotone in its second argument and anti-monotone in its first argument;
 \item\label{first3} $a\Rightarrow a = a\Rightarrow 1=1$, $1\Rightarrow a=a$;
 \item\label{first4} $a\leq b \Rightarrow a$;
@@ -790,9 +790,9 @@ p+ \dfrac{(1-p)(b-p)}{a-p} &  \mbox{otherwise.}
 
 \item\label{first8} $(a\otimes (a\Rightarrow b))\leq b$, and hence $(a\otimes (a\Rightarrow b))\leq \min\{a,b\}$;
 %\item $\min(a\Rightarrow c, b\Rightarrow c )= \max\{a,b\}\Rightarrow c$, and hence $x\otimes (x\Rightarrow y)\leq \min(x,y)$.
-%\item $ (x\Rightarrow y)\otimes (x\Rightarrow z)\leq x\Rightarrow (y\otimes z) $ holds  in the idempotent norm but fails in the product norm.
+%\item $ (x\Rightarrow y)\otimes (x\Rightarrow z)\leq x\Rightarrow (y\otimes z) $ holds in the idempotent norm but fails in the product norm.
 %\item $ \min\{ x\Rightarrow y, x\Rightarrow z\}\leq x\Rightarrow \min{\{y,z\}} $ holds in all residuated lattices. 
-\end{enumerate}   
+\end{enumerate} 
 \end{proposition}
 \begin{proof}
 Items (1)--(5) follow from the adjunction of Definition~\ref{residuum}; \eg for (5),
@@ -835,7 +835,7 @@ Given a regular expression $r[a]$, substitution allows us to generalize the iter
 \mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \bigcup_{n \geq 0} \mathcal{L}(r[a]^\#_n),
 \]
 where $\mathcal L(r[a]^\#_{n+1})=\mathcal L(r[r[a]^\#_n])$ and
-$\mathcal{L}(r[a]^\#_0)=\mathcal L(r[a])$. This operation can take us outside t regular languages if we go beyond tail-recursive substitution. For instance, if we take $r=a[a]b$, then
+$\mathcal{L}(r[a]^\#_0)=\mathcal L(r[a])$. This operation can take us outside the regular languages if we go beyond tail-recursive substitution. For instance, if we take $r=a[a]b$, then
 \[
 \mathcal{L}(r[a]^\#)= \{\varepsilon\}\cup \{ a^{n+1}b^n\mid n\in \mathbb{N}\},
 \]
@@ -869,10 +869,10 @@ which is not a regular language.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%  INFRA SUNT LEONES
+%%%% INFRA SUNT LEONES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\noindent {\color{red}\bf  ALL  FOLLOWING RESULTS UP TO END OF SECTION  SHOULD BE COSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case? NOT CHECKED}
+\noindent {\color{red}\bf ALL FOLLOWING RESULTS UP TO END OF SECTION SHOULD BE CONSEQUENCES OF THE MAIN THEOREM: do we need to spell them out for the special case? NOT CHECKED}
 
 
 
@@ -1156,6 +1156,6 @@ $\mathcal{L}^\cut_\Sigma(r)$ holds exactly when $w\in\mathcal{L}^\cut_\Sigma(r)$
 \end{proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{\color{red}\begin{remark} The transition function on the quotient automaton can be viewed as a fuzzy  transition. Namely if $[\ ]$ is defined by $\mu$-similarity,  we can write $\delta(q_1,[a])=q_2$ as $((q_1,a),q_2)\in_\mu \delta$, where $\varepsilon$ is fuzzy set membership with value $\mu$. 
+{\color{red}\begin{remark} The transition function on the quotient automaton can be viewed as a fuzzy transition. Namely if $[\ ]$ is defined by $\mu$-similarity, we can write $\delta(q_1,[a])=q_2$ as $((q_1,a),q_2)\in_\mu \delta$, where $\varepsilon$ is fuzzy set membership with value $\mu$. 
 \end{remark}}
 
