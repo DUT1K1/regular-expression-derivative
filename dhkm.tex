@@ -94,11 +94,11 @@ $\mathcal{L}(r)^{n+1} = \mathcal{L}(r)^n \cdot \mathcal{L}(r)$.
 not occur.
 \end{definition}
 
-\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$, possibly with indices or superscripts. We write $r[a_1,\ldots,a_n]$ to highlight the occurrences of the alphabet symbols $a_1,\ldots,a_n$ in $r$. By $r[s_1,\ldots,s_n]$ we denote the regular expression obtained by replacing $a_1,\ldots,a_n$ with $s_1,\ldots,s_n$ in $r[a_1,\ldots,a_n]$. We write $r\equiv s$, and say that $r$ and $s$ are \emph{semantically equivalent}, when $\mathcal L(r)=\mathcal L(s)$.\smallskip
+\paragraph{Notation} Regular expressions, possibly restricted, are denoted by $r,s$, possibly with indices or superscripts. We write $r[a_1,\ldots,a_n]$ to highlight the occurrences $a_1,\ldots,a_n$ of alphabet symbols in $r$. By $r[s_1,\ldots,s_n]$ we denote the regular expression obtained by positionally replacing $a_1,\ldots,a_n$ with $s_1,\ldots,s_n$ in $r[a_1,\ldots,a_n]$. We write $r\equiv s$, and say that $r$ and $s$ are \emph{semantically equivalent}, when $\mathcal L(r)=\mathcal L(s)$.\smallskip
 
 
  \begin{remark}{\bf On the Algebra of Regular Events}
-There are various equational systems that ensure semantic equivalence between regular expressions. In this paper we consider Brzozowski's system~\cite{B62} and its extension by Coquand--Siles~\cite{CoquandRegexEquality}; see Definition~\ref{def:similarity}. It is well known that there is no finite purely equational characterization of semantic equivalence; see~\cite{Salomaa,Kozen}. This is due to the $\ast$ operator, which can only be finitely approximated equationally. Examples of semantically equivalent regular expressions that are not similar, in the sense of Coquand and Siles, are $a^*$ and $(\varepsilon+a)^*$. Brzozowski's results are significant because, even though there is no finite equational axiomatization of semantic equivalence, a finite approximation of equality is enough to achieve finiteness in derivatives and hence in states.
+There are various equational systems that ensure semantic equivalence between regular expressions. In this paper we consider Brzozowski's system~\cite{B62} and its extension by Coquand--Siles~\cite{CoquandRegexEquality}; see Definition~\ref{def:similarity}. It is well known that there is no finite purely equational characterization of semantic equivalence~\cite{Redko}; the complete systems of~\cite{Salomaa,Kozen} are not purely equational. This is due to the $\ast$ operator, which can only be finitely approximated equationally. Examples of semantically equivalent regular expressions that are not similar, in the sense of Coquand and Siles, are $a^*$ and $(\varepsilon+a)^*$. Brzozowski's results are significant because, even though there is no finite equational axiomatization of semantic equivalence, a finite approximation of equality is enough to achieve finiteness in derivatives and hence in states.
 \end{remark}
 
 \begin{definition}[Similarity ($\sim$)~\cite{CoquandRegexEquality}]
@@ -142,7 +142,7 @@ r\&\top &\sim& r, &&
 \neg\neg r &\sim& r.
 \end{array}
 \]
-Here $\top$ abbreviates $\neg\emptyset$. 
+Here $\top$ abbreviates $\neg\emptyset$. We take $\sim$ to be the least congruence containing these equations, so it may be applied inside subexpressions.
 \end{definition}
 
 \begin{lemma}[Canonicalization/Normalization]\label{def:canonize}
@@ -263,7 +263,7 @@ $$\mathcal{R}^E(r,s) = \begin{cases}1 & \mbox{ if } r=s; \\
 \end{cases}$$
 \end{definition}
 
-{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$ if $\mathcal{R}^E(r_1,r_2)\gneq 0$ then $r_1=r[a_1,\ldots,b_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
+{\color{red}\begin{conjecture} Let $r,s$ be restricted regular expressions over $\Sigma$, and let $\mathcal{R}$ be a T-similarity relation on $\Sigma$, then for all restricted regular expressions $r_1,r_2$ if $\mathcal{R}^E(r_1,r_2)\gneq 0$ then $r_1=r[a_1,\ldots,a_n] $ and $r_2=r[b_1,\ldots,b_n] $ for suitable choices of $r$ and $a_i$'s and $b_i$'s. 
 \end{conjecture}}
 
 We can straightforwardly prove that all the above fuzzy relations are indeed T-similarities.
@@ -473,6 +473,8 @@ syntax tree of $r$.
 \begin{definition}\label{def:fuzzy-word-derivative}
     The $\mu$-fuzzy derivative of a language $\mathcal{L} \subseteq \Sigma^*$ with respect to a word $u=a\cdot v \in \Sigma^*$ where $a \in \Sigma$ and $v \in \Sigma^*$ is defined to be:
     $$
+    \partial^\cut_\varepsilon(\mathcal{L}) = \mathcal{L}^\cut,
+    \qquad
     \partial^\cut_u(\mathcal{L}) = \bigcup_{\cut'\otimes \cut''\geq \cut}\partial^{\cut'}_v(\partial^{\cut''}_a(\mathcal{L})).
     $$
 \end{definition}
@@ -617,7 +619,7 @@ $q_\cut:\Sigma\to\Sigma^\cut$ be the quotient map, $q_\cut(a)=[a]_\cut$.\begin{e
 \[
   q_\cut^*(a_1\cdots a_n) = [a_1]_\cut \cdots [a_n]_\cut.
 \]
-\item Extend $q_\cut$ to regular expressions $r[a_1,\ldots,a_n]$, where $a_1,\ldots,a_n$ are all the alphabet symbols occurring in $r$, by
+\item Extend $q_\cut$ to regular expressions $r[a_1,\ldots,a_n]$ (notation as in Section~\ref{basic}) by
 \[
   q_\cut^*(r[a_1,\ldots,a_n]) = r\bigl[[a_1]_\cut, \cdots, [a_n]_\cut\bigr].
 \]
@@ -731,7 +733,7 @@ One can prove that the following holds, using the notation in \cite{SC12}.
 $\mu_S: S\rightarrow [0,1]$ is a function; $\mu_S(x)$ is the \emph{degree of membership}
 of $x\in S$, and $x$ is said to be \emph{fully}, \emph{partially}, or \emph{not} included
 according as $\mu_S(x)$ equals $1$, lies strictly between $0$ and $1$, or equals $0$.
-If all $x\in S$ are fully included, the fuzzy set is said to be {\em crisp}.
+If no $x\in S$ is partially included, \ie $\mu_S(x)\in\{0,1\}$ for all $x$, the fuzzy set is said to be {\em crisp}.
 \end{definition}
 
 % a fuzzy set $(\univ, \mu_\univ)$, where $\univ=\{x_1,\ldots,x_n\}$, is written as $\{\mu_\univ(x_1)/x_1,\ldots,\mu_\univ(x_n)/x_n\}$.
@@ -764,7 +766,7 @@ that $\otimes$ and $\Rightarrow$ form an adjoint pair, \ie:
  $a\Rightarrow b =\begin{cases}1-a+b & \mbox{ if } b\lneq a \\
 1 &\mbox{ otherwise. }
 \end{cases}$
-\item for $p\in (0,1]$, the $p$-ordinal sum of Goguen's product and G\"odel's minimum T-norm:
+\item for $p\in (0,1)$, the $p$-ordinal sum of Goguen's product and G\"odel's minimum T-norm:
 $$a\otimes b=\begin{cases}p+ \dfrac{(a-p)(b-p)}{1-p} & a,b\geq p;\\ \min(a,b) & \mbox{ otherwise,}
 \end{cases}$$ and 
 $$a\Rightarrow b=\begin{cases}1& a\leq b,\\
@@ -778,11 +780,11 @@ p+ \dfrac{(1-p)(b-p)}{a-p} & \mbox{otherwise.}
 
 \begin{proposition}[Norms with Residuum] \label{first} Given a left-continuous T-norm, $\otimes$, we have the following standard properties, where $a,b,c \ldots \in [0,1]$:
 \begin{enumerate}
-\item\label{first1} $\otimes$ uniquely determines a \emph{residuum} defined as follows 
-\[a \Rightarrow b := \sup\{c \mid a\otimes c \leq b \}.\] 
+\item\label{first1} $\otimes$ uniquely determines a \emph{residuum} defined as follows
+\[a \Rightarrow b := \sup\{c \mid a\otimes c \leq b \}.\]
 \item\label{first2} $\Rightarrow$ is monotone in its second argument and anti-monotone in its first argument;
 \item\label{first3} $a\Rightarrow a = a\Rightarrow 1=1$, $1\Rightarrow a=a$;
-\item\label{first4} $a\leq b \Rightarrow a$;
+\item\label{first4} $a\leq (b \Rightarrow a)$;
 \item\label{first5} $a\leq b$ if and only if $a\Rightarrow b = 1$; 
 \item\label{first6} $a\otimes b\leq a$, and also $a\otimes b\leq \min\{a,b\}$;
 
