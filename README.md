@@ -50,6 +50,14 @@ The following table maps the main definitions, lemmas, propositions, and theorem
 | Lemma: Canonicalization/Normalization | `coq/src/CanonicalizationCorrectness.v`, theorem/proof `similar_iff_nf_eq`; supporting proofs `eq_regex_sound`, `eq_regex_refl`, `eq_regex_complete` |
 | Lemma: Soundness of normalization | `coq/src/CanonicalizationCorrectness.v`, theorem/proof `similar_sound`; supporting proof `canonize_correct` |
 
+### Section 3: Fuzzy Relations and T-Similarity
+
+| Paper item | Rocq formalization |
+|---|---|
+| Definition (Appendix): T-norm | `coq/src/SimilarityRelations.v`, record `tnorm`; supporting proofs `tn_mono_r`, `tn_mono2`, `tn_idem_le` |
+| Definition: Fuzzy relation, cut, T-similarity, Gödelian | `coq/src/SimilarityRelations.v`, definitions `fuzzy_rel`, `cut_value`, `mu_cut`, `is_T_similarity`, `is_godelian` |
+| Lemma: μ-cuts of T-similarity relations are equivalences | `coq/src/SimilarityRelations.v`, proofs `T_equivalence_idem` (item 1), `T_equivalence_godelian` (item 2) |
+
 | Paper item | Paper location | Rocq location |
 |---|---|---|
 | Alphabet `Σ` | `tex/sections/preliminaries.tex` | `coq/src/Alphabet.v` |

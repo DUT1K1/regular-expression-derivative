@@ -208,10 +208,15 @@ The following Lemma is immediate.
 \begin{lemma}\label{T-equivalence}\hfill \begin{enumerate} 
 \item The $\mu$-cut of a T-similarity relation, $\cR$ is an equivalence relation if $\otimes$ is locally idempotent on $\mu$, \ie 
 $\mu\otimes\mu=\mu$;
-\item $\mu$-cuts of G\"odelian T-similarity relations are equivalences. 
+\item $\mu$-cuts of G\"odelian T-similarity relations are equivalences.
 \end{enumerate}
 \end{lemma}
-{\color{red} Rocq proof??}\vspace{0.5cm}
+{\color{blue}\begin{proof}
+\begin{sloppypar}\raggedright
+Proved in \path{coq/src/SimilarityRelations.v}, theorems
+\path{T_equivalence_idem} and \path{T_equivalence_godelian}~\cite{OurRocqRepo}.
+\end{sloppypar}
+\end{proof}}
 
 Since all crisp equivalence relations are T-similarity relations for any norm, Lemma~\ref{T-equivalence} cannot be reversed. 
 
@@ -594,11 +599,9 @@ $\cut$, $\mathcal D_a^\cut(r)$ in Definition~\ref{def:regex-fuzzy-derivative}, i
 \[  \sum\limits_{\substack{a\sim_\cut^\Sigma b\\ s\sim_\cut^E r}}
   \mathcal D_b(s).
 \]
-\item The \emph{$\cut$-fuzzy semantic 
-derivative} of $\mathcal{L}$ with respect to $a$ is
+\item The $\cut$-fuzzy semantic
+derivative of $\mathcal{L}$ with respect to $a$, $\partial_a^\cut(\mathcal{L})$ in Definition~\ref{fuzzyderivative}, is equal to
 $$
-\partial_a^\cut(\mathcal{L})
-=
 \{w \in \Sigma^* \mid
   \exists b \in \Sigma,\ \exists v\in\Sigma^*
   :\;

@@ -124,6 +124,126 @@ Module SimilarityRelations (X : SYM).
     }.
   End FuzzyRelationLayer.
 
+  (* ============================================================ *)
+  (* Definition A.2: T-norm                                       *)
+  (* ============================================================ *)
+
+  (* A T-norm is an operation on [0,1]; on simval = R its laws are
+     required only for arguments in [0,1]. *)
+  Record tnorm : Type := TNorm {
+    tn_op :> simval -> simval -> simval;
+    tn_in01  : forall x y, in01 x -> in01 y -> in01 (tn_op x y);
+    tn_comm  : forall x y, in01 x -> in01 y -> tn_op x y = tn_op y x;
+    tn_assoc : forall x y z, in01 x -> in01 y -> in01 z ->
+      tn_op (tn_op x y) z = tn_op x (tn_op y z);
+    tn_mono  : forall x y z, in01 x -> in01 y -> in01 z ->
+      x <= y -> tn_op x z <= tn_op y z;
+    tn_unit  : forall x, in01 x -> tn_op x 1 = x
+  }.
+
+  Section TNormFacts.
+    Variable T : tnorm.
+
+    Lemma tn_mono_r (x y z : simval) :
+      in01 x -> in01 y -> in01 z -> x <= y -> T z x <= T z y.
+    Proof.
+      move=> Hx Hy Hz Hxy.
+      rewrite (@tn_comm T z x Hz Hx) (@tn_comm T z y Hz Hy).
+      exact: (@tn_mono T x y z Hx Hy Hz Hxy).
+    Qed.
+
+    Lemma tn_mono2 (x x' y y' : simval) :
+      in01 x -> in01 x' -> in01 y -> in01 y' ->
+      x <= x' -> y <= y' -> T x y <= T x' y'.
+    Proof.
+      move=> Hx Hx' Hy Hy' Hxx' Hyy'.
+      apply: (Rle_trans _ (T x' y)).
+      - exact: (@tn_mono T x x' y Hx Hx' Hy Hxx').
+      - exact: (@tn_mono_r y y' x' Hy Hy' Hx' Hyy').
+    Qed.
+
+    (* An idempotent x is below x ⊗ y for every y >= x. *)
+    Lemma tn_idem_le (x y : simval) :
+      in01 x -> in01 y -> T x x = x -> x <= y -> x <= T x y.
+    Proof.
+      move=> Hx Hy Hidem Hxy.
+      have H := @tn_mono_r x y x Hx Hy Hx Hxy.
+      rewrite Hidem in H.
+      exact H.
+    Qed.
+  End TNormFacts.
+
+  (* ============================================================ *)
+  (* Definition 3.1: T-similarity, godelian; Lemma 3.1            *)
+  (* ============================================================ *)
+
+  Section TSimilarityLayer.
+    Variable S : Type.
+    Variable T : tnorm.
+
+    (* Definition 3.1(1),(4): values in [0,1], reflexive, symmetric,
+       reverse triangle inequality wrt T *)
+    Record is_T_similarity (R : fuzzy_rel S) : Prop := {
+      tsim_range : forall s1 s2, in01 (R s1 s2);
+      tsim_prox  : is_proximity R;
+      tsim_trans : forall s1 s2 s, T (R s1 s) (R s s2) <= R s1 s2
+    }.
+
+    (* Definition 3.1(6) *)
+    Definition is_godelian (R : fuzzy_rel S) : Prop :=
+      forall s1 s2, R s1 s2 = T (R s1 s2) (R s1 s2).
+
+    (* Lemma 3.1(1) *)
+    Lemma T_equivalence_idem (R : fuzzy_rel S) (mu : simval) :
+      is_T_similarity R -> cut_value mu -> T mu mu = mu ->
+      Relation_Definitions.equivalence S (mu_cut mu R).
+    Proof.
+      move=> [Hrange [Hrefl Hsym] Htrans] [Hmu0 Hmu1] Hidem.
+      have Hmu : in01 mu by split; lra.
+      split.
+      - move=> s.
+        rewrite /mu_cut Hrefl.
+        exact Hmu1.
+      - move=> s1 s s2; rewrite /mu_cut => H1 H2.
+        rewrite -Hidem.
+        apply: (Rle_trans _ (T (R s1 s) (R s s2))); last exact: Htrans.
+        exact: (@tn_mono2 T mu (R s1 s) mu (R s s2)
+                  Hmu (Hrange s1 s) Hmu (Hrange s s2) H1 H2).
+      - move=> s1 s2 H.
+        rewrite /mu_cut Hsym.
+        exact H.
+    Qed.
+
+    (* Lemma 3.1(2) *)
+    Lemma T_equivalence_godelian (R : fuzzy_rel S) (mu : simval) :
+      is_T_similarity R -> is_godelian R -> cut_value mu ->
+      Relation_Definitions.equivalence S (mu_cut mu R).
+    Proof.
+      move=> [Hrange [Hrefl Hsym] Htrans] Hgod [Hmu0 Hmu1].
+      split.
+      - move=> s.
+        rewrite /mu_cut Hrefl.
+        exact Hmu1.
+      - move=> s1 s s2; rewrite /mu_cut => H1 H2.
+        apply: (Rle_trans _ (T (R s1 s) (R s s2))); last exact: Htrans.
+        have Hx := Hrange s1 s.
+        have Hy := Hrange s s2.
+        destruct (Rle_dec (R s1 s) (R s s2)) as [Hxy|Hnxy].
+        + apply: (Rle_trans _ (R s1 s) _ H1).
+          exact: (@tn_idem_le T (R s1 s) (R s s2)
+                    Hx Hy (esym (Hgod s1 s)) Hxy).
+        + have Hyx : R s s2 <= R s1 s.
+          { apply Rlt_le. apply Rnot_le_lt. exact Hnxy. }
+          apply: (Rle_trans _ (R s s2) _ H2).
+          rewrite (@tn_comm T (R s1 s) (R s s2) Hx Hy).
+          exact: (@tn_idem_le T (R s s2) (R s1 s)
+                    Hy Hx (esym (Hgod s s2)) Hyx).
+      - move=> s1 s2 H.
+        rewrite /mu_cut Hsym.
+        exact H.
+    Qed.
+  End TSimilarityLayer.
+
 
   Definition word := RS.word.
   Definition language := RS.language.
@@ -143,7 +263,7 @@ Module SimilarityRelations (X : SYM).
     Hypothesis R_trans : forall a b c, smin (R a b) (R b c) <= R a c.
 
     (* ============================================================ *)
-    (* Definition 3.1 (R^ω): similarity on words                    *)
+    (* Definition 3.2 (R^ω): similarity on words                    *)
     (* ============================================================ *)
 
     Fixpoint Rw (w1 w2 : word) : simval :=
@@ -169,7 +289,7 @@ Module SimilarityRelations (X : SYM).
     Qed.
 
     (* ============================================================ *)
-    (* Lemma 3.1: R^ω is reflexive, symmetric, transitive           *)
+    (* Lemma 3.2(2), min T-norm: R^ω is a similarity                *)
     (* ============================================================ *)
 
     Lemma Rw_refl : forall w, Rw w w = 1.
@@ -228,7 +348,7 @@ Module SimilarityRelations (X : SYM).
     Qed.
 
     (* ============================================================ *)
-    (* Definition 3.2 (R^L): similarity on languages                *)
+    (* Definition 3.3 (R^L): similarity on languages                *)
     (* ============================================================ *)
 
     Definition lang_nonempty (L : language) : Prop :=
@@ -1072,7 +1192,7 @@ Module SimilarityRelations (X : SYM).
             -- apply bridge_right_nonempty; assumption.
     Qed.
 
-    (* Lemma 3.2 *)
+    (* Lemma 3.2(3), min T-norm *)
     Lemma RL_is_similarity :
       (forall L, RL L L = 1) /\
       (forall L1 L2, RL L1 L2 = RL L2 L1) /\
@@ -1119,7 +1239,7 @@ Module SimilarityRelations (X : SYM).
     Qed.
 
     (* ============================================================ *)
-    (* Definition 3.3 (R^r): syntax-sensitive similarity on regex   *)
+    (* Definition 3.4 (G^E): syntax-sensitive similarity on regex   *)
     (* ============================================================ *)
 
     Fixpoint Rr (r s : regex) : simval :=
